@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <Defs>
   <SoundDef>
     <defName>VPE_Bolt_Cast</defName>
@@ -210,7 +210,7 @@
     <priorityMode>PrioritizeNearest</priorityMode>
     <subSounds>
       <li>
-        <onCamera>True</onCamera>   
+        <onCamera>True</onCamera>
         <grains>
           <li Class="AudioGrain_Clip">
             <clipPath>Staticlord/Psycast_Hurricane_Sustainer_01a</clipPath>

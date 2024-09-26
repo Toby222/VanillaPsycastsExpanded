@@ -1,66 +1,65 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <Defs>
+  <ThingDef Abstract="True" Name="VPE_BaseMeleeWeapon_Eltex_Sharp" ParentName="BaseMeleeWeapon_Sharp_Quality">
+    <weaponTags>
+      <li>VPE_EltexMelee</li>
+    </weaponTags>
+    <equippedAngleOffset>-65</equippedAngleOffset>
+    <burnableByRecipe>false</burnableByRecipe>
+    <techLevel>Medieval</techLevel>
+    <recipeMaker>
+      <skillRequirements>
+        <Crafting>6</Crafting>
+      </skillRequirements>
+      <researchPrerequisite>VPE_CasterGear</researchPrerequisite>
+      <recipeUsers>
+        <li>ElectricSmithy</li>
+        <li>FueledSmithy</li>
+      </recipeUsers>
+      <unfinishedThingDef>UnfinishedComponent</unfinishedThingDef>
+    </recipeMaker>
+    <equippedStatOffsets>
+      <PsychicSensitivityOffset>0.15</PsychicSensitivityOffset>
+      <PsychicEntropyRecoveryRate>0.016</PsychicEntropyRecoveryRate>
+    </equippedStatOffsets>
+    <relicChance>2</relicChance>
+    <modExtensions>
+      <li Class="VFECore.ThingDefExtension">
+        <usableWithShields>true</usableWithShields>
+      </li>
+    </modExtensions>
+  </ThingDef>
 
-  <ThingDef Name="VPE_BaseMeleeWeapon_Eltex_Sharp" ParentName="BaseMeleeWeapon_Sharp_Quality" Abstract="True">
+  <ThingDef Abstract="True" Name="VPE_BaseMeleeWeapon_Eltex_Blunt" ParentName="BaseMeleeWeapon_Blunt_Quality">
     <weaponTags>
       <li>VPE_EltexMelee</li>
     </weaponTags>
     <equippedAngleOffset>-65</equippedAngleOffset>
     <burnableByRecipe>false</burnableByRecipe>
-	<techLevel>Medieval</techLevel>
+    <techLevel>Medieval</techLevel>
     <recipeMaker>
-    <skillRequirements>
-      <Crafting>6</Crafting>
-    </skillRequirements>
-	<researchPrerequisite>VPE_CasterGear</researchPrerequisite>
+      <skillRequirements>
+        <Crafting>6</Crafting>
+      </skillRequirements>
+      <researchPrerequisite>VPE_CasterGear</researchPrerequisite>
       <recipeUsers>
-            <li>ElectricSmithy</li>
-            <li>FueledSmithy</li>
+        <li>ElectricSmithy</li>
+        <li>FueledSmithy</li>
       </recipeUsers>
-	  <unfinishedThingDef>UnfinishedComponent</unfinishedThingDef>
+      <unfinishedThingDef>UnfinishedComponent</unfinishedThingDef>
     </recipeMaker>
     <equippedStatOffsets>
       <PsychicSensitivityOffset>0.15</PsychicSensitivityOffset>
       <PsychicEntropyRecoveryRate>0.016</PsychicEntropyRecoveryRate>
     </equippedStatOffsets>
-	<relicChance>2</relicChance>
+    <relicChance>2</relicChance>
     <modExtensions>
-	    <li Class="VFECore.ThingDefExtension">
-            <usableWithShields>true</usableWithShields>
-        </li>
+      <li Class="VFECore.ThingDefExtension">
+        <usableWithShields>true</usableWithShields>
+      </li>
     </modExtensions>
   </ThingDef>
-  
-  <ThingDef Name="VPE_BaseMeleeWeapon_Eltex_Blunt" ParentName="BaseMeleeWeapon_Blunt_Quality" Abstract="True">
-    <weaponTags>
-      <li>VPE_EltexMelee</li>
-    </weaponTags>
-    <equippedAngleOffset>-65</equippedAngleOffset>
-    <burnableByRecipe>false</burnableByRecipe>
-	<techLevel>Medieval</techLevel>
-    <recipeMaker>
-    <skillRequirements>
-      <Crafting>6</Crafting>
-    </skillRequirements>
-	<researchPrerequisite>VPE_CasterGear</researchPrerequisite>
-      <recipeUsers>
-            <li>ElectricSmithy</li>
-            <li>FueledSmithy</li>
-      </recipeUsers>
-	  <unfinishedThingDef>UnfinishedComponent</unfinishedThingDef>
-    </recipeMaker>
-    <equippedStatOffsets>
-      <PsychicSensitivityOffset>0.15</PsychicSensitivityOffset>
-      <PsychicEntropyRecoveryRate>0.016</PsychicEntropyRecoveryRate>
-    </equippedStatOffsets>
-	<relicChance>2</relicChance>
-    <modExtensions>
-	    <li Class="VFECore.ThingDefExtension">
-            <usableWithShields>true</usableWithShields>
-        </li>
-    </modExtensions>
-  </ThingDef>
-	
+
   <ThingDef ParentName="VPE_BaseMeleeWeapon_Eltex_Sharp">
     <defName>VPE_MeleeWeapon_EltexDagger</defName>
     <label>eltex dagger</label>
@@ -104,11 +103,11 @@
       </li>
     </tools>
     <costList>
-	    <Steel>30</Steel>
-		<VPE_Eltex>4</VPE_Eltex>
-	</costList>
+      <Steel>30</Steel>
+      <VPE_Eltex>4</VPE_Eltex>
+    </costList>
   </ThingDef>
-  
+
   <ThingDef ParentName="VPE_BaseMeleeWeapon_Eltex_Blunt">
     <defName>VPE_MeleeWeapon_EltexMace</defName>
     <label>eltex mace</label>
@@ -142,11 +141,11 @@
       </li>
     </tools>
     <costList>
-	    <Steel>50</Steel>
-		<VPE_Eltex>4</VPE_Eltex>
-	</costList>
+      <Steel>50</Steel>
+      <VPE_Eltex>4</VPE_Eltex>
+    </costList>
   </ThingDef>
-  
+
   <ThingDef ParentName="VPE_BaseMeleeWeapon_Eltex_Sharp">
     <defName>VPE_MeleeWeapon_EltexSword</defName>
     <label>eltex sword</label>
@@ -187,9 +186,8 @@
       </li>
     </tools>
     <costList>
-	    <Steel>50</Steel>
-		<VPE_Eltex>4</VPE_Eltex>
-	</costList>
+      <Steel>50</Steel>
+      <VPE_Eltex>4</VPE_Eltex>
+    </costList>
   </ThingDef>
-  
 </Defs>

@@ -1,6 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Defs>
-
   <RaidStrategyDef>
     <defName>VPE_ImmediateAttack_Psycasters</defName>
     <workerClass>VanillaPsycastsExpanded.RaidStrategyWorker_ImmediateAttack_Psycasters</workerClass>
@@ -14,7 +13,8 @@
         <faction>Mechanoid</faction>
         <selectionWeightPerPointsCurve>
           <points>
-            <li>(0, 1)</li> <!-- Constant 1 -->
+            <li>(0, 1)</li>
+            <!-- Constant 1 -->
           </points>
         </selectionWeightPerPointsCurve>
       </li>
@@ -36,5 +36,4 @@ Psycasters in this group:
     <letterLabelFriendly>Friendlies (Psycaster)</letterLabelFriendly>
     <arrivalTextFriendly>They are moving in to help you immediately.</arrivalTextFriendly>
   </RaidStrategyDef>
-  
 </Defs>

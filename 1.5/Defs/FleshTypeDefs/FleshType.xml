@@ -1,8 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-
 <Defs>
- 
-
   <FleshTypeDef>
     <defName>VPE_SteelConstructFlesh</defName>
     <corpseCategory>CorpsesMechanoid</corpseCategory>
@@ -19,7 +16,7 @@
       </li>
     </genericWounds>
   </FleshTypeDef>
-  
+
   <FleshTypeDef>
     <defName>VPE_RockConstructFlesh</defName>
     <corpseCategory>CorpsesMechanoid</corpseCategory>
@@ -36,8 +33,8 @@
       </li>
     </genericWounds>
   </FleshTypeDef>
-  
-   <FleshTypeDef>
+
+  <FleshTypeDef>
     <defName>VPE_SkeletalFlesh</defName>
     <corpseCategory>CorpsesMechanoid</corpseCategory>
     <damageEffecter>Damage_HitMechanoid</damageEffecter>
@@ -53,6 +50,4 @@
       </li>
     </genericWounds>
   </FleshTypeDef>
-
- 
 </Defs>

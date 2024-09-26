@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <Defs>
   <VFECore.Abilities.AbilityDef ParentName="VPE_PsycastBase">
     <defName>VPE_SpeedBoost</defName>
@@ -228,7 +228,7 @@
           <li>VPE_AdrenalineRush</li>
         </prerequisites>
       </li>
-      <li Class = "VanillaPsycastsExpanded.AbilityExtension_ForceJobOnTarget">
+      <li Class="VanillaPsycastsExpanded.AbilityExtension_ForceJobOnTarget">
         <jobDef>GotoMindControlled</jobDef>
         <durationMultiplier>PsychicSensitivity</durationMultiplier>
         <fleckOnTarget>PsycastPsychicEffect</fleckOnTarget>

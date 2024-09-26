@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <Defs>
-
   <SoundDef>
     <defName>VPE_EnergyDump_Cast</defName>
     <context>MapOnly</context>
@@ -17,7 +16,7 @@
       </li>
     </subSounds>
   </SoundDef>
-  
+
   <SoundDef>
     <defName>VPE_Bliss_Cast</defName>
     <context>MapOnly</context>
@@ -34,7 +33,7 @@
       </li>
     </subSounds>
   </SoundDef>
-  
+
   <SoundDef>
     <defName>VPE_ReunionFarskim_Cast</defName>
     <context>MapOnly</context>
@@ -51,7 +50,7 @@
       </li>
     </subSounds>
   </SoundDef>
-  
+
   <SoundDef>
     <defName>VPE_MindWipe_Cast</defName>
     <context>MapOnly</context>

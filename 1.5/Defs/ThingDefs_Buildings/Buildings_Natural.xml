@@ -1,6 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Defs>
-
   <ThingDef ParentName="RockBase">
     <defName>VPE_EltexOre</defName>
     <label>eltex ore</label>
@@ -16,13 +15,11 @@
     </statBases>
     <building>
       <isResourceRock>true</isResourceRock>
-	  <isNaturalRock>false</isNaturalRock>
+      <isNaturalRock>false</isNaturalRock>
       <mineableThing>VPE_Eltex</mineableThing>
       <mineableYield>3</mineableYield>
-	  <claimable>false</claimable>
-	  <veinMineable>true</veinMineable>
+      <claimable>false</claimable>
+      <veinMineable>true</veinMineable>
     </building>
   </ThingDef>
-
-
 </Defs>

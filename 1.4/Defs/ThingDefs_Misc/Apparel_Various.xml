@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Defs>
-
   <ThingDef ParentName="ArmorSmithableBase">
     <defName>VPE_Apparel_PlateArmorPrestige</defName>
     <label>prestige plate armor</label>
@@ -15,7 +14,7 @@
     <graphicData>
       <texPath>Things/Apparel/RoyalPlateArmor/RoyalPlateArmor</texPath>
       <graphicClass>Graphic_Single</graphicClass>
-		<shaderType>CutoutComplex</shaderType>
+      <shaderType>CutoutComplex</shaderType>
     </graphicData>
     <stuffCategories>
       <li>Metallic</li>
@@ -53,7 +52,7 @@
         <li>Legs</li>
       </bodyPartGroups>
       <wornGraphicPath>Things/Apparel/RoyalPlateArmor/RoyalPlateArmor</wornGraphicPath>
-	  <useWornGraphicMask>true</useWornGraphicMask>
+      <useWornGraphicMask>true</useWornGraphicMask>
       <layers>
         <li>Middle</li>
         <li>Shell</li>

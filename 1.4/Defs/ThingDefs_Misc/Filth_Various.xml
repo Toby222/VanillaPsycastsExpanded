@@ -1,7 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Defs>
-
-
   <!--=================== Fluids etc =================-->
 
   <ThingDef ParentName="BaseFilth">
@@ -13,20 +11,18 @@
     </statBases>
     <graphicData>
       <texPath>Things/Filth/RubbleSlag</texPath>
-     
     </graphicData>
     <filth>
-	 <disappearsInDays>10~15</disappearsInDays>
+      <disappearsInDays>10~15</disappearsInDays>
       <rainWashes>true</rainWashes>
       <cleaningWorkToReduceThickness>70</cleaningWorkToReduceThickness>
-     
     </filth>
   </ThingDef>
-  
-   <ThingDef ParentName="BaseFilth">
+
+  <ThingDef ParentName="BaseFilth">
     <defName>VPE_Filth_Rock</defName>
     <label>rock rubble</label>
-	 <statBases>
+    <statBases>
       <Beauty>-15</Beauty>
       <Cleanliness>-3</Cleanliness>
     </statBases>
@@ -36,12 +32,7 @@
     <filth>
       <disappearsInDays>10~15</disappearsInDays>
       <cleaningWorkToReduceThickness>35</cleaningWorkToReduceThickness>
-	   <rainWashes>true</rainWashes>
+      <rainWashes>true</rainWashes>
     </filth>
   </ThingDef>
-  
-    
-
-
-
 </Defs>

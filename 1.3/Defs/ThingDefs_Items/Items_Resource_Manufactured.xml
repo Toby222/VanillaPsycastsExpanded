@@ -1,8 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Defs>
-  
   <!--============================================= Eltex =============================================-->
-  
+
   <ThingDef ParentName="ResourceBase">
     <defName>VPE_Eltex</defName>
     <label>eltex</label>
@@ -17,7 +16,7 @@
     <statBases>
       <MaxHitPoints>50</MaxHitPoints>
       <MarketValue>167</MarketValue>
-	  <RoyalFavorValue>0.25</RoyalFavorValue>
+      <RoyalFavorValue>0.25</RoyalFavorValue>
       <Mass>0.02</Mass>
       <Flammability>0.4</Flammability>
       <DeteriorationRate>1.0</DeteriorationRate>
@@ -28,7 +27,6 @@
     <thingSetMakerTags>
       <li>RewardStandardHighFreq</li>
     </thingSetMakerTags>
-	<allowedArchonexusCount>25</allowedArchonexusCount>
+    <allowedArchonexusCount>25</allowedArchonexusCount>
   </ThingDef>
-  
 </Defs>

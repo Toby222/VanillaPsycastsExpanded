@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Defs>
-  <ThingDef ParentName="ApparelBase" Name="VPE_MedievalPsychicApparelBase" Abstract="True">
+  <ThingDef Abstract="True" Name="VPE_MedievalPsychicApparelBase" ParentName="ApparelBase">
     <techLevel>Medieval</techLevel>
     <tradeTags>
       <li>PsychicApparel</li>
     </tradeTags>
-    <thingSetMakerTags><li>RewardStandardMidFreq</li></thingSetMakerTags>
+    <thingSetMakerTags>
+      <li>RewardStandardMidFreq</li>
+    </thingSetMakerTags>
     <apparel>
       <tags>
         <li>Psychic</li>
       </tags>
     </apparel>
   </ThingDef>
-  
+
   <ThingDef ParentName="VPE_MedievalPsychicApparelBase">
     <defName>VPE_Apparel_EltexMask</defName>
     <label>eltex mask</label>
@@ -38,7 +40,7 @@
     <equippedStatOffsets>
       <PsychicSensitivityOffset>0.1</PsychicSensitivityOffset>
       <PsychicEntropyRecoveryRate>0.046</PsychicEntropyRecoveryRate>
-	  <PsychicEntropyMax>0.6667</PsychicEntropyMax>
+      <PsychicEntropyMax>0.6667</PsychicEntropyMax>
     </equippedStatOffsets>
     <costList>
       <WoodLog>50</WoodLog>
@@ -58,7 +60,7 @@
         </dataNorth>
       </drawData>
       <canBeGeneratedToSatisfyWarmth>false</canBeGeneratedToSatisfyWarmth>
-      <layers> 
+      <layers>
         <li>Overhead</li>
       </layers>
       <tags>
@@ -106,7 +108,7 @@
     <equippedStatOffsets>
       <PsychicSensitivityOffset>0.10</PsychicSensitivityOffset>
       <PsychicEntropyRecoveryRate>0.043</PsychicEntropyRecoveryRate>
-	  <PsychicEntropyMax>0.6667</PsychicEntropyMax>
+      <PsychicEntropyMax>0.6667</PsychicEntropyMax>
       <SlaveSuppressionOffset MayRequire="Ludeon.RimWorld.Ideology">-0.2</SlaveSuppressionOffset>
     </equippedStatOffsets>
     <costList>
@@ -149,5 +151,4 @@
       </options>
     </colorGenerator>
   </ThingDef>
-  
 </Defs>

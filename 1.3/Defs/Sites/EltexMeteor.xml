@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Defs>
-
   <SitePartDef>
     <defName>VPE_EltexMeteor</defName>
     <label>eltex meteor</label>
@@ -23,5 +22,4 @@
       <nearMapCenter>true</nearMapCenter>
     </genStep>
   </GenStepDef>
-
 </Defs>

@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Defs>
-
-  <RecipeDef Name="VPE_CraftEltexGear" Abstract = "True">
+  <RecipeDef Abstract="True" Name="VPE_CraftEltexGear">
     <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
-	<workSkill>Crafting</workSkill>
+    <workSkill>Crafting</workSkill>
     <effectWorking>Tailor</effectWorking>
     <soundWorking>Recipe_Tailor</soundWorking>
     <unfinishedThingDef>UnfinishedTechArmor</unfinishedThingDef>
-	<allowMixingIngredients>false</allowMixingIngredients>
+    <allowMixingIngredients>false</allowMixingIngredients>
     <fixedIngredientFilter>
       <thingDefs>
         <li>VPE_Eltex</li>
@@ -24,13 +23,13 @@
       <li>HandTailoringBench</li>
       <li>ElectricTailoringBench</li>
     </recipeUsers>
-	<useIngredientsForColor>false</useIngredientsForColor>
+    <useIngredientsForColor>false</useIngredientsForColor>
   </RecipeDef>
-  
-  <RecipeDef Name="VPE_CraftEltexGearSmithy" ParentName="VPE_CraftEltexGear" Abstract = "True">
+
+  <RecipeDef Abstract="True" Name="VPE_CraftEltexGearSmithy" ParentName="VPE_CraftEltexGear">
     <effectWorking>Smith</effectWorking>
     <soundWorking>Recipe_Smith</soundWorking>
-    <recipeUsers Inherit = "False">
+    <recipeUsers Inherit="False">
       <li>ElectricSmithy</li>
       <li>FueledSmithy</li>
     </recipeUsers>
@@ -64,7 +63,7 @@
       <Apparel_PsyfocusRobe>1</Apparel_PsyfocusRobe>
     </products>
   </RecipeDef>
-  
+
   <RecipeDef ParentName="VPE_CraftEltexGear">
     <defName>VPE_Make_EltexMask</defName>
     <label>make eltex mask</label>
@@ -89,12 +88,12 @@
         <count>6</count>
       </li>
     </ingredients>
-	<researchPrerequisite>VPE_CasterGear</researchPrerequisite>
+    <researchPrerequisite>VPE_CasterGear</researchPrerequisite>
     <products>
       <VPE_Apparel_EltexMask>1</VPE_Apparel_EltexMask>
     </products>
   </RecipeDef>
-  
+
   <RecipeDef ParentName="VPE_CraftEltexGear">
     <defName>VPE_Make_EltexCape</defName>
     <label>make eltex cape</label>
@@ -119,12 +118,12 @@
         <count>4</count>
       </li>
     </ingredients>
-	<researchPrerequisite>VPE_CasterGear</researchPrerequisite>
+    <researchPrerequisite>VPE_CasterGear</researchPrerequisite>
     <products>
       <VPE_Apparel_EltexCape>1</VPE_Apparel_EltexCape>
     </products>
   </RecipeDef>
-  
+
   <RecipeDef ParentName="VPE_CraftEltexGear">
     <defName>VPE_Make_EltexVest</defName>
     <label>make eltex vest</label>
@@ -153,7 +152,7 @@
       <Apparel_PsyfocusVest>1</Apparel_PsyfocusVest>
     </products>
   </RecipeDef>
-  
+
   <RecipeDef ParentName="VPE_CraftEltexGear">
     <defName>VPE_Make_EltexShirt</defName>
     <label>make eltex shirt</label>
@@ -182,13 +181,13 @@
       <Apparel_PsyfocusShirt>1</Apparel_PsyfocusShirt>
     </products>
   </RecipeDef>
-  
+
   <RecipeDef ParentName="VPE_CraftEltexGearSmithy">
     <defName>VPE_Make_EltexStaff</defName>
     <label>make eltex staff</label>
     <description>Make an eltex staff.</description>
     <jobString>Making eltex staff.</jobString>
-	<unfinishedThingDef>UnfinishedComponent</unfinishedThingDef>
+    <unfinishedThingDef>UnfinishedComponent</unfinishedThingDef>
     <workAmount>18000</workAmount>
     <ingredients>
       <li>
@@ -211,14 +210,14 @@
     <fixedIngredientFilter>
       <thingDefs>
         <li>VPE_Eltex</li>
-		<li>Plasteel</li>
+        <li>Plasteel</li>
       </thingDefs>
     </fixedIngredientFilter>
     <products>
       <MeleeWeapon_PsyfocusStaff>1</MeleeWeapon_PsyfocusStaff>
     </products>
   </RecipeDef>
- 
+
   <RecipeDef ParentName="VPE_CraftEltexGearSmithy">
     <defName>VPE_Make_EltexHelmet</defName>
     <label>make eltex helmet</label>
@@ -254,15 +253,15 @@
     <fixedIngredientFilter>
       <thingDefs>
         <li>VPE_Eltex</li>
-		<li>Plasteel</li>
-		<li>Steel</li>
+        <li>Plasteel</li>
+        <li>Steel</li>
       </thingDefs>
     </fixedIngredientFilter>
     <products>
       <Apparel_PsyfocusHelmet>1</Apparel_PsyfocusHelmet>
     </products>
   </RecipeDef>
-  
+
   <RecipeDef ParentName="VPE_CraftEltexGearSmithy">
     <defName>VPE_Make_EltexSkullcap</defName>
     <label>make eltex skullcap</label>
@@ -290,13 +289,12 @@
     <fixedIngredientFilter>
       <thingDefs>
         <li>VPE_Eltex</li>
-		<li>Plasteel</li>
-		<li>Steel</li>
+        <li>Plasteel</li>
+        <li>Steel</li>
       </thingDefs>
     </fixedIngredientFilter>
     <products>
       <Apparel_EltexSkullcap>1</Apparel_EltexSkullcap>
     </products>
   </RecipeDef>
-
 </Defs>

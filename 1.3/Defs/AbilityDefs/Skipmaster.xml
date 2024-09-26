@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <Defs>
   <VFECore.Abilities.AbilityDef ParentName="VPE_PsycastBase">
     <defName>VPE_SolarPinhole</defName>
@@ -12,7 +12,7 @@
     <radius>14.9</radius>
     <range>24.9</range>
     <targetMode>Location</targetMode>
-	<showUndrafted>true</showUndrafted>
+    <showUndrafted>true</showUndrafted>
     <modExtensions>
       <li Class="VanillaPsycastsExpanded.AbilityExtension_Psycast">
         <path>VPE_Skipmaster</path>

@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <Defs>
-
   <VFECore.Abilities.AbilityDef ParentName="VPE_WordOfAbilityBase">
     <defName>VPE_WordofJoy</defName>
     <label>word of joy</label>
@@ -74,7 +73,7 @@
         <showCastBubble>false</showCastBubble>
         <psychic>true</psychic>
       </li>
-      <li Class="VanillaPsycastsExpanded.AbilityExtension_WordOfLove"></li>
+      <li Class="VanillaPsycastsExpanded.AbilityExtension_WordOfLove" />
       <li Class="VFECore.Abilities.AbilityExtension_SocialInteraction">
         <interactionDef>WordOfLove</interactionDef>
       </li>
@@ -265,7 +264,7 @@
           <li>VPE_SootheFemale</li>
         </prerequisites>
       </li>
-      <li Class="VanillaPsycastsExpanded.Empath.AbilityExtension_EnergyDump"></li>
+      <li Class="VanillaPsycastsExpanded.Empath.AbilityExtension_EnergyDump" />
     </modExtensions>
   </VFECore.Abilities.AbilityDef>
 
@@ -298,7 +297,7 @@
           <li>VPE_EnergyDump</li>
         </prerequisites>
       </li>
-      <li Class="VanillaPsycastsExpanded.AbilityExtension_MindWipe"></li>
+      <li Class="VanillaPsycastsExpanded.AbilityExtension_MindWipe" />
       <li Class="VFECore.Abilities.AbilityExtension_EffecterOnTarget">
         <effecterDef>Skip_Exit</effecterDef>
         <maintainForTicks>60</maintainForTicks>

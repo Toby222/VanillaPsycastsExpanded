@@ -50,7 +50,7 @@
               nixfmt.enable = true;
               shfmt.enable = true;
               prettier = {
-                enable = false;
+                enable = true;
                 includes = [
                   "*.xml"
                   "*.xslt"

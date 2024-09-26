@@ -1,7 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Defs>
-
-
   <MentalStateDef ParentName="BaseMentalState">
     <defName>VPE_Wander_Sad</defName>
     <stateClass>MentalState_WanderSad</stateClass>
@@ -23,6 +21,4 @@
     <unspawnedCanDo>true</unspawnedCanDo>
     <escapingPrisonersIgnore>true</escapingPrisonersIgnore>
   </MentalStateDef>
-
-
 </Defs>

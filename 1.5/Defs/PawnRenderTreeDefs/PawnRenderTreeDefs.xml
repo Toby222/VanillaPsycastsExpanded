@@ -1,8 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Defs>
-
-
-
   <PawnRenderTreeDef>
     <defName>VPE_RockConstruct_Tree</defName>
     <root Class="PawnRenderNodeProperties_Parent">
@@ -15,7 +12,6 @@
           <useRottenColor>true</useRottenColor>
           <nodeClass>VanillaPsycastsExpanded.PawnRenderNode_RockConstruct</nodeClass>
           <children>
-          
             <li>
               <debugLabel>Firefoam</debugLabel>
               <nodeClass>PawnRenderNode_AnimalPart</nodeClass>
@@ -33,7 +29,4 @@
       </children>
     </root>
   </PawnRenderTreeDef>
-
- 
-
 </Defs>
