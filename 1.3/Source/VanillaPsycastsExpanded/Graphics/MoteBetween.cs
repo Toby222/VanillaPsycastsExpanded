@@ -25,16 +25,19 @@
         {
             if (this.link1.Linked && this.link2.Linked)
             {
-                if (!this.link1.Target.ThingDestroyed) this.link1.UpdateDrawPos();
+                if (!this.link1.Target.ThingDestroyed)
+                    this.link1.UpdateDrawPos();
 
-                if (!this.link2.Target.ThingDestroyed) this.link2.UpdateDrawPos();
+                if (!this.link2.Target.ThingDestroyed)
+                    this.link2.UpdateDrawPos();
 
                 Vector3 a = this.link1.LastDrawPos;
                 Vector3 b = this.link2.LastDrawPos;
 
                 this.exactPosition = a + (b - a) * this.LifetimeFraction;
 
-                if (this.def.mote.rotateTowardsTarget) this.exactRotation = a.AngleToFlat(b) + 90f;
+                if (this.def.mote.rotateTowardsTarget)
+                    this.exactRotation = a.AngleToFlat(b) + 90f;
             }
 
             this.exactPosition.y = this.def.altitudeLayer.AltitudeFor();

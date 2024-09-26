@@ -26,17 +26,27 @@ public class Ability_Waterskip : Ability
                         break;
                     case ThingWithComps twc when twc.TryGetComp<CompPower>() != null:
                     {
-                        if (twc.TryGetComp<CompBreakdownable>() is { } comp1) comp1.DoBreakdown();
-                        if (twc.TryGetComp<CompFlickable>() is { } comp2) comp2.SwitchIsOn = false;
-                        if (twc.TryGetComp<CompProjectileInterceptor>() is not null || twc is Building_Turret)
+                        if (twc.TryGetComp<CompBreakdownable>() is { } comp1)
+                            comp1.DoBreakdown();
+                        if (twc.TryGetComp<CompFlickable>() is { } comp2)
+                            comp2.SwitchIsOn = false;
+                        if (
+                            twc.TryGetComp<CompProjectileInterceptor>() is not null
+                            || twc is Building_Turret
+                        )
                             twc.TakeDamage(new(DamageDefOf.EMP, 10, 10, -1, pawn));
                         break;
                     }
                 }
 
-            if (!c.Filled(map)) FilthMaker.TryMakeFilth(c, map, ThingDefOf.Filth_Water);
+            if (!c.Filled(map))
+                FilthMaker.TryMakeFilth(c, map, ThingDefOf.Filth_Water);
 
-            var dataStatic = FleckMaker.GetDataStatic(c.ToVector3Shifted(), map, FleckDefOf.WaterskipSplashParticles);
+            var dataStatic = FleckMaker.GetDataStatic(
+                c.ToVector3Shifted(),
+                map,
+                FleckDefOf.WaterskipSplashParticles
+            );
             dataStatic.rotationRate = Rand.Range(-30, 30);
             dataStatic.rotation = 90 * Rand.RangeInclusive(0, 3);
             map.flecks.CreateFleck(dataStatic);
@@ -45,7 +55,8 @@ public class Ability_Waterskip : Ability
 
     private IEnumerable<IntVec3> AffectedCells(IntVec3 cell, Map map)
     {
-        if (cell.Filled(pawn.Map)) yield break;
+        if (cell.Filled(pawn.Map))
+            yield break;
 
         foreach (var intVec in GenRadial.RadialCellsAround(cell, GetRadiusForPawn(), true))
             if (intVec.InBounds(map) && GenSight.LineOfSightToEdges(cell, intVec, map, true))
@@ -60,7 +71,10 @@ public class Ability_Waterskip : Ability
         if (target.IsValid)
         {
             GenDraw.DrawTargetHighlight(target);
-            GenDraw.DrawFieldEdges(AffectedCells(target.Cell, pawn.Map).ToList(), ValidateTarget(target, false) ? Color.white : Color.red);
+            GenDraw.DrawFieldEdges(
+                AffectedCells(target.Cell, pawn.Map).ToList(),
+                ValidateTarget(target, false) ? Color.white : Color.red
+            );
         }
     }
 
@@ -69,8 +83,12 @@ public class Ability_Waterskip : Ability
         if (target.Cell.Filled(pawn.Map))
         {
             if (showMessages)
-                Messages.Message("AbilityOccupiedCells".Translate(def.LabelCap), target.ToTargetInfo(pawn.Map), MessageTypeDefOf.RejectInput,
-                    false);
+                Messages.Message(
+                    "AbilityOccupiedCells".Translate(def.LabelCap),
+                    target.ToTargetInfo(pawn.Map),
+                    MessageTypeDefOf.RejectInput,
+                    false
+                );
 
             return false;
         }

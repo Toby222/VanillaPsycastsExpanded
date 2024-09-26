@@ -10,18 +10,20 @@ public class Dialog_EditPsysets : Window
 
     public Dialog_EditPsysets(ITab_Pawn_Psycasts parent)
     {
-        this.parent   = parent;
+        this.parent = parent;
         this.doCloseX = true;
     }
 
-    protected override float   Margin      => 3f;
-    public override    Vector2 InitialSize => new(this.parent.Size.x * 0.3f, Mathf.Max(300f, this.NeededHeight));
+    protected override float Margin => 3f;
+    public override Vector2 InitialSize =>
+        new(this.parent.Size.x * 0.3f, Mathf.Max(300f, this.NeededHeight));
 
     private float NeededHeight => this.parent.RequestedPsysetsHeight + this.Margin * 2f;
 
     public override void DoWindowContents(Rect inRect)
     {
         this.parent.DoPsysets(inRect);
-        if (this.windowRect.height < this.NeededHeight) this.windowRect.height = this.NeededHeight;
+        if (this.windowRect.height < this.NeededHeight)
+            this.windowRect.height = this.NeededHeight;
     }
 }

@@ -18,7 +18,13 @@ public class AbilityExtension_TransferEntropy : AbilityExtension_AbilityMod
             var pawn = target.Thing as Pawn;
             if (pawn != null)
             {
-                if (targetReceivesEntropy) pawn.psychicEntropy.TryAddEntropy(ability.pawn.psychicEntropy.EntropyValue, ability.pawn, false, true);
+                if (targetReceivesEntropy)
+                    pawn.psychicEntropy.TryAddEntropy(
+                        ability.pawn.psychicEntropy.EntropyValue,
+                        ability.pawn,
+                        false,
+                        true
+                    );
                 if (!pawn.HasPsylink)
                 {
                     var coma = HediffMaker.MakeHediff(VPE_DefOf.PsychicComa, pawn);
@@ -26,7 +32,11 @@ public class AbilityExtension_TransferEntropy : AbilityExtension_AbilityMod
                 }
 
                 ability.pawn.psychicEntropy.RemoveAllEntropy();
-                MoteMaker.MakeInteractionOverlay(ThingDefOf.Mote_PsychicLinkPulse, ability.pawn, pawn);
+                MoteMaker.MakeInteractionOverlay(
+                    ThingDefOf.Mote_PsychicLinkPulse,
+                    ability.pawn,
+                    pawn
+                );
             }
         }
     }
@@ -42,12 +52,17 @@ public class AbilityExtension_TransferEntropy : AbilityExtension_AbilityMod
         return base.IsEnabledForPawn(ability, out reason);
     }
 
-    public override bool Valid(GlobalTargetInfo[] targets, Ability ability, bool throwMessages = false)
+    public override bool Valid(
+        GlobalTargetInfo[] targets,
+        Ability ability,
+        bool throwMessages = false
+    )
     {
         foreach (var target in targets)
         {
             var pawn = target.Thing as Pawn;
-            if (pawn != null && !AbilityUtility.ValidateNoMentalState(pawn, throwMessages, null)) return false;
+            if (pawn != null && !AbilityUtility.ValidateNoMentalState(pawn, throwMessages, null))
+                return false;
         }
 
         return base.Valid(targets, ability, throwMessages);

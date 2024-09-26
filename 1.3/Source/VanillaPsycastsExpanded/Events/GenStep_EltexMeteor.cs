@@ -20,14 +20,22 @@
 
         protected override bool CanScatterAt(IntVec3 c, Map map)
         {
-            if (MapGenerator.TryGetVar<List<CellRect>>("UsedRects", out var var) && var.Any((CellRect x) => x.Contains(c)))
+            if (
+                MapGenerator.TryGetVar<List<CellRect>>("UsedRects", out var var)
+                && var.Any((CellRect x) => x.Contains(c))
+            )
             {
                 return false;
             }
             return map.reachability.CanReachMapEdge(c, TraverseParms.For(TraverseMode.PassDoors));
         }
 
-        protected override void ScatterAt(IntVec3 c, Map map, GenStepParams parms, int stackCount = 1)
+        protected override void ScatterAt(
+            IntVec3 c,
+            Map map,
+            GenStepParams parms,
+            int stackCount = 1
+        )
         {
             base.ScatterAt(c, map, parms, stackCount);
             int minX = recentLumpCells.Min((IntVec3 x) => x.x);

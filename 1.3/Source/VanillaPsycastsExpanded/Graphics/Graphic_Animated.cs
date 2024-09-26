@@ -10,10 +10,20 @@
         public override Material MatSingle => this.CurFrame?.MatSingle;
         private Graphic CurFrame =>
             this.subGraphics?[
-                Mathf.FloorToInt(((Current.Game?.tickManager?.TicksGame ?? 0f) + this.offset) / ((GraphicData_Animated) this.data).ticksPerFrame) %
-                this.subGraphics.Length];
+                Mathf.FloorToInt(
+                    ((Current.Game?.tickManager?.TicksGame ?? 0f) + this.offset)
+                        / ((GraphicData_Animated)this.data).ticksPerFrame
+                ) % this.subGraphics.Length
+            ];
         public int SubGraphicCount => this.subGraphics.Length - 1;
-        public override void DrawWorker(Vector3 loc, Rot4 rot, ThingDef thingDef, Thing thing, float extraRotation)
+
+        public override void DrawWorker(
+            Vector3 loc,
+            Rot4 rot,
+            ThingDef thingDef,
+            Thing thing,
+            float extraRotation
+        )
         {
             if (thing is IAnimationOneTime animation)
             {
@@ -29,7 +39,7 @@
 
     public class GraphicData_Animated : GraphicData
     {
-        public int  ticksPerFrame;
+        public int ticksPerFrame;
         public bool random;
     }
 }

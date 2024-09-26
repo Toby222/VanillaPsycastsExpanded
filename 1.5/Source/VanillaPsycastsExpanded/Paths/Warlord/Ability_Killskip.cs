@@ -1,9 +1,9 @@
 ﻿namespace VanillaPsycastsExpanded
 {
+    using System.Collections.Generic;
     using HarmonyLib;
     using RimWorld;
     using RimWorld.Planet;
-    using System.Collections.Generic;
     using Verse;
     using Verse.AI;
     using Verse.Sound;
@@ -12,12 +12,14 @@
     public class Ability_Killskip : Ability
     {
         private int attackInTicks = -1;
+
         public override void Cast(params GlobalTargetInfo[] targets)
         {
             base.Cast(targets);
             AttackTarget(((LocalTargetInfo)targets[0]));
             TryQueueAttackIfDead(((LocalTargetInfo)targets[0]));
         }
+
         private void TryQueueAttackIfDead(LocalTargetInfo target)
         {
             if (target.Pawn.Dead)
@@ -47,8 +49,16 @@
 
         private void AttackTarget(LocalTargetInfo target)
         {
-            this.AddEffecterToMaintain(EffecterDefOf.Skip_Entry.Spawn(pawn.Position, this.pawn.Map, 0.72f), pawn.Position, 60);
-            this.AddEffecterToMaintain(VPE_DefOf.VPE_Skip_ExitNoDelayRed.Spawn(target.Cell, this.pawn.Map, 0.72f), target.Cell, 60);
+            this.AddEffecterToMaintain(
+                EffecterDefOf.Skip_Entry.Spawn(pawn.Position, this.pawn.Map, 0.72f),
+                pawn.Position,
+                60
+            );
+            this.AddEffecterToMaintain(
+                VPE_DefOf.VPE_Skip_ExitNoDelayRed.Spawn(target.Cell, this.pawn.Map, 0.72f),
+                target.Cell,
+                60
+            );
             this.pawn.Position = target.Cell;
             this.pawn.Notify_Teleported(false);
             this.pawn.stances.SetStance(new Stance_Mobile());
@@ -65,12 +75,24 @@
             VPE_DefOf.VPE_Killskip_Jump_01b,
             VPE_DefOf.VPE_Killskip_Jump_01c,
         };
-		private Pawn FindAttackTarget()
+
+        private Pawn FindAttackTarget()
         {
-            TargetScanFlags targetScanFlags = TargetScanFlags.NeedLOSToPawns | TargetScanFlags.NeedReachableIfCantHitFromMyPos | TargetScanFlags.NeedThreat 
+            TargetScanFlags targetScanFlags =
+                TargetScanFlags.NeedLOSToPawns
+                | TargetScanFlags.NeedReachableIfCantHitFromMyPos
+                | TargetScanFlags.NeedThreat
                 | TargetScanFlags.NeedAutoTargetable;
-            return (Pawn)AttackTargetFinder.BestAttackTarget(pawn, targetScanFlags, (Thing x) => x is Pawn pawn && !pawn.Dead, 0f, 999999);
+            return (Pawn)
+                AttackTargetFinder.BestAttackTarget(
+                    pawn,
+                    targetScanFlags,
+                    (Thing x) => x is Pawn pawn && !pawn.Dead,
+                    0f,
+                    999999
+                );
         }
+
         public override void ExposeData()
         {
             base.ExposeData();

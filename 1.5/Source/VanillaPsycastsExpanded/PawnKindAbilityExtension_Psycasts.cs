@@ -13,14 +13,14 @@ namespace VanillaPsycastsExpanded
     public class PawnKindAbilityExtension_Psycasts : PawnKindAbilityExtension
     {
         public List<PathUnlockData> unlockedPaths;
-        public IntRange                  statUpgradePoints = IntRange.zero;
+        public IntRange statUpgradePoints = IntRange.zero;
     }
 
     public class PathUnlockData
     {
         public PsycasterPathDef path;
-        public IntRange         unlockedAbilityLevelRange = IntRange.one;
-        public IntRange         unlockedAbilityCount      = IntRange.zero;
+        public IntRange unlockedAbilityLevelRange = IntRange.one;
+        public IntRange unlockedAbilityCount = IntRange.zero;
 
         public void LoadDataFromXmlCustom(XmlNode xmlRoot)
         {
@@ -30,10 +30,14 @@ namespace VanillaPsycastsExpanded
                 return;
             }
 
-            DirectXmlCrossRefLoader.RegisterObjectWantsCrossRef(this, nameof(this.path), xmlRoot.Name);
+            DirectXmlCrossRefLoader.RegisterObjectWantsCrossRef(
+                this,
+                nameof(this.path),
+                xmlRoot.Name
+            );
             string[] split = xmlRoot.FirstChild.Value.Split('|');
             this.unlockedAbilityLevelRange = ParseHelper.FromString<IntRange>(split[0]);
-            this.unlockedAbilityCount      = ParseHelper.FromString<IntRange>(split[1]);
+            this.unlockedAbilityCount = ParseHelper.FromString<IntRange>(split[1]);
         }
     }
 }

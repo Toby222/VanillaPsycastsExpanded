@@ -2,10 +2,11 @@
 using RimWorld;
 using Verse;
 using Verse.AI;
+
 namespace VanillaPsycastsExpanded
 {
-	public class MentalState_FriendlyManhunter : MentalState_Manhunter
-	{
+    public class MentalState_FriendlyManhunter : MentalState_Manhunter
+    {
         public override bool ForceHostileTo(Faction f)
         {
             return false;
@@ -15,9 +16,10 @@ namespace VanillaPsycastsExpanded
         {
             return false;
         }
+
         public override RandomSocialMode SocialModeMax()
-		{
-			return RandomSocialMode.Off;
-		}
-	}
+        {
+            return RandomSocialMode.Off;
+        }
+    }
 }

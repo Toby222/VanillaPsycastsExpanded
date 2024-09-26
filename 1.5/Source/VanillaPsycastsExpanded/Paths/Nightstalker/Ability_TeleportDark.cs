@@ -12,11 +12,13 @@ public class Ability_TeleportDark : Ability_Teleport
         {
             VPE_DefOf.VPE_PsycastSkipFlashEntry_DarkBlue,
             FleckDefOf.PsycastSkipInnerExit,
-            FleckDefOf.PsycastSkipOuterRingExit
+            FleckDefOf.PsycastSkipOuterRingExit,
         };
 
     public override bool CanHitTarget(LocalTargetInfo target) =>
-        pawn.Map.glowGrid.GroundGlowAt(target.Cell) <= 0.29 && !target.Cell.Fogged(pawn.Map) && target.Cell.Walkable(pawn.Map);
+        pawn.Map.glowGrid.GroundGlowAt(target.Cell) <= 0.29
+        && !target.Cell.Fogged(pawn.Map)
+        && target.Cell.Walkable(pawn.Map);
 
     public override void ModifyTargets(ref GlobalTargetInfo[] targets)
     {

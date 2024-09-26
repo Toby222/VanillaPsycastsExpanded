@@ -10,7 +10,13 @@
         public override void Cast(params GlobalTargetInfo[] targets)
         {
             base.Cast(targets);
-            this.ApplyHediff(this.pawn, VPE_DefOf.VPE_GainedVitality, null, this.GetDurationForPawn(), 0);
+            this.ApplyHediff(
+                this.pawn,
+                VPE_DefOf.VPE_GainedVitality,
+                null,
+                this.GetDurationForPawn(),
+                0
+            );
         }
     }
 }

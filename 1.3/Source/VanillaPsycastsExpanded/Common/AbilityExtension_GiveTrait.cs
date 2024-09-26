@@ -7,10 +7,12 @@
     using Verse.Sound;
     using VFECore.Abilities;
     using Ability = VFECore.Abilities.Ability;
-	public class AbilityExtension_GiveTrait : AbilityExtension_AbilityMod
-	{
+
+    public class AbilityExtension_GiveTrait : AbilityExtension_AbilityMod
+    {
         public TraitDef trait;
         public int degree;
+
         public override void Cast(GlobalTargetInfo[] targets, Ability ability)
         {
             base.Cast(targets, ability);

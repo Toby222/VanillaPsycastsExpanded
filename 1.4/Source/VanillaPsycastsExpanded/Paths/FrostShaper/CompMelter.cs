@@ -6,6 +6,7 @@
     public class CompMelter : ThingComp
     {
         public float damageBuffer;
+
         public override void CompTick()
         {
             base.CompTick();
@@ -22,7 +23,11 @@
                     }
                     if (this.parent.HitPoints < 0)
                     {
-                        FilthMaker.TryMakeFilth(this.parent.Position, this.parent.Map, ThingDefOf.Filth_Water);
+                        FilthMaker.TryMakeFilth(
+                            this.parent.Position,
+                            this.parent.Map,
+                            ThingDefOf.Filth_Water
+                        );
                         this.parent.Destroy();
                     }
                 }

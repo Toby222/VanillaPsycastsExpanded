@@ -14,12 +14,16 @@ public class Hediff_Essence : HediffWithComps
 
     public override string Label => base.Label + " " + EssenceOf.NameShortColored;
 
-    public override bool ShouldRemove => EssenceOf == null || (EssenceOf.Dead && EssenceOf.Corpse is not { Spawned: true });
+    public override bool ShouldRemove =>
+        EssenceOf == null || (EssenceOf.Dead && EssenceOf.Corpse is not { Spawned: true });
 
     public override void Tick()
     {
         base.Tick();
-        if (EssenceOf is { Dead: true, Corpse: { Spawned: true } } && pawn.CurJobDef != VPE_DefOf.VPE_EssenceTransfer)
+        if (
+            EssenceOf is { Dead: true, Corpse: { Spawned: true } }
+            && pawn.CurJobDef != VPE_DefOf.VPE_EssenceTransfer
+        )
         {
             var job = JobMaker.MakeJob(VPE_DefOf.VPE_EssenceTransfer, EssenceOf.Corpse);
             job.forceSleep = true;
@@ -41,11 +45,17 @@ public class Ability_EssenceTransfer : Ability
     public override void Cast(params GlobalTargetInfo[] targets)
     {
         base.Cast(targets);
-        if (targets[0].Thing is not Pawn human || targets[1].Thing is not Pawn animal) return;
+        if (targets[0].Thing is not Pawn human || targets[1].Thing is not Pawn animal)
+            return;
         if (curTarget is { Dead: false, Discarded: false, Destroyed: false })
-            foreach (var hediffEssence in curTarget.health.hediffSet.hediffs.OfType<Hediff_Essence>().ToList())
+            foreach (
+                var hediffEssence in curTarget
+                    .health.hediffSet.hediffs.OfType<Hediff_Essence>()
+                    .ToList()
+            )
                 curTarget.health.RemoveHediff(hediffEssence);
-        else curTarget = null;
+        else
+            curTarget = null;
         var hediff = (Hediff_Essence)HediffMaker.MakeHediff(VPE_DefOf.VPE_Essence, animal);
         hediff.EssenceOf = human;
         animal.health.AddHediff(hediff);
@@ -54,7 +64,8 @@ public class Ability_EssenceTransfer : Ability
 
     public override float GetRangeForPawn()
     {
-        if (currentTargetingIndex == 1) return 99999;
+        if (currentTargetingIndex == 1)
+            return 99999;
         return base.GetRangeForPawn();
     }
 
@@ -68,7 +79,9 @@ public class Ability_EssenceTransfer : Ability
 public class JobDriver_EssenceTransfer : JobDriver
 {
     private int restStartTick;
-    public override bool TryMakePreToilReservations(bool errorOnFailed) => pawn.Reserve(job.targetA, job, errorOnFailed: errorOnFailed);
+
+    public override bool TryMakePreToilReservations(bool errorOnFailed) =>
+        pawn.Reserve(job.targetA, job, errorOnFailed: errorOnFailed);
 
     protected override IEnumerable<Toil> MakeNewToils()
     {
@@ -77,17 +90,27 @@ public class JobDriver_EssenceTransfer : JobDriver
 
         yield return Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.Touch);
         var toil = Toils_LayDown.LayDown(TargetIndex.B, false, false, true, false);
-        toil.AddPreInitAction(delegate { restStartTick = Find.TickManager.TicksGame; });
-        toil.AddPreTickAction(delegate
-        {
-            if (Find.TickManager.TicksGame >= restStartTick + GenDate.TicksPerHour * 6) ReadyForNextToil();
-        });
+        toil.AddPreInitAction(
+            delegate
+            {
+                restStartTick = Find.TickManager.TicksGame;
+            }
+        );
+        toil.AddPreTickAction(
+            delegate
+            {
+                if (Find.TickManager.TicksGame >= restStartTick + GenDate.TicksPerHour * 6)
+                    ReadyForNextToil();
+            }
+        );
         yield return toil;
-        yield return Toils_General.Do(delegate
-        {
-            ResurrectionUtility.TryResurrect((TargetA.Thing as Corpse).InnerPawn);
-            pawn.Kill(null);
-        });
+        yield return Toils_General.Do(
+            delegate
+            {
+                ResurrectionUtility.TryResurrect((TargetA.Thing as Corpse).InnerPawn);
+                pawn.Kill(null);
+            }
+        );
     }
 
     public override void ExposeData()

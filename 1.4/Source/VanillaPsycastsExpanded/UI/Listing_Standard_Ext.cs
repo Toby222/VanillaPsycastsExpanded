@@ -8,7 +8,12 @@ using Verse.Sound;
 
 public static class Listing_Standard_Ext
 {
-    public static void CheckboxMultiLabeled(this Listing_Standard listing, string label, ref MultiCheckboxState state, string tooltip = null)
+    public static void CheckboxMultiLabeled(
+        this Listing_Standard listing,
+        string label,
+        ref MultiCheckboxState state,
+        string tooltip = null
+    )
     {
         Rect rect = listing.GetRect(Text.LineHeight);
         if (listing.BoundingRectCached == null || rect.Overlaps(listing.BoundingRectCached.Value))
@@ -17,7 +22,8 @@ public static class Listing_Standard_Ext
             {
                 MouseoverSounds.DoRegion(rect);
 
-                if (Mouse.IsOver(rect)) Widgets.DrawHighlight(rect);
+                if (Mouse.IsOver(rect))
+                    Widgets.DrawHighlight(rect);
 
                 TooltipHandler.TipRegion(rect, tooltip);
             }
@@ -30,10 +36,10 @@ public static class Listing_Standard_Ext
             {
                 state = state switch
                 {
-                    MultiCheckboxState.On      => MultiCheckboxState.Partial,
+                    MultiCheckboxState.On => MultiCheckboxState.Partial,
                     MultiCheckboxState.Partial => MultiCheckboxState.Off,
-                    MultiCheckboxState.Off     => MultiCheckboxState.On,
-                    _                          => throw new ArgumentOutOfRangeException(nameof(state), state, null)
+                    MultiCheckboxState.Off => MultiCheckboxState.On,
+                    _ => throw new ArgumentOutOfRangeException(nameof(state), state, null),
                 };
 
                 if (state == MultiCheckboxState.On)
@@ -42,13 +48,16 @@ public static class Listing_Standard_Ext
                     SoundDefOf.Checkbox_TurnedOff.PlayOneShotOnCamera();
             }
 
-            GUI.DrawTexture(new Rect(rect.x + rect.width - 24f, rect.y, 24f, 24f), state switch
-            {
-                MultiCheckboxState.On      => Widgets.CheckboxOnTex,
-                MultiCheckboxState.Off     => Widgets.CheckboxOffTex,
-                MultiCheckboxState.Partial => Widgets.CheckboxPartialTex,
-                _                          => BaseContent.ClearTex
-            });
+            GUI.DrawTexture(
+                new Rect(rect.x + rect.width - 24f, rect.y, 24f, 24f),
+                state switch
+                {
+                    MultiCheckboxState.On => Widgets.CheckboxOnTex,
+                    MultiCheckboxState.Off => Widgets.CheckboxOffTex,
+                    MultiCheckboxState.Partial => Widgets.CheckboxPartialTex,
+                    _ => BaseContent.ClearTex,
+                }
+            );
             Text.Anchor = anchor;
         }
 

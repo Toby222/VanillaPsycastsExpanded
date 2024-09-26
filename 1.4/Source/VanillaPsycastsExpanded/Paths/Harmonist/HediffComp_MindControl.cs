@@ -27,9 +27,15 @@ public class HediffComp_MindControl : HediffComp_Ability
         if (!oldFaction.IsPlayer && oldLord is not { AnyActivePawn: true })
         {
             if (Pawn.Map.mapPawns.SpawnedPawnsInFaction(oldFaction).Except(Pawn).Any())
-                oldLord = ((Pawn)GenClosest.ClosestThing_Global(Pawn.Position, Pawn.Map.mapPawns.SpawnedPawnsInFaction(oldFaction),
-                    99999f,
-                    p => p != Pawn && ((Pawn)p).GetLord() != null)).GetLord();
+                oldLord = (
+                    (Pawn)
+                        GenClosest.ClosestThing_Global(
+                            Pawn.Position,
+                            Pawn.Map.mapPawns.SpawnedPawnsInFaction(oldFaction),
+                            99999f,
+                            p => p != Pawn && ((Pawn)p).GetLord() != null
+                        )
+                ).GetLord();
 
             if (oldLord == null)
             {

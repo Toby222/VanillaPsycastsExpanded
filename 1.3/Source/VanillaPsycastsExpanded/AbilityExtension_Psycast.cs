@@ -14,29 +14,31 @@ using AbilityDef = VFECore.Abilities.AbilityDef;
 
 public class AbilityExtension_Psycast : AbilityExtension_AbilityMod
 {
-    public float            entropyGain = 0f;
+    public float entropyGain = 0f;
     public List<StatModifier> entropyGainStatFactors = new List<StatModifier>();
-    public int              level;
-    public int              order;
+    public int level;
+    public int order;
     public PsycasterPathDef path;
     public List<AbilityDef> prerequisites = new();
-    public float            psyfocusCost  = 0f;
-    public bool             spaceAfter;
-    public bool             showCastBubble = true;
-    public bool             psychic;
+    public float psyfocusCost = 0f;
+    public bool spaceAfter;
+    public bool showCastBubble = true;
+    public bool psychic;
 
     public bool PrereqsCompleted(Pawn pawn) => this.PrereqsCompleted(pawn.GetComp<CompAbilities>());
 
     public bool PrereqsCompleted(CompAbilities compAbilities)
     {
-        return this.prerequisites.NullOrEmpty() || compAbilities.LearnedAbilities.Any(ab => this.prerequisites.Contains(ab.def));
+        return this.prerequisites.NullOrEmpty()
+            || compAbilities.LearnedAbilities.Any(ab => this.prerequisites.Contains(ab.def));
     }
 
     public void UnlockWithPrereqs(CompAbilities compAbilities)
     {
         foreach (AbilityDef prerequisite in this.prerequisites)
         {
-            AbilityExtension_Psycast extension = prerequisite.GetModExtension<AbilityExtension_Psycast>();
+            AbilityExtension_Psycast extension =
+                prerequisite.GetModExtension<AbilityExtension_Psycast>();
             if (extension != null)
                 extension.UnlockWithPrereqs(compAbilities);
             else
@@ -46,10 +48,15 @@ public class AbilityExtension_Psycast : AbilityExtension_AbilityMod
         compAbilities.GiveAbility(this.abilityDef);
     }
 
-    public float GetPsyfocusUsedByPawn(Pawn pawn) => this.psyfocusCost * pawn.GetStatValue(VPE_DefOf.VPE_PsyfocusCostFactor);
+    public float GetPsyfocusUsedByPawn(Pawn pawn) =>
+        this.psyfocusCost * pawn.GetStatValue(VPE_DefOf.VPE_PsyfocusCostFactor);
 
-    public float GetEntropyUsedByPawn(Pawn pawn) => 
-        this.entropyGainStatFactors.Aggregate(this.entropyGain, (current, statFactor) => current * (pawn.GetStatValue(statFactor.stat) * statFactor.value));
+    public float GetEntropyUsedByPawn(Pawn pawn) =>
+        this.entropyGainStatFactors.Aggregate(
+            this.entropyGain,
+            (current, statFactor) =>
+                current * (pawn.GetStatValue(statFactor.stat) * statFactor.value)
+        );
 
     public override bool IsEnabledForPawn(Ability ability, out string reason)
     {
@@ -66,12 +73,19 @@ public class AbilityExtension_Psycast : AbilityExtension_AbilityMod
             if (!hediff.SufficientPsyfocusPresent(psyfocusCost))
             {
                 reason = "CommandPsycastNotEnoughPsyfocus".Translate(
-                    psyfocusCost.ToStringPercent("#.0"), ability.pawn.psychicEntropy.CurrentPsyfocus.ToStringPercent("#.0"),
-                    ability.def.label.Named("PSYCASTNAME"), ability.pawn.Named("CASTERNAME"));
+                    psyfocusCost.ToStringPercent("#.0"),
+                    ability.pawn.psychicEntropy.CurrentPsyfocus.ToStringPercent("#.0"),
+                    ability.def.label.Named("PSYCASTNAME"),
+                    ability.pawn.Named("CASTERNAME")
+                );
                 return false;
             }
 
-            if (ability.pawn.psychicEntropy.WouldOverflowEntropy(this.GetEntropyUsedByPawn(ability.pawn)))
+            if (
+                ability.pawn.psychicEntropy.WouldOverflowEntropy(
+                    this.GetEntropyUsedByPawn(ability.pawn)
+                )
+            )
             {
                 reason = "CommandPsycastWouldExceedEntropy".Translate(ability.def.label);
                 return false;
@@ -101,10 +115,14 @@ public class AbilityExtension_Psycast : AbilityExtension_AbilityMod
     {
         base.Cast(targets, ability);
 
-        Hediff_PsycastAbilities psycastHediff =
-            (Hediff_PsycastAbilities)ability.pawn.health.hediffSet.GetFirstHediffOfDef(VPE_DefOf.VPE_PsycastAbilityImplant);
-        psycastHediff.UseAbility(this.GetPsyfocusUsedByPawn(ability.pawn), this.GetEntropyUsedByPawn(ability.pawn));
-        if (ability is IChannelledPsycast channelled) psycastHediff.BeginChannelling(channelled);
+        Hediff_PsycastAbilities psycastHediff = (Hediff_PsycastAbilities)
+            ability.pawn.health.hediffSet.GetFirstHediffOfDef(VPE_DefOf.VPE_PsycastAbilityImplant);
+        psycastHediff.UseAbility(
+            this.GetPsyfocusUsedByPawn(ability.pawn),
+            this.GetEntropyUsedByPawn(ability.pawn)
+        );
+        if (ability is IChannelledPsycast channelled)
+            psycastHediff.BeginChannelling(channelled);
     }
 
     public override string GetDescription(Ability ability)
@@ -113,7 +131,9 @@ public class AbilityExtension_Psycast : AbilityExtension_AbilityMod
 
         float psyfocusCost = this.GetPsyfocusUsedByPawn(ability.pawn);
         if (psyfocusCost > float.Epsilon)
-            builder.AppendInNewLine($"{"AbilityPsyfocusCost".Translate()}: {psyfocusCost.ToStringPercent()}");
+            builder.AppendInNewLine(
+                $"{"AbilityPsyfocusCost".Translate()}: {psyfocusCost.ToStringPercent()}"
+            );
 
         float entropy = this.GetEntropyUsedByPawn(ability.pawn);
         if (entropy > float.Epsilon)
@@ -125,23 +145,31 @@ public class AbilityExtension_Psycast : AbilityExtension_AbilityMod
     public override void WarmupToil(Toil toil)
     {
         base.WarmupToil(toil);
-        if (!this.showCastBubble) return;
-        toil.AddPreInitAction(delegate
-        {
-            MoteCastBubble mote = (MoteCastBubble)ThingMaker.MakeThing(VPE_DefOf.VPE_Mote_Cast);
-            mote.Setup(toil.actor, toil.actor.GetComp<CompAbilities>().currentlyCasting);
-            GenSpawn.Spawn(mote, toil.actor.Position, toil.actor.Map);
-        });
+        if (!this.showCastBubble)
+            return;
+        toil.AddPreInitAction(
+            delegate
+            {
+                MoteCastBubble mote = (MoteCastBubble)ThingMaker.MakeThing(VPE_DefOf.VPE_Mote_Cast);
+                mote.Setup(toil.actor, toil.actor.GetComp<CompAbilities>().currentlyCasting);
+                GenSpawn.Spawn(mote, toil.actor.Position, toil.actor.Map);
+            }
+        );
     }
 
     public override void TargetingOnGUI(LocalTargetInfo target, Ability ability)
     {
         base.TargetingOnGUI(target, ability);
-        if (!this.psychic) return;
-        List<GlobalTargetInfo> validTargets = ability.currentTargets.Where(t => t.IsValid && t.Map != null).ToList();
-        GlobalTargetInfo[]     targets      = new GlobalTargetInfo[validTargets.Count + 1];
+        if (!this.psychic)
+            return;
+        List<GlobalTargetInfo> validTargets = ability
+            .currentTargets.Where(t => t.IsValid && t.Map != null)
+            .ToList();
+        GlobalTargetInfo[] targets = new GlobalTargetInfo[validTargets.Count + 1];
         validTargets.CopyTo(targets, 0);
-        targets[targets.Length - 1] = target.ToGlobalTargetInfo(validTargets?.LastOrDefault().Map ?? ability.pawn.Map);
+        targets[targets.Length - 1] = target.ToGlobalTargetInfo(
+            validTargets?.LastOrDefault().Map ?? ability.pawn.Map
+        );
         ability.ModifyTargets(ref targets);
         foreach (GlobalTargetInfo targetInfo in targets)
             if (targetInfo.Thing is Pawn p)
@@ -151,23 +179,39 @@ public class AbilityExtension_Psycast : AbilityExtension_AbilityMod
                 {
                     Vector3 drawPos = p.DrawPos;
                     drawPos.z += 1f;
-                    GenMapUI.DrawText(new Vector2(drawPos.x, drawPos.z), "Ineffective".Translate(), Color.red);
+                    GenMapUI.DrawText(
+                        new Vector2(drawPos.x, drawPos.z),
+                        "Ineffective".Translate(),
+                        Color.red
+                    );
                 }
                 else
                 {
                     Vector3 drawPos = p.DrawPos;
                     drawPos.z += 1f;
-                    GenMapUI.DrawText(new Vector2(drawPos.x, drawPos.z), StatDefOf.PsychicSensitivity.LabelCap + ": " + sense.ToStringPercent(),
-                                      sense > float.Epsilon ? Color.white : Color.red);
+                    GenMapUI.DrawText(
+                        new Vector2(drawPos.x, drawPos.z),
+                        StatDefOf.PsychicSensitivity.LabelCap + ": " + sense.ToStringPercent(),
+                        sense > float.Epsilon ? Color.white : Color.red
+                    );
                 }
             }
     }
 
-    public override bool ValidateTarget(LocalTargetInfo target, Ability ability, bool throwMessages = false)
+    public override bool ValidateTarget(
+        LocalTargetInfo target,
+        Ability ability,
+        bool throwMessages = false
+    )
     {
-        if (this.psychic && target.Pawn is { } p && p.GetStatValue(StatDefOf.PsychicSensitivity) < 1.401298E-45f)
+        if (
+            this.psychic
+            && target.Pawn is { } p
+            && p.GetStatValue(StatDefOf.PsychicSensitivity) < 1.401298E-45f
+        )
         {
-            if (throwMessages) Messages.Message("Ineffective".Translate(), MessageTypeDefOf.RejectInput, false);
+            if (throwMessages)
+                Messages.Message("Ineffective".Translate(), MessageTypeDefOf.RejectInput, false);
             return false;
         }
 
@@ -181,8 +225,9 @@ public static class AbilityExtensionPsycastUtility
 
     public static AbilityExtension_Psycast Psycast(this AbilityDef def)
     {
-        if (cache.TryGetValue(def, out AbilityExtension_Psycast ext)) return ext;
-        ext        = def.GetModExtension<AbilityExtension_Psycast>();
+        if (cache.TryGetValue(def, out AbilityExtension_Psycast ext))
+            return ext;
+        ext = def.GetModExtension<AbilityExtension_Psycast>();
         cache[def] = ext;
         return ext;
     }

@@ -18,26 +18,44 @@ public class BallLightning : AbilityProjectile
     public override void SpawnSetup(Map map, bool respawningAfterLoad)
     {
         base.SpawnSetup(map, respawningAfterLoad);
-        if (!respawningAfterLoad) ticksTillAttack = WARMUP;
+        if (!respawningAfterLoad)
+            ticksTillAttack = WARMUP;
     }
 
     public override void Tick()
     {
         base.Tick();
-        if (!Spawned) return;
+        if (!Spawned)
+            return;
         ticksTillAttack--;
         if (ticksTillAttack <= 0)
         {
             currentTargets.Clear();
-            foreach (var thing in GenRadial.RadialDistinctThingsAround(ExactPosition.ToIntVec3(), Map, ability.GetRadiusForPawn(), true)
-                        .Where(t => t.HostileTo(launcher))
-                        .Take(Mathf.FloorToInt(ability.GetPowerForPawn())))
+            foreach (
+                var thing in GenRadial
+                    .RadialDistinctThingsAround(
+                        ExactPosition.ToIntVec3(),
+                        Map,
+                        ability.GetRadiusForPawn(),
+                        true
+                    )
+                    .Where(t => t.HostileTo(launcher))
+                    .Take(Mathf.FloorToInt(ability.GetPowerForPawn()))
+            )
             {
                 currentTargets.Add(thing);
                 BattleLogEntry_RangedImpact logEntry =
                     new(launcher, thing, thing, def, VPE_DefOf.VPE_Bolt, targetCoverDef);
-                thing.TakeDamage(new(DamageDefOf.Flame, 12f, 5f, DrawPos.AngleToFlat(thing.DrawPos), this)).AssociateWithLog(logEntry);
-                thing.TakeDamage(new(DamageDefOf.EMP, 20f, 5f, DrawPos.AngleToFlat(thing.DrawPos), this)).AssociateWithLog(logEntry);
+                thing
+                    .TakeDamage(
+                        new(DamageDefOf.Flame, 12f, 5f, DrawPos.AngleToFlat(thing.DrawPos), this)
+                    )
+                    .AssociateWithLog(logEntry);
+                thing
+                    .TakeDamage(
+                        new(DamageDefOf.EMP, 20f, 5f, DrawPos.AngleToFlat(thing.DrawPos), this)
+                    )
+                    .AssociateWithLog(logEntry);
                 VPE_DefOf.VPE_BallLightning_Zap.PlayOneShot(thing);
             }
 
@@ -54,21 +72,41 @@ public class BallLightning : AbilityProjectile
         {
             var b = thing.DrawPos.Yto0();
             Vector3 s = new(graphic.drawSize.x, 1f, (b - a).magnitude);
-            var matrix = Matrix4x4.TRS(a + (b - a) / 2 + Vector3.up * (def.Altitude - Altitudes.AltInc / 2), Quaternion.LookRotation(b - a), s);
+            var matrix = Matrix4x4.TRS(
+                a + (b - a) / 2 + Vector3.up * (def.Altitude - Altitudes.AltInc / 2),
+                Quaternion.LookRotation(b - a),
+                s
+            );
             UnityEngine.Graphics.DrawMesh(MeshPool.plane10, matrix, graphic.MatSingle, 0);
         }
     }
 
     protected override void Impact(Thing hitThing, bool blockedByShield = false)
     {
-        GenExplosion.DoExplosion(Position, Map, def.projectile.explosionRadius, def.projectile.damageDef, launcher,
-            DamageAmount, ArmorPenetration, def.projectile.soundExplode, equipmentDef, def,
-            intendedTarget.Thing, def.projectile.postExplosionSpawnThingDef, def.projectile.postExplosionSpawnChance,
-            def.projectile.postExplosionSpawnThingCount, def.projectile.postExplosionGasType,
-            def.projectile.applyDamageToExplosionCellsNeighbors, def.projectile.preExplosionSpawnThingDef,
+        GenExplosion.DoExplosion(
+            Position,
+            Map,
+            def.projectile.explosionRadius,
+            def.projectile.damageDef,
+            launcher,
+            DamageAmount,
+            ArmorPenetration,
+            def.projectile.soundExplode,
+            equipmentDef,
+            def,
+            intendedTarget.Thing,
+            def.projectile.postExplosionSpawnThingDef,
+            def.projectile.postExplosionSpawnChance,
+            def.projectile.postExplosionSpawnThingCount,
+            def.projectile.postExplosionGasType,
+            def.projectile.applyDamageToExplosionCellsNeighbors,
+            def.projectile.preExplosionSpawnThingDef,
             def.projectile.preExplosionSpawnChance,
-            def.projectile.preExplosionSpawnThingCount, def.projectile.explosionChanceToStartFire,
-            def.projectile.explosionDamageFalloff, origin.AngleToFlat(destination));
+            def.projectile.preExplosionSpawnThingCount,
+            def.projectile.explosionChanceToStartFire,
+            def.projectile.explosionDamageFalloff,
+            origin.AngleToFlat(destination)
+        );
         base.Impact(hitThing, blockedByShield);
     }
 

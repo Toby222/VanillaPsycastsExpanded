@@ -1,7 +1,7 @@
 ﻿namespace VanillaPsycastsExpanded
 {
-    using RimWorld;
     using System.Collections.Generic;
+    using RimWorld;
     using Verse;
 
     public class Hediff_Hallucination : HediffWithComps
@@ -13,6 +13,7 @@
             ThoughtDefOf.SleptInBedroom,
             ThoughtDefOf.SleptInBarracks,
         };
+
         public override void PostAdd(DamageInfo? dinfo)
         {
             base.PostAdd(dinfo);

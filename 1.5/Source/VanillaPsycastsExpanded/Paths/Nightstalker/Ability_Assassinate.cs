@@ -18,12 +18,18 @@ public class Ability_Assassinate : Ability
     {
         base.Cast(targets);
         target = targets.FirstOrDefault(t => t.Thing is Pawn).Thing as Pawn;
-        if (target == null) return;
+        if (target == null)
+            return;
         attacksLeft = Mathf.RoundToInt(GetPowerForPawn());
         var map = pawn.Map;
         originalPosition = pawn.Position;
         target.stances.stunner.StunFor(attacksLeft * 2, pawn);
-        TeleportPawnTo(GenAdjFast.AdjacentCellsCardinal(target.Position).Where(c => c.Walkable(map)).RandomElement());
+        TeleportPawnTo(
+            GenAdjFast
+                .AdjacentCellsCardinal(target.Position)
+                .Where(c => c.Walkable(map))
+                .RandomElement()
+        );
     }
 
     public override void Tick()
@@ -43,7 +49,10 @@ public class Ability_Assassinate : Ability
 
     private void DoAttack()
     {
-        var verb = pawn.meleeVerbs.GetUpdatedAvailableVerbsList(false).MaxBy(v => VerbUtility.DPS(v.verb, pawn)).verb;
+        var verb = pawn
+            .meleeVerbs.GetUpdatedAvailableVerbsList(false)
+            .MaxBy(v => VerbUtility.DPS(v.verb, pawn))
+            .verb;
         pawn.meleeVerbs.TryMeleeAttack(target, verb, true);
         pawn.stances.CancelBusyStanceHard();
         FleckMaker.AttachedOverlay(target, VPE_DefOf.VPE_Slash, Rand.InsideUnitCircle * 0.3f);
@@ -51,7 +60,11 @@ public class Ability_Assassinate : Ability
 
     private void TeleportPawnTo(IntVec3 c)
     {
-        var dataAttachedOverlay = FleckMaker.GetDataAttachedOverlay(pawn, FleckDefOf.PsycastSkipFlashEntry, Vector3.zero);
+        var dataAttachedOverlay = FleckMaker.GetDataAttachedOverlay(
+            pawn,
+            FleckDefOf.PsycastSkipFlashEntry,
+            Vector3.zero
+        );
         dataAttachedOverlay.link.detachAfterTicks = 1;
         pawn.Map.flecks.CreateFleck(dataAttachedOverlay);
         TargetInfo dest = new(c, pawn.Map);
@@ -59,8 +72,16 @@ public class Ability_Assassinate : Ability
         FleckMaker.Static(dest.Cell, dest.Map, FleckDefOf.PsycastSkipOuterRingExit);
         SoundDefOf.Psycast_Skip_Entry.PlayOneShot(pawn);
         SoundDefOf.Psycast_Skip_Exit.PlayOneShot(dest);
-        AddEffecterToMaintain(EffecterDefOf.Skip_EntryNoDelay.Spawn(pawn, pawn.Map), pawn.Position, 60);
-        AddEffecterToMaintain(EffecterDefOf.Skip_ExitNoDelay.Spawn(dest.Cell, dest.Map), dest.Cell, 60);
+        AddEffecterToMaintain(
+            EffecterDefOf.Skip_EntryNoDelay.Spawn(pawn, pawn.Map),
+            pawn.Position,
+            60
+        );
+        AddEffecterToMaintain(
+            EffecterDefOf.Skip_ExitNoDelay.Spawn(dest.Cell, dest.Map),
+            dest.Cell,
+            60
+        );
         pawn.Position = c;
         pawn.Notify_Teleported();
     }
@@ -69,8 +90,14 @@ public class Ability_Assassinate : Ability
     {
         if (target.Pawn is { } targetPawn)
         {
-            if (targetPawn.Map.glowGrid.GroundGlowAt(targetPawn.Position) <= 0.29f) return true;
-            if (showMessages) Messages.Message("VPE.MustBeInDark".Translate(), MessageTypeDefOf.RejectInput, false);
+            if (targetPawn.Map.glowGrid.GroundGlowAt(targetPawn.Position) <= 0.29f)
+                return true;
+            if (showMessages)
+                Messages.Message(
+                    "VPE.MustBeInDark".Translate(),
+                    MessageTypeDefOf.RejectInput,
+                    false
+                );
         }
 
         return false;

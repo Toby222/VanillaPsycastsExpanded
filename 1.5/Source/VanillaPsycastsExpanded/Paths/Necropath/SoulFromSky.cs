@@ -20,12 +20,17 @@ public class SoulFromSky : Skyfaller
                 pawn.health.RemoveHediff(hediff);
                 pawn.health.RestorePart(part);
             }
-            else if (hediff.def != VPE_DefOf.TraumaSavant && (hediff.def.isBad || hediff is Hediff_Addiction) && hediff.def.everCurableByItem)
+            else if (
+                hediff.def != VPE_DefOf.TraumaSavant
+                && (hediff.def.isBad || hediff is Hediff_Addiction)
+                && hediff.def.everCurableByItem
+            )
                 pawn.health.RemoveHediff(hediff);
         }
 
         ResurrectionUtility.TryResurrectWithSideEffects(pawn);
-        if (!pawn.Spawned) GenSpawn.Spawn(pawn, Position, MapHeld);
+        if (!pawn.Spawned)
+            GenSpawn.Spawn(pawn, Position, MapHeld);
         Destroy();
     }
 

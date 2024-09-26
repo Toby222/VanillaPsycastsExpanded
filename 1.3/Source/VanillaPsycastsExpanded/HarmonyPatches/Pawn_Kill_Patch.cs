@@ -1,8 +1,8 @@
 ﻿namespace VanillaPsycastsExpanded
 {
-    using HarmonyLib;
     using System.Collections.Generic;
     using System.Linq;
+    using HarmonyLib;
     using Verse;
     using VFECore.Abilities;
 
@@ -18,21 +18,28 @@
             }
             return true;
         }
+
         private static void Postfix(Pawn __instance, DamageInfo? dinfo, Hediff exactCulprit = null)
         {
             if (__instance.Dead)
             {
                 if (dinfo.HasValue && dinfo.Value.Instigator is Pawn attacker)
                 {
-                    var hediff = attacker.health.hediffSet.GetFirstHediffOfDef(VPE_DefOf.VPE_ControlledFrenzy) as Hediff_Ability;
+                    var hediff =
+                        attacker.health.hediffSet.GetFirstHediffOfDef(
+                            VPE_DefOf.VPE_ControlledFrenzy
+                        ) as Hediff_Ability;
                     if (hediff != null)
                     {
                         attacker.psychicEntropy.TryAddEntropy(-10f);
-                        hediff.TryGetComp<HediffComp_Disappears>().ticksToDisappear = hediff.ability.GetDurationForPawn();
+                        hediff.TryGetComp<HediffComp_Disappears>().ticksToDisappear =
+                            hediff.ability.GetDurationForPawn();
                     }
                 }
 
-                var hediff2 = __instance.health.hediffSet.GetFirstHediffOfDef(VPE_DefOf.VPE_IceBlock);
+                var hediff2 = __instance.health.hediffSet.GetFirstHediffOfDef(
+                    VPE_DefOf.VPE_IceBlock
+                );
                 if (hediff2 != null)
                 {
                     __instance.health.RemoveHediff(hediff2);

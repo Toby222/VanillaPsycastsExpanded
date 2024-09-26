@@ -18,10 +18,20 @@
             foreach (GlobalTargetInfo target in targets)
             {
                 Pawn pawn = target.Thing as Pawn;
-                if (!this.onlyHostile || !pawn.HostileTo(ability.pawn)) return;
+                if (!this.onlyHostile || !pawn.HostileTo(ability.pawn))
+                    return;
                 pawn.GetLord()?.RemovePawn(pawn);
                 pawn.jobs.EndCurrentJob(JobCondition.InterruptForced);
-                pawn.mindState.mentalStateHandler.TryStartMentalState(MentalStateDefOf.PanicFlee, ability.def.label, true, false, null, true, false, true);
+                pawn.mindState.mentalStateHandler.TryStartMentalState(
+                    MentalStateDefOf.PanicFlee,
+                    ability.def.label,
+                    true,
+                    false,
+                    null,
+                    true,
+                    false,
+                    true
+                );
             }
         }
     }

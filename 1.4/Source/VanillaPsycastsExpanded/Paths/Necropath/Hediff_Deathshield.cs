@@ -1,10 +1,11 @@
 ﻿namespace VanillaPsycastsExpanded
 {
-    using RimWorld;
     using System.Collections.Generic;
     using System.Linq;
+    using RimWorld;
     using UnityEngine;
     using Verse;
+
     public class Hediff_Deathshield : Hediff_Overlay
     {
         public override float OverlaySize => 1.5f;
@@ -13,6 +14,7 @@
         public float curAngle;
 
         public Color? skinColor;
+
         public override void PostAdd(DamageInfo? dinfo)
         {
             base.PostAdd(dinfo);
@@ -42,6 +44,7 @@
             }
             this.pawn.Drawer.renderer.graphics.ResolveAllGraphics();
         }
+
         public override void Tick()
         {
             base.Tick();
@@ -51,6 +54,7 @@
                 curAngle = 0;
             }
         }
+
         public override void Draw()
         {
             if (pawn.Spawned)
@@ -58,8 +62,20 @@
                 Vector3 pos = pawn.DrawPos;
                 pos.y = AltitudeLayer.MoteOverhead.AltitudeFor();
                 Matrix4x4 matrix = default(Matrix4x4);
-                matrix.SetTRS(pos, Quaternion.AngleAxis(curAngle, Vector3.up), new Vector3(OverlaySize, 1f, OverlaySize));
-                UnityEngine.Graphics.DrawMesh(MeshPool.plane10, matrix, OverlayMat, 0, null, 0, MatPropertyBlock);
+                matrix.SetTRS(
+                    pos,
+                    Quaternion.AngleAxis(curAngle, Vector3.up),
+                    new Vector3(OverlaySize, 1f, OverlaySize)
+                );
+                UnityEngine.Graphics.DrawMesh(
+                    MeshPool.plane10,
+                    matrix,
+                    OverlayMat,
+                    0,
+                    null,
+                    0,
+                    MatPropertyBlock
+                );
             }
         }
 

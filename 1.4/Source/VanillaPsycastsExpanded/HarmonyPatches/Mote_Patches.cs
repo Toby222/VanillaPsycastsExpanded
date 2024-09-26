@@ -2,6 +2,7 @@
 {
     using HarmonyLib;
     using Verse;
+
     [HarmonyPatch(typeof(ListerThings), "EverListable")]
     public static class ListerThings_EverListable_Patch
     {
@@ -15,9 +16,14 @@
 
         public static bool CanBeSaved(this ThingDef def)
         {
-            if (def != null && (typeof(MoteAttachedScaled).IsAssignableFrom(def.thingClass) 
-                || typeof(MoteAttachedMovingAround).IsAssignableFrom(def.thingClass) 
-                || typeof(MoteAttachedOneTime).IsAssignableFrom(def.thingClass)))
+            if (
+                def != null
+                && (
+                    typeof(MoteAttachedScaled).IsAssignableFrom(def.thingClass)
+                    || typeof(MoteAttachedMovingAround).IsAssignableFrom(def.thingClass)
+                    || typeof(MoteAttachedOneTime).IsAssignableFrom(def.thingClass)
+                )
+            )
             {
                 return true;
             }

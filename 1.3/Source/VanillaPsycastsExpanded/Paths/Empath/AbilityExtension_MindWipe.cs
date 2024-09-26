@@ -1,15 +1,16 @@
 ﻿namespace VanillaPsycastsExpanded
 {
-    using RimWorld;
-    using RimWorld.Planet;
     using System.Collections.Generic;
     using System.Security.Cryptography;
+    using RimWorld;
+    using RimWorld.Planet;
     using Verse;
-using VFECore;
+    using VFECore;
     using VFECore.Abilities;
     using Ability = VFECore.Abilities.Ability;
+
     public class AbilityExtension_MindWipe : AbilityExtension_AbilityMod
-	{
+    {
         public override void Cast(GlobalTargetInfo[] targets, Ability ability)
         {
             base.Cast(targets, ability);

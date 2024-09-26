@@ -33,13 +33,19 @@ public class FocusStrengthOffset_NearbyOfTechlevel : FocusStrengthOffset
     public override string GetExplanation(Thing parent)
     {
         var num = parent.MapHeld is { } map ? GetThings(parent.Position, map).Count : 1;
-        return "VPE.ThingsOfLevel".Translate(num, techLevel.ToString()) + ": " + GetOffset(parent).ToStringWithSign("0%");
+        return "VPE.ThingsOfLevel".Translate(num, techLevel.ToString())
+            + ": "
+            + GetOffset(parent).ToStringWithSign("0%");
     }
 
     public override void PostDrawExtraSelectionOverlays(Thing parent, Pawn user = null)
     {
         base.PostDrawExtraSelectionOverlays(parent, user);
-        GenDraw.DrawRadiusRing(parent.Position, radius, PlaceWorker_MeditationOffsetBuildingsNear.RingColor);
+        GenDraw.DrawRadiusRing(
+            parent.Position,
+            radius,
+            PlaceWorker_MeditationOffsetBuildingsNear.RingColor
+        );
         if (parent.MapHeld is { } map)
             foreach (var thing in GetThings(parent.Position, map))
                 GenDraw.DrawLineBetween(parent.TrueCenter(), thing.TrueCenter(), SimpleColor.Green);
@@ -47,6 +53,10 @@ public class FocusStrengthOffset_NearbyOfTechlevel : FocusStrengthOffset
 
     protected virtual List<Thing> GetThings(IntVec3 cell, Map map)
     {
-        return GenRadialCached.RadialDistinctThingsAround(cell, map, radius, true).Where(t => t.def.techLevel == techLevel).Take(10).ToList();
+        return GenRadialCached
+            .RadialDistinctThingsAround(cell, map, radius, true)
+            .Where(t => t.def.techLevel == techLevel)
+            .Take(10)
+            .ToList();
     }
 }

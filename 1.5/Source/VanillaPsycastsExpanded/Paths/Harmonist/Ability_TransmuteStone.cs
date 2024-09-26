@@ -11,7 +11,8 @@ public class Ability_TransmuteStone : Ability
     private static readonly AccessTools.FieldRef<World, List<ThingDef>> allNaturalRockDefs =
         AccessTools.FieldRefAccess<World, List<ThingDef>>("allNaturalRockDefs");
 
-    private static readonly AccessTools.FieldRef<Thing, Graphic> graphicInt = AccessTools.FieldRefAccess<Thing, Graphic>("graphicInt");
+    private static readonly AccessTools.FieldRef<Thing, Graphic> graphicInt =
+        AccessTools.FieldRefAccess<Thing, Graphic>("graphicInt");
 
     public override void Cast(params GlobalTargetInfo[] targets)
     {
@@ -46,7 +47,8 @@ public class Ability_TransmuteStone : Ability
                     GenSpawn.Spawn(newThing, cell, map, rot);
                 else if (owner != null)
                 {
-                    if (!owner.TryAdd(newThing)) Log.Error($"[VPE] Failed to add {newThing} to {owner}");
+                    if (!owner.TryAdd(newThing))
+                        Log.Error($"[VPE] Failed to add {newThing} to {owner}");
                 }
                 else
                 {
@@ -54,7 +56,10 @@ public class Ability_TransmuteStone : Ability
                     return;
                 }
 
-                foreach (var designation in des) map.designationManager.AddDesignation(new Designation(newThing, designation.def));
+                foreach (var designation in des)
+                    map.designationManager.AddDesignation(
+                        new Designation(newThing, designation.def)
+                    );
             }
 
             foreach (var cell in GenRadial.RadialCellsAround(target.Cell, GetRadiusForPawn(), true))
@@ -68,16 +73,34 @@ public class Ability_TransmuteStone : Ability
                                 Replace(thing, chosenRock.building.mineableThing);
                             else if (rockDef.building.smoothedThing == thing.def)
                                 Replace(thing, chosenRock.building.smoothedThing);
-                            else if (rockDef.building.mineableThing.butcherProducts[0].thingDef == thing.def)
-                                Replace(thing, chosenRock.building.mineableThing.butcherProducts[0].thingDef);
-                            else if (thing.Stuff != null && thing.Stuff == rockDef.building.mineableThing.butcherProducts[0].thingDef)
-                                Replace(thing, stuff: chosenRock.building.mineableThing.butcherProducts[0].thingDef);
+                            else if (
+                                rockDef.building.mineableThing.butcherProducts[0].thingDef
+                                == thing.def
+                            )
+                                Replace(
+                                    thing,
+                                    chosenRock.building.mineableThing.butcherProducts[0].thingDef
+                                );
+                            else if (
+                                thing.Stuff != null
+                                && thing.Stuff
+                                    == rockDef.building.mineableThing.butcherProducts[0].thingDef
+                            )
+                                Replace(
+                                    thing,
+                                    stuff: chosenRock
+                                        .building
+                                        .mineableThing
+                                        .butcherProducts[0]
+                                        .thingDef
+                                );
 
                 var grid = map.terrainGrid;
                 var terrain = grid.TerrainAt(cell);
                 grid.SetTerrain(cell, NewTerrain(terrain));
                 terrain = grid.UnderTerrainAt(cell);
-                if (terrain != null) grid.SetUnderTerrain(cell, NewTerrain(terrain));
+                if (terrain != null)
+                    grid.SetUnderTerrain(cell, NewTerrain(terrain));
             }
         }
     }

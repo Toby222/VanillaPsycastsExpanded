@@ -8,9 +8,9 @@
     {
         protected override Projectile ShootProjectile(GlobalTargetInfo target)
         {
-			var projectile = base.ShootProjectile(target) as IceBreatheProjectile;
-			projectile.ability = this;
-			return projectile;
+            var projectile = base.ShootProjectile(target) as IceBreatheProjectile;
+            projectile.ability = this;
+            return projectile;
         }
     }
 }

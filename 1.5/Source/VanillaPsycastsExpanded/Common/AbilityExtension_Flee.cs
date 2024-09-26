@@ -18,10 +18,21 @@ public class AbilityExtension_Flee : AbilityExtension_AbilityMod
         foreach (var target in targets)
         {
             var pawn = target.Thing as Pawn;
-            if (!onlyHostile || !pawn.HostileTo(ability.pawn)) return;
+            if (!onlyHostile || !pawn.HostileTo(ability.pawn))
+                return;
             pawn.GetLord()?.RemovePawn(pawn);
             pawn.jobs.EndCurrentJob(JobCondition.InterruptForced);
-            pawn.mindState.mentalStateHandler.TryStartMentalState(MentalStateDefOf.PanicFlee, ability.def.label, true, false, false, null, true, false, true);
+            pawn.mindState.mentalStateHandler.TryStartMentalState(
+                MentalStateDefOf.PanicFlee,
+                ability.def.label,
+                true,
+                false,
+                false,
+                null,
+                true,
+                false,
+                true
+            );
         }
     }
 }

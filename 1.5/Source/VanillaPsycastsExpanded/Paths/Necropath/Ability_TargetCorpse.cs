@@ -13,7 +13,11 @@
             {
                 if (showMessages)
                 {
-                    Messages.Message("VPE.MustBeCorpse".Translate(), corpse, MessageTypeDefOf.CautionInput);
+                    Messages.Message(
+                        "VPE.MustBeCorpse".Translate(),
+                        corpse,
+                        MessageTypeDefOf.CautionInput
+                    );
                 }
                 return false;
             }
@@ -21,7 +25,11 @@
             {
                 if (showMessages)
                 {
-                    Messages.Message("VPE.MustBeCorpseHumanlike".Translate(), corpse, MessageTypeDefOf.CautionInput);
+                    Messages.Message(
+                        "VPE.MustBeCorpseHumanlike".Translate(),
+                        corpse,
+                        MessageTypeDefOf.CautionInput
+                    );
                 }
                 return false;
             }

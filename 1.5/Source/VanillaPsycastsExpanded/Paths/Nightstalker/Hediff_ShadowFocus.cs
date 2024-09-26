@@ -13,8 +13,8 @@ public class Hediff_ShadowFocus : HediffWithComps
                 new()
                 {
                     stat = StatDefOf.PsychicSensitivity,
-                    value = 1f - pawn.MapHeld.glowGrid.GroundGlowAt(pawn.PositionHeld)
-                }
-            }
+                    value = 1f - pawn.MapHeld.glowGrid.GroundGlowAt(pawn.PositionHeld),
+                },
+            },
         };
 }

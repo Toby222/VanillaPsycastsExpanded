@@ -15,10 +15,14 @@ public static class PsycastUtility
 
     static PsycastUtility()
     {
-        eltexThings = DefDatabase<RecipeDef>.AllDefs
-           .Where(recipe => recipe.ingredients.Any(x => x.IsFixedIngredient && x.FixedIngredient == VPE_DefOf.VPE_Eltex))
-           .Select(recipe => recipe.ProducedThingDef)
-           .ToHashSet();
+        eltexThings = DefDatabase<RecipeDef>
+            .AllDefs.Where(recipe =>
+                recipe.ingredients.Any(x =>
+                    x.IsFixedIngredient && x.FixedIngredient == VPE_DefOf.VPE_Eltex
+                )
+            )
+            .Select(recipe => recipe.ProducedThingDef)
+            .ToHashSet();
     }
 
     public static void RecheckPaths(this Pawn pawn)
@@ -55,16 +59,27 @@ public static class PsycastUtility
 
     public static bool IsEltexOrHasEltexMaterial(this ThingDef def)
     {
-        return def != null &&
-               (def == VPE_DefOf.VPE_Eltex ||
-                (def.costList != null && def.costList.Any(x => x.thingDef == VPE_DefOf.VPE_Eltex)) ||
-                eltexThings.Contains(def));
+        return def != null
+            && (
+                def == VPE_DefOf.VPE_Eltex
+                || (
+                    def.costList != null && def.costList.Any(x => x.thingDef == VPE_DefOf.VPE_Eltex)
+                )
+                || eltexThings.Contains(def)
+            );
     }
 
     public static Hediff_PsycastAbilities Psycasts(this Pawn pawn) =>
-        (Hediff_PsycastAbilities)pawn?.health?.hediffSet?.GetFirstHediffOfDef(VPE_DefOf.VPE_PsycastAbilityImplant);
+        (Hediff_PsycastAbilities)
+            pawn?.health?.hediffSet?.GetFirstHediffOfDef(VPE_DefOf.VPE_PsycastAbilityImplant);
 
-    [DebugAction("Pawns", "Reset Psycasts", true, actionType = DebugActionType.ToolMapForPawns, allowedGameStates = AllowedGameStates.PlayingOnMap)]
+    [DebugAction(
+        "Pawns",
+        "Reset Psycasts",
+        true,
+        actionType = DebugActionType.ToolMapForPawns,
+        allowedGameStates = AllowedGameStates.PlayingOnMap
+    )]
     public static void ResetPsycasts(Pawn p)
     {
         p.Psycasts()?.Reset();
@@ -88,5 +103,6 @@ public static class PsycastUtility
         return false;
     }
 
-    public static T CreateDelegate<T>(this MethodInfo method) where T : Delegate => (T)method.CreateDelegate(typeof(T));
+    public static T CreateDelegate<T>(this MethodInfo method)
+        where T : Delegate => (T)method.CreateDelegate(typeof(T));
 }

@@ -13,17 +13,21 @@
 
     public class Comp_PlaySound : ThingComp
     {
-        private Sustainer                sustainer;
-        private IntVec3                  cell;
-        public  CompProperties_PlaySound Props => (CompProperties_PlaySound) this.props;
+        private Sustainer sustainer;
+        private IntVec3 cell;
+        public CompProperties_PlaySound Props => (CompProperties_PlaySound)this.props;
 
         public override void CompTick()
         {
             base.CompTick();
-            if (!this.parent.Spawned) return;
+            if (!this.parent.Spawned)
+                return;
             if (this.sustainer == null || this.sustainer.Ended)
-                this.sustainer = this.Props.sustainer.TrySpawnSustainer(SoundInfo.InMap(this.parent, MaintenanceType.PerTick));
-            if (this.Props.sustainer != null) this.sustainer.Maintain();
+                this.sustainer = this.Props.sustainer.TrySpawnSustainer(
+                    SoundInfo.InMap(this.parent, MaintenanceType.PerTick)
+                );
+            if (this.Props.sustainer != null)
+                this.sustainer.Maintain();
         }
 
         public override void PostSpawnSetup(bool respawningAfterLoad)

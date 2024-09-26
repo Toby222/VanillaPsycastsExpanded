@@ -1,23 +1,33 @@
-﻿using RimWorld;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using RimWorld;
 using Verse;
 using Verse.AI;
 
 namespace VanillaPsycastsExpanded
 {
-	public class JobGiver_Flee : ThinkNode_JobGiver
-	{
+    public class JobGiver_Flee : ThinkNode_JobGiver
+    {
         protected override Job TryGiveJob(Pawn pawn)
         {
-            var enemies = pawn.Map.mapPawns.AllPawnsSpawned.Where(x => !x.Dead && !x.Downed && x.Position.DistanceTo(pawn.Position) < 50f
-                && GenSight.LineOfSight(x.Position, pawn.Position, pawn.Map)).OrderBy(x => x.Position.DistanceTo(pawn.Position)).ToList();
+            var enemies = pawn
+                .Map.mapPawns.AllPawnsSpawned.Where(x =>
+                    !x.Dead
+                    && !x.Downed
+                    && x.Position.DistanceTo(pawn.Position) < 50f
+                    && GenSight.LineOfSight(x.Position, pawn.Position, pawn.Map)
+                )
+                .OrderBy(x => x.Position.DistanceTo(pawn.Position))
+                .ToList();
             if (enemies.Any())
             {
-                if (pawn.Faction != Faction.OfPlayer && CellFinderLoose.GetFleeExitPosition(pawn, 10f, out var pos))
+                if (
+                    pawn.Faction != Faction.OfPlayer
+                    && CellFinderLoose.GetFleeExitPosition(pawn, 10f, out var pos)
+                )
                 {
                     Job job = JobMaker.MakeJob(JobDefOf.Flee, pos, enemies.First());
                     job.exitMapOnArrival = true;

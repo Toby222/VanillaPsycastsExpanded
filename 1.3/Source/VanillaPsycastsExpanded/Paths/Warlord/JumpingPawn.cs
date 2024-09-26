@@ -24,7 +24,11 @@
             if (this.Map != null && Find.TickManager.TicksGame % 3 == 0)
             {
                 var map = this.Map;
-                FleckCreationData data = FleckMaker.GetDataStatic(GetDrawPos(), map, VPE_DefOf.VPE_WarlordZap);
+                FleckCreationData data = FleckMaker.GetDataStatic(
+                    GetDrawPos(),
+                    map,
+                    VPE_DefOf.VPE_WarlordZap
+                );
                 data.rotation = Rand.Range(0f, 360f);
                 map.flecks.CreateFleck(data);
             }
@@ -37,13 +41,19 @@
             drawPos.y = AltitudeLayer.Skyfaller.AltitudeFor();
             return drawPos + Vector3.forward * (x - Mathf.Pow(x, 2)) * 15f;
         }
+
         protected override void RespawnPawn()
         {
             Pawn flyingPawn = FlyingPawn;
             base.RespawnPawn();
             VPE_DefOf.VPE_PowerLeap_Land.PlayOneShot(flyingPawn);
             FleckMaker.ThrowSmoke(flyingPawn.DrawPos, flyingPawn.Map, 1f);
-            FleckMaker.ThrowDustPuffThick(flyingPawn.DrawPos, flyingPawn.Map, 2f, new Color(1f, 1f, 1f, 2.5f));
+            FleckMaker.ThrowDustPuffThick(
+                flyingPawn.DrawPos,
+                flyingPawn.Map,
+                2f,
+                new Color(1f, 1f, 1f, 2.5f)
+            );
         }
     }
 }

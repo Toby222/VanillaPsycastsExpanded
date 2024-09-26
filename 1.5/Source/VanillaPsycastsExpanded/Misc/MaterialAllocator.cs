@@ -21,7 +21,7 @@ internal static class MaterialAllocator
         Material material2 = new(material);
         references[material2] = new()
         {
-            stackTrace = Prefs.DevMode ? Environment.StackTrace : "(unavailable)"
+            stackTrace = Prefs.DevMode ? Environment.StackTrace : "(unavailable)",
         };
         TryReport();
         return material2;
@@ -32,7 +32,7 @@ internal static class MaterialAllocator
         Material material = new(shader);
         references[material] = new()
         {
-            stackTrace = Prefs.DevMode ? Environment.StackTrace : "(unavailable)"
+            stackTrace = Prefs.DevMode ? Environment.StackTrace : "(unavailable)",
         };
         TryReport();
         return material;
@@ -40,18 +40,25 @@ internal static class MaterialAllocator
 
     public static void Destroy(Material material)
     {
-        if (!references.ContainsKey(material)) Log.Error($"Destroying material {material}, but that material was not created through the MaterialTracker");
+        if (!references.ContainsKey(material))
+            Log.Error(
+                $"Destroying material {material}, but that material was not created through the MaterialTracker"
+            );
         references.Remove(material);
         Object.Destroy(material);
     }
 
     public static void TryReport()
     {
-        if (MaterialWarningThreshold() > nextWarningThreshold) nextWarningThreshold = MaterialWarningThreshold();
+        if (MaterialWarningThreshold() > nextWarningThreshold)
+            nextWarningThreshold = MaterialWarningThreshold();
         if (references.Count > nextWarningThreshold)
         {
-            Log.Error($"Material allocator has allocated {references.Count} materials; this may be a sign of a material leak");
-            if (Prefs.DevMode) MaterialReport();
+            Log.Error(
+                $"Material allocator has allocated {references.Count} materials; this may be a sign of a material leak"
+            );
+            if (Prefs.DevMode)
+                MaterialReport();
             nextWarningThreshold *= 2;
         }
     }
@@ -61,11 +68,14 @@ internal static class MaterialAllocator
     [DebugOutput("System")]
     public static void MaterialReport()
     {
-        foreach (var item in (from kvp in references
-                     group kvp by kvp.Value.stackTrace
-                     into g
-                     orderby g.Count() descending
-                     select $"{g.Count()}: {g.FirstOrDefault().Value.stackTrace}").Take(20))
+        foreach (
+            var item in (
+                from kvp in references
+                group kvp by kvp.Value.stackTrace into g
+                orderby g.Count() descending
+                select $"{g.Count()}: {g.FirstOrDefault().Value.stackTrace}"
+            ).Take(20)
+        )
             Log.Error(item);
     }
 
@@ -73,8 +83,7 @@ internal static class MaterialAllocator
     public static void MaterialSnapshot()
     {
         snapshot = new();
-        foreach (var item in from kvp in references
-                 group kvp by kvp.Value.stackTrace)
+        foreach (var item in from kvp in references group kvp by kvp.Value.stackTrace)
             snapshot[item.Key] = item.Count();
     }
 
@@ -83,16 +92,20 @@ internal static class MaterialAllocator
     {
         var source = references.Values.Select(v => v.stackTrace).Concat(snapshot.Keys).Distinct();
         Dictionary<string, int> currentSnapshot = new();
-        foreach (var item in from kvp in references
-                 group kvp by kvp.Value.stackTrace)
+        foreach (var item in from kvp in references group kvp by kvp.Value.stackTrace)
             currentSnapshot[item.Key] = item.Count();
-        foreach (var item2 in (from k in source
-                     select new KeyValuePair<string, int>(k, currentSnapshot.TryGetValue(k) - snapshot.TryGetValue(k))
-                     into kvp
-                     orderby kvp.Value descending
-                     select kvp
-                     into g
-                     select $"{g.Value}: {g.Key}").Take(20))
+        foreach (
+            var item2 in (
+                from k in source
+                select new KeyValuePair<string, int>(
+                    k,
+                    currentSnapshot.TryGetValue(k) - snapshot.TryGetValue(k)
+                ) into kvp
+                orderby kvp.Value descending
+                select kvp into g
+                select $"{g.Value}: {g.Key}"
+            ).Take(20)
+        )
             Log.Error(item2);
     }
 

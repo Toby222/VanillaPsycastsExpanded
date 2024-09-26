@@ -1,8 +1,8 @@
 ﻿namespace VanillaPsycastsExpanded
 {
+    using System.Linq;
     using RimWorld;
     using RimWorld.Planet;
-    using System.Linq;
     using Verse;
     using Verse.AI;
     using VFECore.Abilities;
@@ -15,6 +15,7 @@
         public StatDef durationMultiplier;
 
         public FleckDef fleckOnTarget;
+
         protected void ForceJob(GlobalTargetInfo target, Ability ability)
         {
             Pawn pawn = target.Thing as Pawn;
@@ -37,6 +38,7 @@
             }
         }
     }
+
     public class AbilityExtension_ForceJobOnTarget : AbilityExtension_ForceJobOnTargetBase
     {
         public override void Cast(GlobalTargetInfo[] targets, Ability ability)

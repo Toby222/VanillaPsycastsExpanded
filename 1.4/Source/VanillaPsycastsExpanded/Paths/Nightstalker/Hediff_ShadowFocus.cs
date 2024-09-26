@@ -6,16 +6,17 @@
 
     public class Hediff_ShadowFocus : HediffWithComps
     {
-        public override HediffStage CurStage => new()
-        {
-            statOffsets = new List<StatModifier>
+        public override HediffStage CurStage =>
+            new()
             {
-                new()
+                statOffsets = new List<StatModifier>
                 {
-                    stat  = StatDefOf.PsychicSensitivity,
-                    value = 1f - this.pawn.MapHeld.glowGrid.GameGlowAt(this.pawn.PositionHeld)
-                }
-            }
-        };
+                    new()
+                    {
+                        stat = StatDefOf.PsychicSensitivity,
+                        value = 1f - this.pawn.MapHeld.glowGrid.GameGlowAt(this.pawn.PositionHeld),
+                    },
+                },
+            };
     }
 }

@@ -12,7 +12,7 @@
                 targets[0],
                 new GlobalTargetInfo(this.pawn.Position, this.pawn.Map),
                 this.pawn,
-                new GlobalTargetInfo(targets[0].Cell, targets[0].Map)
+                new GlobalTargetInfo(targets[0].Cell, targets[0].Map),
             };
         }
     }

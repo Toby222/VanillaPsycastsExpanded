@@ -14,18 +14,23 @@
         private static readonly HashSet<IntVec3> DarkenedCells = new();
 
         private IntVec3 position;
-        private int     spawnedTick;
+        private int spawnedTick;
 
-        private IEnumerable<IntVec3> AffectedCells => GenRadial.RadialCellsAround(this.position, this.Props.glowRadius, true);
+        private IEnumerable<IntVec3> AffectedCells =>
+            GenRadial.RadialCellsAround(this.position, this.Props.glowRadius, true);
 
         [HarmonyPatch(typeof(GlowGrid), "RecalculateAllGlow")]
         [HarmonyPostfix]
-        public static void RecalculateAllGlow_Postfix(List<CompGlower> ___litGlowers, Color32[] ___glowGrid, Color32[] ___glowGridNoCavePlants)
+        public static void RecalculateAllGlow_Postfix(
+            List<CompGlower> ___litGlowers,
+            Color32[] ___glowGrid,
+            Color32[] ___glowGridNoCavePlants
+        )
         {
             foreach (CompDarkener darkener in ___litGlowers.OfType<CompDarkener>())
             foreach (IntVec3 c in darkener.AffectedCells)
             {
-                int ind                                         = darkener.parent.Map.cellIndices.CellToIndex(c);
+                int ind = darkener.parent.Map.cellIndices.CellToIndex(c);
                 ___glowGrid[ind] = ___glowGridNoCavePlants[ind] = new Color32(0, 0, 0, 1);
             }
         }
@@ -44,10 +49,23 @@
         }
 
         [HarmonyPatch(typeof(Projectile))]
-        [HarmonyPatch(nameof(Projectile.Launch), typeof(Thing), typeof(Vector3), typeof(LocalTargetInfo), typeof(LocalTargetInfo), typeof(ProjectileHitFlags),
-                      typeof(bool), typeof(Thing), typeof(ThingDef))]
+        [HarmonyPatch(
+            nameof(Projectile.Launch),
+            typeof(Thing),
+            typeof(Vector3),
+            typeof(LocalTargetInfo),
+            typeof(LocalTargetInfo),
+            typeof(ProjectileHitFlags),
+            typeof(bool),
+            typeof(Thing),
+            typeof(ThingDef)
+        )]
         [HarmonyPrefix]
-        public static void Launch_Prefix(Thing launcher, LocalTargetInfo intendedTarget, ref LocalTargetInfo usedTarget)
+        public static void Launch_Prefix(
+            Thing launcher,
+            LocalTargetInfo intendedTarget,
+            ref LocalTargetInfo usedTarget
+        )
         {
             if (intendedTarget == usedTarget && DarkenedCells.Any())
             {
@@ -65,7 +83,8 @@
             base.PostSpawnSetup(respawningAfterLoad);
             this.position = this.parent.Position;
             DarkenedCells.UnionWith(this.AffectedCells);
-            if (!respawningAfterLoad) this.spawnedTick = Find.TickManager.TicksGame;
+            if (!respawningAfterLoad)
+                this.spawnedTick = Find.TickManager.TicksGame;
         }
 
         public override void PostDeSpawn(Map map)

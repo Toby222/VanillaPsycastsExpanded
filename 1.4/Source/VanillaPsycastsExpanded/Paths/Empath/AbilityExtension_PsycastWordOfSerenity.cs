@@ -20,9 +20,14 @@ public class AbilityExtension_PsycastWordOfSerenity : AbilityExtension_Psycast
         base.Cast(targets, ability);
         foreach (var target in targets)
         {
-            var psycastHediff =
-                (Hediff_PsycastAbilities)ability.pawn.health.hediffSet.GetFirstHediffOfDef(VPE_DefOf.VPE_PsycastAbilityImplant);
-            psycastHediff.UseAbility(PsyfocusCostForTarget(target), GetEntropyUsedByPawn(ability.pawn));
+            var psycastHediff = (Hediff_PsycastAbilities)
+                ability.pawn.health.hediffSet.GetFirstHediffOfDef(
+                    VPE_DefOf.VPE_PsycastAbilityImplant
+                );
+            psycastHediff.UseAbility(
+                PsyfocusCostForTarget(target),
+                GetEntropyUsedByPawn(ability.pawn)
+            );
         }
     }
 
@@ -33,7 +38,7 @@ public class AbilityExtension_PsycastWordOfSerenity : AbilityExtension_Psycast
             MentalBreakIntensity.Minor => psyfocusCostForMinor,
             MentalBreakIntensity.Major => psyfocusCostForMajor,
             MentalBreakIntensity.Extreme => psyfocusCostForExtreme,
-            _ => 0f
+            _ => 0f,
         };
     }
 
@@ -51,19 +56,31 @@ public class AbilityExtension_PsycastWordOfSerenity : AbilityExtension_Psycast
         return MentalBreakIntensity.Minor;
     }
 
-    public override bool Valid(GlobalTargetInfo[] targets, Ability ability, bool throwMessages = false)
+    public override bool Valid(
+        GlobalTargetInfo[] targets,
+        Ability ability,
+        bool throwMessages = false
+    )
     {
         foreach (var target in targets)
         {
             var pawn = target.Thing as Pawn;
             if (pawn != null)
             {
-                if (!AbilityUtility.ValidateHasMentalState(pawn, throwMessages, null)) return false;
+                if (!AbilityUtility.ValidateHasMentalState(pawn, throwMessages, null))
+                    return false;
                 if (exceptions.Contains(pawn.MentalStateDef))
                 {
                     if (throwMessages)
-                        Messages.Message("AbilityDoesntWorkOnMentalState".Translate(ability.def.label, pawn.MentalStateDef.label), pawn,
-                            MessageTypeDefOf.RejectInput, false);
+                        Messages.Message(
+                            "AbilityDoesntWorkOnMentalState".Translate(
+                                ability.def.label,
+                                pawn.MentalStateDef.label
+                            ),
+                            pawn,
+                            MessageTypeDefOf.RejectInput,
+                            false
+                        );
                     return false;
                 }
 
@@ -73,11 +90,21 @@ public class AbilityExtension_PsycastWordOfSerenity : AbilityExtension_Psycast
                     var pawn2 = ability.pawn;
                     if (throwMessages)
                     {
-                        var taggedString = ("MentalBreakIntensity" + TargetMentalBreakIntensity(target)).Translate();
+                        var taggedString = (
+                            "MentalBreakIntensity" + TargetMentalBreakIntensity(target)
+                        ).Translate();
                         Messages.Message(
-                            "CommandPsycastNotEnoughPsyfocusForMentalBreak".Translate(num.ToStringPercent(), taggedString,
-                                pawn2.psychicEntropy.CurrentPsyfocus.ToStringPercent("0.#"), ability.def.label.Named("PSYCASTNAME"), pawn2.Named("CASTERNAME")),
-                            pawn, MessageTypeDefOf.RejectInput, false);
+                            "CommandPsycastNotEnoughPsyfocusForMentalBreak".Translate(
+                                num.ToStringPercent(),
+                                taggedString,
+                                pawn2.psychicEntropy.CurrentPsyfocus.ToStringPercent("0.#"),
+                                ability.def.label.Named("PSYCASTNAME"),
+                                pawn2.Named("CASTERNAME")
+                            ),
+                            pawn,
+                            MessageTypeDefOf.RejectInput,
+                            false
+                        );
                     }
 
                     return false;

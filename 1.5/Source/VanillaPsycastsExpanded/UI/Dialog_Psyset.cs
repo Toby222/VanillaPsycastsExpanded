@@ -47,15 +47,25 @@ public class Dialog_Psyset : Window
         existingRect.xMax -= 8f;
         Widgets.Label(existingRect.TakeTopPart(20f), "VPE.Contents".Translate());
         Widgets.DrawMenuSection(existingRect);
-        DragAndDropWidget.DropArea(group, existingRect, obj => psyset.Abilities.Add((AbilityDef)obj), null);
+        DragAndDropWidget.DropArea(
+            group,
+            existingRect,
+            obj => psyset.Abilities.Add((AbilityDef)obj),
+            null
+        );
         var curPos = existingRect.position + new Vector2(8f, 8f);
         foreach (var def in psyset.Abilities.ToList())
         {
             Rect rect = new(curPos, new(36f, 36f));
             PsycastsUIUtility.DrawAbility(rect, def);
-            TooltipHandler.TipRegion(rect, () => $"{def.LabelCap}\n\n{def.description}\n\n{"VPE.ClickRemove".Translate().Resolve().ToUpper()}",
-                def.GetHashCode() + 2);
-            if (Widgets.ButtonInvisible(rect)) psyset.Abilities.Remove(def);
+            TooltipHandler.TipRegion(
+                rect,
+                () =>
+                    $"{def.LabelCap}\n\n{def.description}\n\n{"VPE.ClickRemove".Translate().Resolve().ToUpper()}",
+                def.GetHashCode() + 2
+            );
+            if (Widgets.ButtonInvisible(rect))
+                psyset.Abilities.Remove(def);
             curPos.x += 44f;
             if (curPos.x + 36f >= existingRect.xMax)
             {
@@ -68,8 +78,10 @@ public class Dialog_Psyset : Window
         var pagesRect = abilityRect.TakeTopPart(50f);
         var decreaseRect = pagesRect.TakeLeftPart(40f).ContractedBy(0f, 5f);
         var increaseRect = pagesRect.TakeRightPart(40f).ContractedBy(0f, 5f);
-        if (curIdx > 0 && Widgets.ButtonText(decreaseRect, "<")) curIdx--;
-        if (curIdx < paths.Count - 1 && Widgets.ButtonText(increaseRect, ">")) curIdx++;
+        if (curIdx > 0 && Widgets.ButtonText(decreaseRect, "<"))
+            curIdx--;
+        if (curIdx < paths.Count - 1 && Widgets.ButtonText(increaseRect, ">"))
+            curIdx++;
         Text.Anchor = TextAnchor.MiddleCenter;
         Widgets.Label(pagesRect, $"{(paths.Count > 0 ? curIdx + 1 : 0)} / {paths.Count}");
         Text.Anchor = TextAnchor.UpperLeft;
@@ -77,26 +89,40 @@ public class Dialog_Psyset : Window
         {
             var path = paths[curIdx];
             PsycastsUIUtility.DrawPathBackground(ref abilityRect, path);
-            PsycastsUIUtility.DoPathAbilities(abilityRect, path, abilityPos, (rect, def) =>
-            {
-                PsycastsUIUtility.DrawAbility(rect, def);
-                if (compAbilities.HasAbility(def))
+            PsycastsUIUtility.DoPathAbilities(
+                abilityRect,
+                path,
+                abilityPos,
+                (rect, def) =>
                 {
-                    DragAndDropWidget.Draggable(group, rect, def);
-                    TooltipHandler.TipRegion(rect, () => $"{def.LabelCap}\n\n{def.description}", def.GetHashCode() + 1);
+                    PsycastsUIUtility.DrawAbility(rect, def);
+                    if (compAbilities.HasAbility(def))
+                    {
+                        DragAndDropWidget.Draggable(group, rect, def);
+                        TooltipHandler.TipRegion(
+                            rect,
+                            () => $"{def.LabelCap}\n\n{def.description}",
+                            def.GetHashCode() + 1
+                        );
+                    }
+                    else
+                        Widgets.DrawRectFast(rect, new(0f, 0f, 0f, 0.6f));
                 }
-                else
-                    Widgets.DrawRectFast(rect, new(0f, 0f, 0f, 0.6f));
-            });
+            );
         }
 
         if (DragAndDropWidget.CurrentlyDraggedDraggable() is AbilityDef abilityDef)
-            PsycastsUIUtility.DrawAbility(new(Event.current.mousePosition, new(36f, 36f)), abilityDef);
-        if (DragAndDropWidget.HoveringDropAreaRect(group) is { } hovering) Widgets.DrawHighlight(hovering);
+            PsycastsUIUtility.DrawAbility(
+                new(Event.current.mousePosition, new(36f, 36f)),
+                abilityDef
+            );
+        if (DragAndDropWidget.HoveringDropAreaRect(group) is { } hovering)
+            Widgets.DrawHighlight(hovering);
     }
 }
 
 public class Dialog_RenamePsyset : Dialog_Rename<PsySet>
 {
-    public Dialog_RenamePsyset(PsySet psyset) : base(psyset) { }
+    public Dialog_RenamePsyset(PsySet psyset)
+        : base(psyset) { }
 }

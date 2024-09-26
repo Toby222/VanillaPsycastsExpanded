@@ -13,9 +13,7 @@ public class GameComponent_PsycastsManager : GameComponent
     private List<Thing> removeAfterTicks_things;
     private List<int> removeAfterTicks_ticks;
 
-    public GameComponent_PsycastsManager(Game game)
-    {
-    }
+    public GameComponent_PsycastsManager(Game game) { }
 
     public override void GameComponentTick()
     {
@@ -53,18 +51,27 @@ public class GameComponent_PsycastsManager : GameComponent
     public override void LoadedGame()
     {
         base.LoadedGame();
-        if (inited) return;
+        if (inited)
+            return;
         Log.Message("[VPE] Added to existing save, adding PsyLinks.");
         inited = true;
-        foreach (var pawn in Find.WorldPawns.AllPawnsAliveOrDead.Concat(Find.Maps.SelectMany(map => map.mapPawns.AllPawns)))
+        foreach (
+            var pawn in Find.WorldPawns.AllPawnsAliveOrDead.Concat(
+                Find.Maps.SelectMany(map => map.mapPawns.AllPawns)
+            )
+        )
         {
             var hediffs = new List<Hediff_Psylink>();
             pawn?.health?.hediffSet?.GetHediffs(ref hediffs);
-            if (hediffs.OrderByDescending(p => p.level).FirstOrDefault() is { } psylink &&
-                pawn.Psycasts() is null)
+            if (
+                hediffs.OrderByDescending(p => p.level).FirstOrDefault() is { } psylink
+                && pawn.Psycasts() is null
+            )
             {
-                ((Hediff_PsycastAbilities)pawn.health.AddHediff(VPE_DefOf.VPE_PsycastAbilityImplant, psylink.Part))
-                    .InitializeFromPsylink(psylink);
+                (
+                    (Hediff_PsycastAbilities)
+                        pawn.health.AddHediff(VPE_DefOf.VPE_PsycastAbilityImplant, psylink.Part)
+                ).InitializeFromPsylink(psylink);
                 pawn.abilities.abilities.RemoveAll(ab => ab is Psycast);
             }
         }
@@ -74,7 +81,8 @@ public class GameComponent_PsycastsManager : GameComponent
     {
         base.ExposeData();
         Scribe_Collections.Look(ref goodwillImpacts, "goodwillImpacts", LookMode.Deep);
-        if (Scribe.mode == LoadSaveMode.PostLoadInit) goodwillImpacts ??= new List<GoodwillImpactDelayed>();
+        if (Scribe.mode == LoadSaveMode.PostLoadInit)
+            goodwillImpacts ??= new List<GoodwillImpactDelayed>();
 
         if (Scribe.mode == LoadSaveMode.Saving)
         {
@@ -87,8 +95,16 @@ public class GameComponent_PsycastsManager : GameComponent
             }
         }
 
-        Scribe_Collections.Look(ref removeAfterTicks_things, "removeAfterTick_things", LookMode.Reference);
-        Scribe_Collections.Look(ref removeAfterTicks_ticks, "removeAfterTick_ticks", LookMode.Value);
+        Scribe_Collections.Look(
+            ref removeAfterTicks_things,
+            "removeAfterTick_things",
+            LookMode.Reference
+        );
+        Scribe_Collections.Look(
+            ref removeAfterTicks_ticks,
+            "removeAfterTick_ticks",
+            LookMode.Value
+        );
         if (Scribe.mode == LoadSaveMode.PostLoadInit)
         {
             removeAfterTicks = new List<(Thing thing, int tick)>();

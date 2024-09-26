@@ -1,6 +1,6 @@
-﻿using RimWorld;
+﻿using System.Collections.Generic;
+using RimWorld;
 using RimWorld.Planet;
-using System.Collections.Generic;
 using Verse;
 using VFECore;
 using VFECore.Abilities;
@@ -28,7 +28,10 @@ namespace VanillaPsycastsExpanded
                     passions[skillRecord.def] = skillRecord.passion;
                 }
                 pawn.skills = new Pawn_SkillTracker(pawn);
-                NonPublicMethods.GenerateSkills(pawn, new PawnGenerationRequest(pawn.kindDef, pawn.Faction));
+                NonPublicMethods.GenerateSkills(
+                    pawn,
+                    new PawnGenerationRequest(pawn.kindDef, pawn.Faction)
+                );
                 foreach (KeyValuePair<SkillDef, Passion> kvp in passions)
                 {
                     pawn.skills.GetSkill(kvp.Key).passion = kvp.Value;

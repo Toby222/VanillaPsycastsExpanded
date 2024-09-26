@@ -11,12 +11,22 @@ public static class Hediff_Psylink_PostAdd
 {
     public static void Postfix(Hediff_Psylink __instance)
     {
-        ((Hediff_PsycastAbilities)__instance.pawn.health.AddHediff(VPE_DefOf.VPE_PsycastAbilityImplant, __instance.Part))
-           .InitializeFromPsylink(__instance);
+        (
+            (Hediff_PsycastAbilities)
+                __instance.pawn.health.AddHediff(
+                    VPE_DefOf.VPE_PsycastAbilityImplant,
+                    __instance.Part
+                )
+        ).InitializeFromPsylink(__instance);
     }
 }
 
-[HarmonyPatch(typeof(Hediff_Psylink), nameof(Hediff_Psylink.ChangeLevel), typeof(int), typeof(bool))]
+[HarmonyPatch(
+    typeof(Hediff_Psylink),
+    nameof(Hediff_Psylink.ChangeLevel),
+    typeof(int),
+    typeof(bool)
+)]
 public static class Hediff_Psylink_ChangeLevel
 {
     public static bool Prefix(Hediff_Psylink __instance, int levelOffset, ref bool sendLetter)
@@ -42,9 +52,17 @@ public static class DebugToolsPawns_GivePsylink
         var info1 = AccessTools.Field(typeof(HediffDefOf), nameof(HediffDefOf.PsychicAmplifier));
         var info2 = AccessTools.Field(typeof(HediffDef), nameof(HediffDef.maxSeverity));
         foreach (var instruction in instructions)
-            if (instruction.LoadsField(info1)) continue;
+            if (instruction.LoadsField(info1))
+                continue;
             else if (instruction.LoadsField(info2))
-                yield return new(OpCodes.Ldsfld, AccessTools.Field(typeof(PsycasterPathDef), nameof(PsycasterPathDef.TotalPoints)));
-            else yield return instruction;
+                yield return new(
+                    OpCodes.Ldsfld,
+                    AccessTools.Field(
+                        typeof(PsycasterPathDef),
+                        nameof(PsycasterPathDef.TotalPoints)
+                    )
+                );
+            else
+                yield return instruction;
     }
 }

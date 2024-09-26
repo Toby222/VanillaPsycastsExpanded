@@ -21,7 +21,10 @@ public class DeathActionWorker_RockChunk : DeathActionWorker
 {
     public override void PawnDied(Corpse corpse, Lord prevLord)
     {
-        if (corpse.Map != null && corpse.InnerPawn?.TryGetComp<CompSetStoneColour>()?.KilledLeave is { } def)
+        if (
+            corpse.Map != null
+            && corpse.InnerPawn?.TryGetComp<CompSetStoneColour>()?.KilledLeave is { } def
+        )
         {
             var chunk = ThingMaker.MakeThing(def);
             GenSpawn.Spawn(chunk, corpse.Position, corpse.Map);

@@ -11,7 +11,20 @@ public class Ability_Smokepop : Ability
     {
         base.Cast(targets);
         foreach (GlobalTargetInfo target in targets)
-            GenExplosion.DoExplosion(target.Cell, target.Map, this.GetRadiusForPawn(), DamageDefOf.Smoke, null, -1, -1f, null, null, null, null,
-                                     ThingDefOf.Gas_Smoke, 1f);
+            GenExplosion.DoExplosion(
+                target.Cell,
+                target.Map,
+                this.GetRadiusForPawn(),
+                DamageDefOf.Smoke,
+                null,
+                -1,
+                -1f,
+                null,
+                null,
+                null,
+                null,
+                ThingDefOf.Gas_Smoke,
+                1f
+            );
     }
 }

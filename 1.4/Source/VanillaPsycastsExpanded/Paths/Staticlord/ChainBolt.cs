@@ -14,7 +14,9 @@ public class ChainBolt : TeslaProjectile
         get
         {
             var ability = SourceAbility;
-            return ability != null ? Mathf.RoundToInt(ability.GetPowerForPawn()) : base.MaxBounceCount;
+            return ability != null
+                ? Mathf.RoundToInt(ability.GetPowerForPawn())
+                : base.MaxBounceCount;
         }
     }
 
@@ -22,9 +24,13 @@ public class ChainBolt : TeslaProjectile
     {
         get
         {
-            if (this.TryGetComp<CompAbilityProjectile>() is { ability: { } sourceAbility }) return sourceAbility;
-            for (var i = allProjectiles.Count; i-- > 0;)
-                if (allProjectiles[i].TryGetComp<CompAbilityProjectile>() is { ability: { } ability })
+            if (this.TryGetComp<CompAbilityProjectile>() is { ability: { } sourceAbility })
+                return sourceAbility;
+            for (var i = allProjectiles.Count; i-- > 0; )
+                if (
+                    allProjectiles[i].TryGetComp<CompAbilityProjectile>() is
+                    { ability: { } ability }
+                )
                     return ability;
             return null;
         }
@@ -33,5 +39,6 @@ public class ChainBolt : TeslaProjectile
 
 public class Ability_ChainBolt : Ability_ShootProjectile
 {
-    public override float GetPowerForPawn() => def.power + Mathf.FloorToInt((pawn.GetStatValue(StatDefOf.PsychicSensitivity) - 1) * 4);
+    public override float GetPowerForPawn() =>
+        def.power + Mathf.FloorToInt((pawn.GetStatValue(StatDefOf.PsychicSensitivity) - 1) * 4);
 }

@@ -6,6 +6,7 @@ namespace VanillaPsycastsExpanded
     {
         public override string Label => base.Label + ": " + consumedBodies;
         public int consumedBodies;
+
         public override void ExposeData()
         {
             base.ExposeData();

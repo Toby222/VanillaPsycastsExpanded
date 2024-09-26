@@ -1,10 +1,10 @@
 ﻿namespace VanillaPsycastsExpanded
 {
-    using HarmonyLib;
-    using RimWorld;
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using HarmonyLib;
+    using RimWorld;
     using UnityEngine;
     using VanillaPsycastsExpanded.Graphics;
     using Verse;
@@ -14,10 +14,19 @@
     [StaticConstructorOnStartup]
     public class Projectile_FrostRay : Projectile
     {
-        private static readonly Material shadowMaterial = MaterialPool.MatFrom("Things/Skyfaller/SkyfallerShadowCircle", ShaderDatabase.Transparent);
+        private static readonly Material shadowMaterial = MaterialPool.MatFrom(
+            "Things/Skyfaller/SkyfallerShadowCircle",
+            ShaderDatabase.Transparent
+        );
 
-        public static Func<Projectile, float> ArcHeightFactor = (Func<Projectile, float>)
-            Delegate.CreateDelegate(typeof(Func<Projectile, float>), null, AccessTools.Method(typeof(Projectile), "get_ArcHeightFactor"));
+        public static Func<Projectile, float> ArcHeightFactor =
+            (Func<Projectile, float>)
+                Delegate.CreateDelegate(
+                    typeof(Func<Projectile, float>),
+                    null,
+                    AccessTools.Method(typeof(Projectile), "get_ArcHeightFactor")
+                );
+
         public override void Draw()
         {
             float num = ArcHeightFactor(this) * GenMath.InverseParabola(DistanceCoveredFraction);
@@ -30,16 +39,25 @@
                 DrawShadow(drawPos, num);
             }
             Comps_PostDraw();
-            UnityEngine.Graphics.DrawMesh(MeshPool.GridPlane(new Vector2(5f, distanceSize)), position, ExactRotation, (this.Graphic as Graphic_Animated).MatSingle, 0);
+            UnityEngine.Graphics.DrawMesh(
+                MeshPool.GridPlane(new Vector2(5f, distanceSize)),
+                position,
+                ExactRotation,
+                (this.Graphic as Graphic_Animated).MatSingle,
+                0
+            );
         }
 
         private Sustainer sustainer;
+
         public override void Tick()
         {
             base.Tick();
             if (sustainer == null || sustainer.Ended)
             {
-                sustainer = VPE_DefOf.VPE_FrostRay_Sustainer.TrySpawnSustainer(SoundInfo.InMap(this, MaintenanceType.PerTick));
+                sustainer = VPE_DefOf.VPE_FrostRay_Sustainer.TrySpawnSustainer(
+                    SoundInfo.InMap(this, MaintenanceType.PerTick)
+                );
             }
             sustainer.Maintain();
             if (this.launcher is Pawn pawn)
@@ -65,13 +83,34 @@
                 }
                 foreach (var victim in pawns)
                 {
-                    BattleLogEntry_RangedImpact battleLogEntry_RangedImpact = new BattleLogEntry_RangedImpact(launcher, victim, 
-                        intendedTarget.Thing, launcher.def, def, targetCoverDef);
+                    BattleLogEntry_RangedImpact battleLogEntry_RangedImpact =
+                        new BattleLogEntry_RangedImpact(
+                            launcher,
+                            victim,
+                            intendedTarget.Thing,
+                            launcher.def,
+                            def,
+                            targetCoverDef
+                        );
                     Find.BattleLog.Add(battleLogEntry_RangedImpact);
-                    DamageInfo dinfo = new DamageInfo(def.projectile.damageDef, base.DamageAmount, base.ArmorPenetration, ExactRotation.eulerAngles.y, launcher, null, equipmentDef, DamageInfo.SourceCategory.ThingOrUnknown, intendedTarget.Thing);
+                    DamageInfo dinfo = new DamageInfo(
+                        def.projectile.damageDef,
+                        base.DamageAmount,
+                        base.ArmorPenetration,
+                        ExactRotation.eulerAngles.y,
+                        launcher,
+                        null,
+                        equipmentDef,
+                        DamageInfo.SourceCategory.ThingOrUnknown,
+                        intendedTarget.Thing
+                    );
                     victim.TakeDamage(dinfo).AssociateWithLog(battleLogEntry_RangedImpact);
                     HealthUtility.AdjustSeverity(victim, HediffDefOf.Hypothermia, 0.016f);
-                    HealthUtility.AdjustSeverity(victim, VPE_DefOf.VFEP_HypothermicSlowdown, 0.016f);
+                    HealthUtility.AdjustSeverity(
+                        victim,
+                        VPE_DefOf.VFEP_HypothermicSlowdown,
+                        0.016f
+                    );
                 }
             }
         }

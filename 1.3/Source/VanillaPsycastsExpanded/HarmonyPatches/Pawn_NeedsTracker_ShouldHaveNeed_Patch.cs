@@ -9,7 +9,10 @@
     {
         private static bool Prefix(NeedDef nd, Pawn ___pawn)
         {
-            if ((nd == NeedDefOf.Rest || nd == NeedDefOf.Joy) && (___pawn.story?.traits?.HasTrait(VPE_DefOf.VPE_Thrall) ?? false))
+            if (
+                (nd == NeedDefOf.Rest || nd == NeedDefOf.Joy)
+                && (___pawn.story?.traits?.HasTrait(VPE_DefOf.VPE_Thrall) ?? false)
+            )
             {
                 return false;
             }

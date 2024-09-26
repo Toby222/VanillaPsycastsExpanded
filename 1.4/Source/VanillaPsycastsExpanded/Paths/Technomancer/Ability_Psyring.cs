@@ -18,19 +18,29 @@ public class Ability_Psyring : Ability
     {
         base.Cast(targets);
         var thing = targets[0].Thing;
-        if (thing is null) return;
+        if (thing is null)
+            return;
 
-        Find.WindowStack.Add(new Dialog_CreatePsyring(pawn, thing, def.GetModExtension<PsyringExclusionExtension>()?.excludedAbilities));
+        Find.WindowStack.Add(
+            new Dialog_CreatePsyring(
+                pawn,
+                thing,
+                def.GetModExtension<PsyringExclusionExtension>()?.excludedAbilities
+            )
+        );
     }
 
     public override bool ValidateTarget(LocalTargetInfo target, bool showMessages = true)
     {
-        if (!base.ValidateTarget(target, showMessages)) return false;
-        if (!target.HasThing) return false;
+        if (!base.ValidateTarget(target, showMessages))
+            return false;
+        if (!target.HasThing)
+            return false;
 
         if (target.Thing.def != VPE_DefOf.VPE_Eltex)
         {
-            if (showMessages) Messages.Message("VPE.MustEltex".Translate(), MessageTypeDefOf.RejectInput, false);
+            if (showMessages)
+                Messages.Message("VPE.MustEltex".Translate(), MessageTypeDefOf.RejectInput, false);
             return false;
         }
 
@@ -76,16 +86,20 @@ public class Psyring : Apparel
         }
 
         var comp = pawn.GetComp<CompAbilities>();
-        if (comp == null) return;
+        if (comp == null)
+            return;
         alreadyHad = comp.HasAbility(ability);
-        if (!alreadyHad) comp.GiveAbility(ability);
+        if (!alreadyHad)
+            comp.GiveAbility(ability);
     }
 
     public override void Notify_Unequipped(Pawn pawn)
     {
         base.Notify_Unequipped(pawn);
-        if (ability == null) return;
-        if (!alreadyHad) pawn.GetComp<CompAbilities>().LearnedAbilities.RemoveAll(ab => ab.def == ability);
+        if (ability == null)
+            return;
+        if (!alreadyHad)
+            pawn.GetComp<CompAbilities>().LearnedAbilities.RemoveAll(ab => ab.def == ability);
         alreadyHad = false;
     }
 
@@ -107,16 +121,29 @@ public class Psyring : Apparel
                         if (pawn.Psycasts() == null)
                         {
                             opts.Remove(floatMenuOption);
-                            opts.Add(new(
-                                Translator.Translate("CannotWear", psyring.LabelShort, psyring) + " (" + "VPE.NotPsycaster".Translate() + ")",
-                                null));
+                            opts.Add(
+                                new(
+                                    Translator.Translate("CannotWear", psyring.LabelShort, psyring)
+                                        + " ("
+                                        + "VPE.NotPsycaster".Translate()
+                                        + ")",
+                                    null
+                                )
+                            );
                         }
 
                         if (pawn.apparel.WornApparel.OfType<Psyring>().Any())
                         {
                             opts.Remove(floatMenuOption);
-                            opts.Add(new(
-                                Translator.Translate("CannotWear", psyring.LabelShort, psyring) + " (" + "VPE.AlreadyPsyring".Translate() + ")", null));
+                            opts.Add(
+                                new(
+                                    Translator.Translate("CannotWear", psyring.LabelShort, psyring)
+                                        + " ("
+                                        + "VPE.AlreadyPsyring".Translate()
+                                        + ")",
+                                    null
+                                )
+                            );
                         }
                     }
 
@@ -149,14 +176,16 @@ public class Dialog_CreatePsyring : Window
         closeOnAccept = false;
         closeOnCancel = true;
         optionalTitle = "VPE.CreatePsyringTitle".Translate();
-        possibleAbilities = (from ability in pawn.GetComp<CompAbilities>().LearnedAbilities
-                let psycast = ability.def.Psycast()
-                where psycast != null
-                orderby psycast.path.label, psycast.level descending, psycast.order
-                select ability.def)
-           .Except(pawn.AllAbilitiesFromPsyrings())
-           .Except(excludedAbilities ?? Enumerable.Empty<AbilityDef>())
-           .ToList();
+        possibleAbilities = (
+            from ability in pawn.GetComp<CompAbilities>().LearnedAbilities
+            let psycast = ability.def.Psycast()
+            where psycast != null
+            orderby psycast.path.label, psycast.level descending, psycast.order
+            select ability.def
+        )
+            .Except(pawn.AllAbilitiesFromPsyrings())
+            .Except(excludedAbilities ?? Enumerable.Empty<AbilityDef>())
+            .ToList();
     }
 
     public override Vector2 InitialSize => new(400f, 800f);
@@ -167,8 +196,10 @@ public class Dialog_CreatePsyring : Window
         var psyring = (Psyring)ThingMaker.MakeThing(VPE_DefOf.VPE_Psyring);
         psyring.Init(ability);
         GenPlace.TryPlaceThing(psyring, fuel.PositionHeld, fuel.MapHeld, ThingPlaceMode.Near);
-        if (fuel.stackCount == 1) fuel.Destroy();
-        else fuel.SplitOff(1).Destroy();
+        if (fuel.stackCount == 1)
+            fuel.Destroy();
+        else
+            fuel.SplitOff(1).Destroy();
     }
 
     public override void DoWindowContents(Rect inRect)
@@ -204,10 +235,15 @@ public class Dialog_CreatePsyring : Window
 
 public static class PsyringUtilities
 {
-    public static IEnumerable<Psyring> AllPsyrings(this Pawn pawn) => pawn.apparel.WornApparel.OfType<Psyring>();
+    public static IEnumerable<Psyring> AllPsyrings(this Pawn pawn) =>
+        pawn.apparel.WornApparel.OfType<Psyring>();
 
     public static IEnumerable<AbilityDef> AllAbilitiesFromPsyrings(this Pawn pawn) =>
-        pawn.AllPsyrings().Where(psyring => psyring.Added).Select(psyring => psyring.Ability).Distinct();
+        pawn.AllPsyrings()
+            .Where(psyring => psyring.Added)
+            .Select(psyring => psyring.Ability)
+            .Distinct();
 
-    public static IEnumerable<PsycasterPathDef> AllPathsFromPsyrings(this Pawn pawn) => pawn.AllPsyrings().Select(psyring => psyring.Path).Distinct();
+    public static IEnumerable<PsycasterPathDef> AllPathsFromPsyrings(this Pawn pawn) =>
+        pawn.AllPsyrings().Select(psyring => psyring.Path).Distinct();
 }

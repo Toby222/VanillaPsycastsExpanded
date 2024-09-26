@@ -13,9 +13,13 @@
     public static class RoomStatDef_GetScoreStageIndex_Patch
     {
         public static Pawn forPawn;
+
         public static void Postfix(RoomStatDef __instance, ref int __result)
         {
-            if (forPawn != null && forPawn.health.hediffSet.GetFirstHediffOfDef(VPE_DefOf.VPE_Hallucination) != null)
+            if (
+                forPawn != null
+                && forPawn.health.hediffSet.GetFirstHediffOfDef(VPE_DefOf.VPE_Hallucination) != null
+            )
             {
                 __result = __instance.scoreStages.Count - 1;
             }
@@ -29,13 +33,16 @@
         [HarmonyTargetMethod]
         public static MethodBase GetMethod()
         {
-            return typeof(JobDriver_Reign).GetMethods(AccessTools.all).Last(x => x.Name.Contains("<MakeNewToils>"));
+            return typeof(JobDriver_Reign)
+                .GetMethods(AccessTools.all)
+                .Last(x => x.Name.Contains("<MakeNewToils>"));
         }
 
         public static void Prefix(JobDriver_Reign __instance)
         {
             RoomStatDef_GetScoreStageIndex_Patch.forPawn = __instance.pawn;
         }
+
         public static void Postfix()
         {
             RoomStatDef_GetScoreStageIndex_Patch.forPawn = null;
@@ -49,6 +56,7 @@
         {
             RoomStatDef_GetScoreStageIndex_Patch.forPawn = pawn;
         }
+
         public static void Postfix()
         {
             RoomStatDef_GetScoreStageIndex_Patch.forPawn = null;
@@ -62,6 +70,7 @@
         {
             RoomStatDef_GetScoreStageIndex_Patch.forPawn = p;
         }
+
         public static void Postfix()
         {
             RoomStatDef_GetScoreStageIndex_Patch.forPawn = null;
@@ -75,6 +84,7 @@
         {
             RoomStatDef_GetScoreStageIndex_Patch.forPawn = p;
         }
+
         public static void Postfix()
         {
             RoomStatDef_GetScoreStageIndex_Patch.forPawn = null;
@@ -88,6 +98,7 @@
         {
             RoomStatDef_GetScoreStageIndex_Patch.forPawn = p;
         }
+
         public static void Postfix()
         {
             RoomStatDef_GetScoreStageIndex_Patch.forPawn = null;
@@ -101,6 +112,7 @@
         {
             RoomStatDef_GetScoreStageIndex_Patch.forPawn = p;
         }
+
         public static void Postfix()
         {
             RoomStatDef_GetScoreStageIndex_Patch.forPawn = null;
@@ -115,25 +127,31 @@
         {
             foreach (var type in typeof(Toils_Ingest).GetNestedTypes(AccessTools.all))
             {
-                var method = type.GetMethods(AccessTools.all).FirstOrDefault(x => x.Name.Contains("<FinalizeIngest>"));
+                var method = type.GetMethods(AccessTools.all)
+                    .FirstOrDefault(x => x.Name.Contains("<FinalizeIngest>"));
                 if (method != null)
                 {
                     return method;
                 }
             }
-            throw new System.Exception("Toils_Ingest_FinalizeIngest_Patch failed to find a method to patch.");
+            throw new System.Exception(
+                "Toils_Ingest_FinalizeIngest_Patch failed to find a method to patch."
+            );
         }
 
         public static void Prefix(object __instance)
         {
-            RoomStatDef_GetScoreStageIndex_Patch.forPawn = Traverse.Create(__instance).Field("ingester").GetValue<Pawn>();
+            RoomStatDef_GetScoreStageIndex_Patch.forPawn = Traverse
+                .Create(__instance)
+                .Field("ingester")
+                .GetValue<Pawn>();
         }
+
         public static void Postfix()
         {
             RoomStatDef_GetScoreStageIndex_Patch.forPawn = null;
         }
     }
-
 
     [HarmonyPatch(typeof(Toils_LayDown), "ApplyBedThoughts")]
     public static class Toils_LayDown_ApplyBedThoughts_Patch
@@ -142,6 +160,7 @@
         {
             RoomStatDef_GetScoreStageIndex_Patch.forPawn = actor;
         }
+
         public static void Postfix()
         {
             RoomStatDef_GetScoreStageIndex_Patch.forPawn = null;

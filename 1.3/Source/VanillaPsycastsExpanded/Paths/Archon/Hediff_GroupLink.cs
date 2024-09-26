@@ -1,39 +1,50 @@
 ﻿namespace VanillaPsycastsExpanded
 {
-    using RimWorld.Planet;
     using System.Collections.Generic;
     using System.Linq;
+    using RimWorld.Planet;
     using UnityEngine;
     using Verse;
     using Verse.Sound;
     using VFECore.Abilities;
+
     public class Hediff_Thrall : HediffWithComps
     {
         public override void Tick()
         {
             base.Tick();
-            if (Find.TickManager.TicksGame % 60 == 0)
-            {
-
-            }
+            if (Find.TickManager.TicksGame % 60 == 0) { }
         }
     }
+
     public class Hediff_GroupLink : Hediff_Overlay
-	{
+    {
         public override string OverlayPath => "Other/ForceField";
-        public virtual Color OverlayColor => new Color(Color.yellow.r, Color.yellow.g, Color.yellow.b, 0.5f);
+        public virtual Color OverlayColor =>
+            new Color(Color.yellow.r, Color.yellow.g, Color.yellow.b, 0.5f);
         public override float OverlaySize => this.ability.GetRadiusForPawn();
 
         public List<Pawn> linkedPawns = new List<Pawn>();
+
         public override void PostAdd(DamageInfo? dinfo)
         {
             base.PostAdd(dinfo);
             LinkAllPawnsAround();
         }
+
         public void LinkAllPawnsAround()
         {
-            foreach (var pawnToLink in GenRadial.RadialDistinctThingsAround(pawn.Position, pawn.Map, this.ability.GetRadiusForPawn(), true)
-                .OfType<Pawn>().Where(x => x.RaceProps.Humanlike && x != pawn))
+            foreach (
+                var pawnToLink in GenRadial
+                    .RadialDistinctThingsAround(
+                        pawn.Position,
+                        pawn.Map,
+                        this.ability.GetRadiusForPawn(),
+                        true
+                    )
+                    .OfType<Pawn>()
+                    .Where(x => x.RaceProps.Humanlike && x != pawn)
+            )
             {
                 if (!linkedPawns.Contains(pawnToLink))
                 {
@@ -49,18 +60,24 @@
                 linkedPawns.RemoveAt(i);
             }
         }
+
         public override void PostRemoved()
         {
             base.PostRemoved();
             UnlinkAll();
         }
+
         public override void Tick()
         {
             base.Tick();
             for (var i = linkedPawns.Count - 1; i >= 0; i--)
             {
                 var linkedPawn = linkedPawns[i];
-                if (linkedPawn.Map != this.pawn.Map || linkedPawn.Position.DistanceTo(pawn.Position) > this.ability.GetRadiusForPawn())
+                if (
+                    linkedPawn.Map != this.pawn.Map
+                    || linkedPawn.Position.DistanceTo(pawn.Position)
+                        > this.ability.GetRadiusForPawn()
+                )
                 {
                     linkedPawns.RemoveAt(i);
                 }
@@ -78,8 +95,20 @@
             Color value = OverlayColor;
             MatPropertyBlock.SetColor(ShaderPropertyIDs.Color, value);
             Matrix4x4 matrix = default(Matrix4x4);
-            matrix.SetTRS(pos, Quaternion.identity, new Vector3(OverlaySize * 2f * 1.16015625f, 1f, OverlaySize * 2f * 1.16015625f));
-            UnityEngine.Graphics.DrawMesh(MeshPool.plane10, matrix, OverlayMat, 0, null, 0, MatPropertyBlock);
+            matrix.SetTRS(
+                pos,
+                Quaternion.identity,
+                new Vector3(OverlaySize * 2f * 1.16015625f, 1f, OverlaySize * 2f * 1.16015625f)
+            );
+            UnityEngine.Graphics.DrawMesh(
+                MeshPool.plane10,
+                matrix,
+                OverlayMat,
+                0,
+                null,
+                0,
+                MatPropertyBlock
+            );
             foreach (var linked in linkedPawns)
             {
                 GenDraw.DrawLineBetween(linked.DrawPos, this.pawn.DrawPos, SimpleColor.Yellow);

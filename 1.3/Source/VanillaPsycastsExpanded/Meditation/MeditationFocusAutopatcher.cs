@@ -11,54 +11,50 @@
         {
             foreach (ThingDef def in DefDatabase<ThingDef>.AllDefs)
             {
-                if (def.thingClass != null && typeof(Building_ResearchBench).IsAssignableFrom(def.thingClass))
+                if (
+                    def.thingClass != null
+                    && typeof(Building_ResearchBench).IsAssignableFrom(def.thingClass)
+                )
                 {
                     def.comps ??= new List<CompProperties>();
-                    def.comps.Add(new CompProperties_MeditationFocus
-                    {
-                        statDef    = StatDefOf.MeditationFocusStrength,
-                        focusTypes = new List<MeditationFocusDef> {VPE_DefOf.VPE_Science},
-                        offsets = new List<FocusStrengthOffset>
+                    def.comps.Add(
+                        new CompProperties_MeditationFocus
                         {
-                            new FocusStrengthOffset_ResearchSpeed
+                            statDef = StatDefOf.MeditationFocusStrength,
+                            focusTypes = new List<MeditationFocusDef> { VPE_DefOf.VPE_Science },
+                            offsets = new List<FocusStrengthOffset>
                             {
-                                offset = 0.5f
-                            }
+                                new FocusStrengthOffset_ResearchSpeed { offset = 0.5f },
+                            },
                         }
-                    });
+                    );
                     def.statBases ??= new List<StatModifier>();
                     def.statBases.Add(
-                        new StatModifier
-                        {
-                            stat  = StatDefOf.MeditationFocusStrength,
-                            value = 0.0f
-                        }
+                        new StatModifier { stat = StatDefOf.MeditationFocusStrength, value = 0.0f }
                     );
                 }
 
                 if (def.techLevel == TechLevel.Archotech)
                 {
                     def.comps ??= new List<CompProperties>();
-                    def.comps.Add(new CompProperties_MeditationFocus
-                    {
-                        statDef    = StatDefOf.MeditationFocusStrength,
-                        focusTypes = new List<MeditationFocusDef> {VPE_DefOf.VPE_Archotech},
-                        offsets = new List<FocusStrengthOffset>
+                    def.comps.Add(
+                        new CompProperties_MeditationFocus
                         {
-                            new FocusStrengthOffset_NearbyOfTechlevel
+                            statDef = StatDefOf.MeditationFocusStrength,
+                            focusTypes = new List<MeditationFocusDef> { VPE_DefOf.VPE_Archotech },
+                            offsets = new List<FocusStrengthOffset>
                             {
-                                radius    = 4.9f,
-                                techLevel = TechLevel.Archotech
-                            }
+                                new FocusStrengthOffset_NearbyOfTechlevel
+                                {
+                                    radius = 4.9f,
+                                    techLevel = TechLevel.Archotech,
+                                },
+                            },
                         }
-                    });
+                    );
                     def.statBases ??= new List<StatModifier>();
                     def.statBases.Add(
-                        new StatModifier
-                        {
-                            stat  = StatDefOf.MeditationFocusStrength,
-                            value = 0.0f
-                        }
+                        new StatModifier { stat = StatDefOf.MeditationFocusStrength, value = 0.0f }
                     );
                 }
             }

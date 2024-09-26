@@ -39,7 +39,7 @@ public class CompDarkener : CompGlower
     public static void MoveDarkLast(List<object> ___lights)
     {
         var darkeners = new List<object>();
-        for (var i = ___lights.Count; i-- > 0;)
+        for (var i = ___lights.Count; i-- > 0; )
         {
             var light = ___lights[i];
             if (lightGlower(light) is CompDarkener)
@@ -56,7 +56,8 @@ public class CompDarkener : CompGlower
     [HarmonyPrefix]
     public static void IgnoreSkyDark(IntVec3 c, ref bool ignoreSky, Map ___map)
     {
-        if (darkCells.TryGetValue(___map, out var set) && set.Contains(c)) ignoreSky = true;
+        if (darkCells.TryGetValue(___map, out var set) && set.Contains(c))
+            ignoreSky = true;
     }
 
     public override void PostSpawnSetup(bool respawningAfterLoad)
@@ -73,10 +74,17 @@ public class CompDarkener : CompGlower
 
     private static void RecacheDarkCells(Map map)
     {
-        if (!darkCells.TryGetValue(map, out var set)) set = new();
+        if (!darkCells.TryGetValue(map, out var set))
+            set = new();
         foreach (var thing in map.listerThings.AllThings)
             if (thing.TryGetComp<CompGlower>() is CompDarkener darkener)
-                foreach (var cell in GenRadial.RadialCellsAround(thing.Position, darkener.GlowRadius, true))
+                foreach (
+                    var cell in GenRadial.RadialCellsAround(
+                        thing.Position,
+                        darkener.GlowRadius,
+                        true
+                    )
+                )
                     set.Add(cell);
         if (set.Count == 0)
             darkCells.Remove(map);

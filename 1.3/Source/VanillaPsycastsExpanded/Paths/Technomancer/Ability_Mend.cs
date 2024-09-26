@@ -12,10 +12,17 @@
         {
             base.Cast(targets);
             foreach (GlobalTargetInfo target in targets)
-                target.Thing.HitPoints = Mathf.Clamp(target.Thing.HitPoints + (int) ((this.pawn.GetStatValue(StatDefOf.PsychicSensitivity) - 0.8f) * 100f),
-                                                     target.Thing.HitPoints, target.Thing.MaxHitPoints);
+                target.Thing.HitPoints = Mathf.Clamp(
+                    target.Thing.HitPoints
+                        + (int)(
+                            (this.pawn.GetStatValue(StatDefOf.PsychicSensitivity) - 0.8f) * 100f
+                        ),
+                    target.Thing.HitPoints,
+                    target.Thing.MaxHitPoints
+                );
         }
 
-        public override bool CanHitTarget(LocalTargetInfo target) => base.CanHitTarget(target) && target.Thing is {def: {useHitPoints: true}};
+        public override bool CanHitTarget(LocalTargetInfo target) =>
+            base.CanHitTarget(target) && target.Thing is { def: { useHitPoints: true } };
     }
 }

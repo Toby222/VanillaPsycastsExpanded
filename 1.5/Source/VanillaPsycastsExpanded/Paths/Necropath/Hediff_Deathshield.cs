@@ -44,7 +44,8 @@ public class Hediff_Deathshield : Hediff_Overlay
     {
         base.Tick();
         curAngle += 0.07f;
-        if (curAngle > 360) curAngle = 0;
+        if (curAngle > 360)
+            curAngle = 0;
     }
 
     public override void Draw()
@@ -54,8 +55,20 @@ public class Hediff_Deathshield : Hediff_Overlay
             var pos = pawn.DrawPos;
             pos.y = AltitudeLayer.MoteOverhead.AltitudeFor();
             var matrix = default(Matrix4x4);
-            matrix.SetTRS(pos, Quaternion.AngleAxis(curAngle, Vector3.up), new(OverlaySize, 1f, OverlaySize));
-            UnityEngine.Graphics.DrawMesh(MeshPool.plane10, matrix, OverlayMat, 0, null, 0, MatPropertyBlock);
+            matrix.SetTRS(
+                pos,
+                Quaternion.AngleAxis(curAngle, Vector3.up),
+                new(OverlaySize, 1f, OverlaySize)
+            );
+            UnityEngine.Graphics.DrawMesh(
+                MeshPool.plane10,
+                matrix,
+                OverlayMat,
+                0,
+                null,
+                0,
+                MatPropertyBlock
+            );
         }
     }
 

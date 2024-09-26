@@ -15,22 +15,33 @@ public class Ability_AffectMechs : Ability
         foreach (Thing thing in this.AllTargetsAt(target.Cell, target.Map))
         {
             this.ApplyHediffs(new GlobalTargetInfo(thing));
-            if (thing.TryGetComp<CompHaywire>() is { } comp) comp.GoHaywire(this.GetDurationForPawn());
+            if (thing.TryGetComp<CompHaywire>() is { } comp)
+                comp.GoHaywire(this.GetDurationForPawn());
         }
     }
 
     public override void DrawHighlight(LocalTargetInfo target)
     {
         base.DrawHighlight(target);
-        foreach (Thing thing in this.AllTargetsAt(target.Cell)) GenDraw.DrawTargetHighlight(thing);
+        foreach (Thing thing in this.AllTargetsAt(target.Cell))
+            GenDraw.DrawTargetHighlight(thing);
     }
 
     private IEnumerable<Thing> AllTargetsAt(IntVec3 cell, Map map = null)
     {
-        foreach (Thing thing in GenRadial.RadialDistinctThingsAround(cell, map ?? this.pawn.Map, this.GetRadiusForPawn(), true))
+        foreach (
+            Thing thing in GenRadial.RadialDistinctThingsAround(
+                cell,
+                map ?? this.pawn.Map,
+                this.GetRadiusForPawn(),
+                true
+            )
+        )
         {
-            if (thing is Building_Turret) yield return thing;
-            if (thing is Pawn { RaceProps: { IsMechanoid: true } }) yield return thing;
+            if (thing is Building_Turret)
+                yield return thing;
+            if (thing is Pawn { RaceProps: { IsMechanoid: true } })
+                yield return thing;
         }
     }
 }

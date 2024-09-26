@@ -25,28 +25,43 @@
                             break;
                         case ThingWithComps twc when twc.TryGetComp<CompPower>() != null:
                         {
-                            if (twc.TryGetComp<CompBreakdownable>() is { } comp1) comp1.DoBreakdown();
-                            if (twc.TryGetComp<CompFlickable>() is { } comp2) comp2.SwitchIsOn = false;
-                            if (twc.TryGetComp<CompProjectileInterceptor>() is not null || twc is Building_Turret)
-                                twc.TakeDamage(new DamageInfo(DamageDefOf.EMP, 10, 10, -1, this.pawn));
+                            if (twc.TryGetComp<CompBreakdownable>() is { } comp1)
+                                comp1.DoBreakdown();
+                            if (twc.TryGetComp<CompFlickable>() is { } comp2)
+                                comp2.SwitchIsOn = false;
+                            if (
+                                twc.TryGetComp<CompProjectileInterceptor>() is not null
+                                || twc is Building_Turret
+                            )
+                                twc.TakeDamage(
+                                    new DamageInfo(DamageDefOf.EMP, 10, 10, -1, this.pawn)
+                                );
                             break;
                         }
                     }
 
-                if (!c.Filled(map)) FilthMaker.TryMakeFilth(c, map, ThingDefOf.Filth_Water);
+                if (!c.Filled(map))
+                    FilthMaker.TryMakeFilth(c, map, ThingDefOf.Filth_Water);
 
-                FleckCreationData dataStatic = FleckMaker.GetDataStatic(c.ToVector3Shifted(), map, FleckDefOf.WaterskipSplashParticles);
+                FleckCreationData dataStatic = FleckMaker.GetDataStatic(
+                    c.ToVector3Shifted(),
+                    map,
+                    FleckDefOf.WaterskipSplashParticles
+                );
                 dataStatic.rotationRate = Rand.Range(-30, 30);
-                dataStatic.rotation     = 90 * Rand.RangeInclusive(0, 3);
+                dataStatic.rotation = 90 * Rand.RangeInclusive(0, 3);
                 map.flecks.CreateFleck(dataStatic);
             }
         }
 
         private IEnumerable<IntVec3> AffectedCells(IntVec3 cell, Map map)
         {
-            if (cell.Filled(this.pawn.Map)) yield break;
+            if (cell.Filled(this.pawn.Map))
+                yield break;
 
-            foreach (IntVec3 intVec in GenRadial.RadialCellsAround(cell, this.GetRadiusForPawn(), true))
+            foreach (
+                IntVec3 intVec in GenRadial.RadialCellsAround(cell, this.GetRadiusForPawn(), true)
+            )
                 if (intVec.InBounds(map) && GenSight.LineOfSightToEdges(cell, intVec, map, true))
                     yield return intVec;
         }
@@ -59,7 +74,10 @@
             if (target.IsValid)
             {
                 GenDraw.DrawTargetHighlight(target);
-                GenDraw.DrawFieldEdges(this.AffectedCells(target.Cell, this.pawn.Map).ToList(), this.ValidateTarget(target, false) ? Color.white : Color.red);
+                GenDraw.DrawFieldEdges(
+                    this.AffectedCells(target.Cell, this.pawn.Map).ToList(),
+                    this.ValidateTarget(target, false) ? Color.white : Color.red
+                );
             }
         }
 
@@ -68,8 +86,12 @@
             if (target.Cell.Filled(this.pawn.Map))
             {
                 if (showMessages)
-                    Messages.Message("AbilityOccupiedCells".Translate(this.def.LabelCap), target.ToTargetInfo(this.pawn.Map), MessageTypeDefOf.RejectInput,
-                                     false);
+                    Messages.Message(
+                        "AbilityOccupiedCells".Translate(this.def.LabelCap),
+                        target.ToTargetInfo(this.pawn.Map),
+                        MessageTypeDefOf.RejectInput,
+                        false
+                    );
 
                 return false;
             }

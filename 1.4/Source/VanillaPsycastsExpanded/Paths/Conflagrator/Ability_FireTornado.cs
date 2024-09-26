@@ -14,7 +14,8 @@ public class Ability_FireTornado : Ability
         base.Cast(targets);
         foreach (GlobalTargetInfo target in targets)
         {
-            FireTornado tornado = (FireTornado)GenSpawn.Spawn(FireTornadoDef, target.Cell, target.Map);
+            FireTornado tornado = (FireTornado)
+                GenSpawn.Spawn(FireTornadoDef, target.Cell, target.Map);
             tornado.ticksLeftToDisappear = this.GetDurationForPawn();
         }
     }

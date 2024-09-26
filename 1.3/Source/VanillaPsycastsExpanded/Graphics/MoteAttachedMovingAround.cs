@@ -1,7 +1,7 @@
 ﻿namespace VanillaPsycastsExpanded
 {
-    using RimWorld;
     using System;
+    using RimWorld;
     using UnityEngine;
     using Verse;
 
@@ -9,6 +9,7 @@
     {
         private float direction;
         private Vector3 curPosition;
+
         public override void SpawnSetup(Map map, bool respawningAfterLoad)
         {
             base.SpawnSetup(map, respawningAfterLoad);
@@ -19,6 +20,7 @@
                 exactPosition.y = link1.Target.CenterVector3.y + 1;
             }
         }
+
         protected override void TimeInterval(float deltaTime)
         {
             base.TimeInterval(deltaTime);
@@ -45,6 +47,7 @@
             pos = Vector3.ClampMagnitude(pos, 0.5f);
             return pos;
         }
+
         public Vector3 GetRootPosition()
         {
             Vector3 vector = def.mote.attachedDrawOffset;
@@ -53,7 +56,13 @@
                 Pawn pawn = link1.Target.Thing as Pawn;
                 if (pawn != null && pawn.story != null)
                 {
-                    vector = pawn.Drawer.renderer.BaseHeadOffsetAt((pawn.GetPosture() == PawnPosture.Standing) ? Rot4.North : pawn.Drawer.renderer.LayingFacing()).RotatedBy(pawn.Drawer.renderer.BodyAngle());
+                    vector = pawn
+                        .Drawer.renderer.BaseHeadOffsetAt(
+                            (pawn.GetPosture() == PawnPosture.Standing)
+                                ? Rot4.North
+                                : pawn.Drawer.renderer.LayingFacing()
+                        )
+                        .RotatedBy(pawn.Drawer.renderer.BodyAngle());
                 }
             }
             return link1.LastDrawPos + vector;

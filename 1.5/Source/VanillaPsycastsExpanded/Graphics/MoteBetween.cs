@@ -25,16 +25,19 @@ public class MoteBetween : Mote
     {
         if (link1.Linked && link2.Linked)
         {
-            if (!link1.Target.ThingDestroyed) link1.UpdateDrawPos();
+            if (!link1.Target.ThingDestroyed)
+                link1.UpdateDrawPos();
 
-            if (!link2.Target.ThingDestroyed) link2.UpdateDrawPos();
+            if (!link2.Target.ThingDestroyed)
+                link2.UpdateDrawPos();
 
             var a = link1.LastDrawPos;
             var b = link2.LastDrawPos;
 
             exactPosition = a + (b - a) * LifetimeFraction;
 
-            if (def.mote.rotateTowardsTarget) exactRotation = a.AngleToFlat(b) + 90f;
+            if (def.mote.rotateTowardsTarget)
+                exactRotation = a.AngleToFlat(b) + 90f;
         }
 
         exactPosition.y = def.altitudeLayer.AltitudeFor();

@@ -10,21 +10,29 @@ public static class GenRadialCached
 {
     private static readonly Dictionary<Key, HashSet<Thing>> cache = new();
 
-    public static IEnumerable<Thing> RadialDistinctThingsAround(IntVec3 center, Map map, float radius, bool useCenter)
+    public static IEnumerable<Thing> RadialDistinctThingsAround(
+        IntVec3 center,
+        Map map,
+        float radius,
+        bool useCenter
+    )
     {
-        Key key = new()
-        {
-            loc = center,
-            radius = radius,
-            mapId = map.Index
-        };
-        if (cache.TryGetValue(key, out var things)) return things;
+        Key key =
+            new()
+            {
+                loc = center,
+                radius = radius,
+                mapId = map.Index,
+            };
+        if (cache.TryGetValue(key, out var things))
+            return things;
         things = new HashSet<Thing>();
         var numCells = GenRadial.NumCellsInRadius(radius);
         for (var i = useCenter ? 0 : 1; i < numCells; i++)
         {
             var c = GenRadial.RadialPattern[i] + center;
-            if (c.InBounds(map)) things.UnionWith(c.GetThingList(map));
+            if (c.InBounds(map))
+                things.UnionWith(c.GetThingList(map));
         }
 
         cache.Add(key, things);
@@ -52,7 +60,8 @@ public static class GenRadialCached
         var idx = map.Index;
         foreach ((var key, var value) in cache.ToList())
         {
-            if (key.mapId >= idx) cache.Remove(key);
+            if (key.mapId >= idx)
+                cache.Remove(key);
             if (key.mapId > idx)
             {
                 var newKey = key;
@@ -64,9 +73,15 @@ public static class GenRadialCached
 
     private static void ClearCacheFor(Thing thing)
     {
-        if (!thing.Spawned) return;
-        cache.RemoveAll(
-            pair => pair.Key.mapId == thing.Map.Index && thing.OccupiedRect().ClosestCellTo(pair.Key.loc).InHorDistOf(pair.Key.loc, pair.Key.radius));
+        if (!thing.Spawned)
+            return;
+        cache.RemoveAll(pair =>
+            pair.Key.mapId == thing.Map.Index
+            && thing
+                .OccupiedRect()
+                .ClosestCellTo(pair.Key.loc)
+                .InHorDistOf(pair.Key.loc, pair.Key.radius)
+        );
     }
 
     private struct Key

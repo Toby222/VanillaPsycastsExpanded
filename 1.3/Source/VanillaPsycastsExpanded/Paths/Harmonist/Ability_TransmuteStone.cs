@@ -11,7 +11,8 @@ public class Ability_TransmuteStone : Ability
     private static readonly AccessTools.FieldRef<World, List<ThingDef>> allNaturalRockDefs =
         AccessTools.FieldRefAccess<World, List<ThingDef>>("allNaturalRockDefs");
 
-    private static readonly AccessTools.FieldRef<Thing, Graphic> graphicInt = AccessTools.FieldRefAccess<Thing, Graphic>("graphicInt");
+    private static readonly AccessTools.FieldRef<Thing, Graphic> graphicInt =
+        AccessTools.FieldRefAccess<Thing, Graphic>("graphicInt");
 
     public override void Cast(params GlobalTargetInfo[] targets)
     {
@@ -21,7 +22,7 @@ public class Ability_TransmuteStone : Ability
             Map map = target.Map;
             Find.World.NaturalRockTypesIn(map.Tile); // Force the game to generate the rocks list we are querying
             List<ThingDef> naturalRockDefs = allNaturalRockDefs(Find.World);
-            ThingDef       chosenRock      = naturalRockDefs.RandomElement();
+            ThingDef chosenRock = naturalRockDefs.RandomElement();
 
             TerrainDef NewTerrain(TerrainDef terrain)
             {
@@ -38,7 +39,13 @@ public class Ability_TransmuteStone : Ability
                 thing.DirtyMapMesh(map);
             }
 
-            foreach (IntVec3 cell in GenRadial.RadialCellsAround(target.Cell, this.GetRadiusForPawn(), true))
+            foreach (
+                IntVec3 cell in GenRadial.RadialCellsAround(
+                    target.Cell,
+                    this.GetRadiusForPawn(),
+                    true
+                )
+            )
             {
                 foreach (Thing thing in cell.GetThingList(map))
                     if (thing.def.IsNonResourceNaturalRock)
@@ -58,22 +65,36 @@ public class Ability_TransmuteStone : Ability
                                 thing.def = chosenRock.building.smoothedThing;
                                 ClearCache(thing);
                             }
-                            else if (rockDef.building.mineableThing.butcherProducts[0].thingDef == thing.def)
+                            else if (
+                                rockDef.building.mineableThing.butcherProducts[0].thingDef
+                                == thing.def
+                            )
                             {
-                                thing.def = chosenRock.building.mineableThing.butcherProducts[0].thingDef;
+                                thing.def = chosenRock
+                                    .building
+                                    .mineableThing
+                                    .butcherProducts[0]
+                                    .thingDef;
                                 ClearCache(thing);
                             }
-                            else if (thing.Stuff != null && thing.Stuff == rockDef.building.mineableThing.butcherProducts[0].thingDef)
+                            else if (
+                                thing.Stuff != null
+                                && thing.Stuff
+                                    == rockDef.building.mineableThing.butcherProducts[0].thingDef
+                            )
                             {
-                                thing.SetStuffDirect(chosenRock.building.mineableThing.butcherProducts[0].thingDef);
+                                thing.SetStuffDirect(
+                                    chosenRock.building.mineableThing.butcherProducts[0].thingDef
+                                );
                                 ClearCache(thing);
                             }
 
-                TerrainGrid grid    = map.terrainGrid;
-                TerrainDef  terrain = grid.TerrainAt(cell);
+                TerrainGrid grid = map.terrainGrid;
+                TerrainDef terrain = grid.TerrainAt(cell);
                 grid.SetTerrain(cell, NewTerrain(terrain));
                 terrain = grid.UnderTerrainAt(cell);
-                if (terrain != null) grid.SetUnderTerrain(cell, NewTerrain(terrain));
+                if (terrain != null)
+                    grid.SetUnderTerrain(cell, NewTerrain(terrain));
             }
         }
     }

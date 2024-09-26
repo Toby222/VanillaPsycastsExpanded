@@ -11,12 +11,16 @@
     {
         public override bool ValidateTarget(LocalTargetInfo target, bool showMessages = true)
         {
-            if (target.Thing is not Pawn victim || victim.GetStatValue(StatDefOf.PsychicSensitivity) <= 0)
+            if (
+                target.Thing is not Pawn victim
+                || victim.GetStatValue(StatDefOf.PsychicSensitivity) <= 0
+            )
             {
                 return false;
             }
             return base.ValidateTarget(target, showMessages);
         }
+
         public override void Cast(params GlobalTargetInfo[] targets)
         {
             base.Cast(targets);
@@ -30,7 +34,9 @@
                     if (brain != null)
                     {
                         int num = Rand.RangeInclusive(1, 5);
-                        pawn.TakeDamage(new DamageInfo(DamageDefOf.Flame, num, 0f, -1f, this.pawn, brain));
+                        pawn.TakeDamage(
+                            new DamageInfo(DamageDefOf.Flame, num, 0f, -1f, this.pawn, brain)
+                        );
                     }
                 }
             }

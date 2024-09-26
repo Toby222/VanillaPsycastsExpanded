@@ -16,7 +16,8 @@ public class Dialog_RenameSkipdoor : Dialog_Rename
     public Dialog_RenameSkipdoor(Skipdoor skipdoor)
     {
         this.Skipdoor = skipdoor;
-        this.curName  = skipdoor.Name ?? skipdoor.def.label + " #" + Rand.Range(1, 99).ToString("D2");
+        this.curName =
+            skipdoor.Name ?? skipdoor.def.label + " #" + Rand.Range(1, 99).ToString("D2");
     }
 
     protected override void SetName(string name)
@@ -46,7 +47,8 @@ public class WorldComponent_SkipdoorManager : WorldComponent
 
     private List<Skipdoor> skipdoors = new();
 
-    public WorldComponent_SkipdoorManager(World world) : base(world) => Instance = this;
+    public WorldComponent_SkipdoorManager(World world)
+        : base(world) => Instance = this;
 
     public List<Skipdoor> Skipdoors
     {
@@ -66,50 +68,79 @@ public class WorldComponent_SkipdoorManager : WorldComponent
 
 public class JobDriver_UseSkipdoor : JobDriver
 {
-    private IntVec3  targetCell;
+    private IntVec3 targetCell;
     private Effecter destEffecter;
-    public  Skipdoor Origin => this.job.targetA.Thing as Skipdoor;
-    public  Skipdoor Dest   => this.job.globalTarget.Thing as Skipdoor;
+    public Skipdoor Origin => this.job.targetA.Thing as Skipdoor;
+    public Skipdoor Dest => this.job.globalTarget.Thing as Skipdoor;
 
     public override bool TryMakePreToilReservations(bool errorOnFailed) => true;
 
     public override string GetReport() =>
-        JobUtility.GetResolvedJobReportRaw(this.job.def.reportString, this.Origin.Name, this.Origin, this.Dest.Name, this.Dest, null, null);
+        JobUtility.GetResolvedJobReportRaw(
+            this.job.def.reportString,
+            this.Origin.Name,
+            this.Origin,
+            this.Dest.Name,
+            this.Dest,
+            null,
+            null
+        );
 
     protected override IEnumerable<Toil> MakeNewToils()
     {
         this.FailOnDespawnedNullOrForbidden(TargetIndex.A);
-        this.AddEndCondition(() => this.Dest is null || !this.Dest.Spawned || this.Dest.Destroyed ? JobCondition.Incompletable : JobCondition.Ongoing);
+        this.AddEndCondition(
+            () =>
+                this.Dest is null || !this.Dest.Spawned || this.Dest.Destroyed
+                    ? JobCondition.Incompletable
+                    : JobCondition.Ongoing
+        );
         yield return Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.Touch);
-        Toil wait = Toils_General.Wait(16, TargetIndex.A).WithProgressBarToilDelay(TargetIndex.A).WithEffect(EffecterDefOf.Skip_Entry, TargetIndex.A);
+        Toil wait = Toils_General
+            .Wait(16, TargetIndex.A)
+            .WithProgressBarToilDelay(TargetIndex.A)
+            .WithEffect(EffecterDefOf.Skip_Entry, TargetIndex.A);
         wait.AddPreTickAction(() =>
         {
             Map targetMap = this.job.globalTarget.Map;
             if (this.ticksLeftThisToil == 5)
             {
-                FleckMaker.Static(this.pawn.Position, this.pawn.Map, FleckDefOf.PsycastSkipFlashEntry);
-                FleckMaker.Static(this.targetCell,    targetMap,     FleckDefOf.PsycastSkipInnerExit);
-                FleckMaker.Static(this.targetCell,    targetMap,     FleckDefOf.PsycastSkipOuterRingExit);
+                FleckMaker.Static(
+                    this.pawn.Position,
+                    this.pawn.Map,
+                    FleckDefOf.PsycastSkipFlashEntry
+                );
+                FleckMaker.Static(this.targetCell, targetMap, FleckDefOf.PsycastSkipInnerExit);
+                FleckMaker.Static(this.targetCell, targetMap, FleckDefOf.PsycastSkipOuterRingExit);
                 SoundDefOf.Psycast_Skip_Entry.PlayOneShot(this.Origin);
                 SoundDefOf.Psycast_Skip_Exit.PlayOneShot(this.Dest);
             }
             else if (this.ticksLeftThisToil == 15)
             {
-                this.targetCell             = GenAdj.CellsAdjacentCardinal(this.Dest).Where(c => c.Standable(targetMap)).RandomElement();
-                this.destEffecter           = EffecterDefOf.Skip_Exit.Spawn(this.targetCell, targetMap);
+                this.targetCell = GenAdj
+                    .CellsAdjacentCardinal(this.Dest)
+                    .Where(c => c.Standable(targetMap))
+                    .RandomElement();
+                this.destEffecter = EffecterDefOf.Skip_Exit.Spawn(this.targetCell, targetMap);
                 this.destEffecter.ticksLeft = 15;
             }
 
-            this.destEffecter?.EffectTick(new TargetInfo(this.targetCell, targetMap), new TargetInfo(this.targetCell, targetMap));
+            this.destEffecter?.EffectTick(
+                new TargetInfo(this.targetCell, targetMap),
+                new TargetInfo(this.targetCell, targetMap)
+            );
         });
-        wait.AddFinishAction(() => { this.destEffecter?.Cleanup(); });
+        wait.AddFinishAction(() =>
+        {
+            this.destEffecter?.Cleanup();
+        });
         yield return wait;
         yield return Toils_General.DoAtomic(() =>
         {
-            Pawn    localPawn = this.pawn;
-            IntVec3 cell      = this.targetCell;
-            Map     map       = this.job.globalTarget.Map;
-            bool    drafted   = localPawn.Drafted;
+            Pawn localPawn = this.pawn;
+            IntVec3 cell = this.targetCell;
+            Map map = this.job.globalTarget.Map;
+            bool drafted = localPawn.Drafted;
             localPawn.teleporting = true;
             localPawn.ClearAllReservations(false);
             localPawn.ExitMap(false, Rot4.Invalid);
@@ -133,14 +164,22 @@ public class CaravanArrivalAction_UseSkipdoor : CaravanArrivalAction
 
     public CaravanArrivalAction_UseSkipdoor(Skipdoor origin, Skipdoor dest)
     {
-        this.Use    = origin;
+        this.Use = origin;
         this.Target = dest;
     }
 
     public override string Label => "VPE.TeleportTo".Translate(this.Target.Name);
 
     public override string ReportString =>
-        JobUtility.GetResolvedJobReportRaw(VPE_DefOf.VPE_UseSkipdoor.reportString, this.Use.Name, this.Use, this.Target.Name, this.Target, null, null);
+        JobUtility.GetResolvedJobReportRaw(
+            VPE_DefOf.VPE_UseSkipdoor.reportString,
+            this.Use.Name,
+            this.Use,
+            this.Target.Name,
+            this.Target,
+            null,
+            null
+        );
 
     public override void Arrived(Caravan caravan)
     {
@@ -151,17 +190,26 @@ public class CaravanArrivalAction_UseSkipdoor : CaravanArrivalAction
     public override FloatMenuAcceptanceReport StillValid(Caravan caravan, int destinationTile) =>
         this.Target is { Spawned: true } && this.Use is { Spawned: true };
 
-    public static IEnumerable<FloatMenuOption> GetFloatMenuOptions(Caravan caravan, Skipdoor origin, Skipdoor dest)
+    public static IEnumerable<FloatMenuOption> GetFloatMenuOptions(
+        Caravan caravan,
+        Skipdoor origin,
+        Skipdoor dest
+    )
     {
         return CaravanArrivalActionUtility.GetFloatMenuOptions(
-            () => true, () => new CaravanArrivalAction_UseSkipdoor(origin, dest),
-            "VPE.TeleportTo".Translate(dest.Name), caravan, origin.Map.Tile, origin.Map.Parent);
+            () => true,
+            () => new CaravanArrivalAction_UseSkipdoor(origin, dest),
+            "VPE.TeleportTo".Translate(dest.Name),
+            caravan,
+            origin.Map.Tile,
+            origin.Map.Parent
+        );
     }
 
     public override void ExposeData()
     {
         base.ExposeData();
         Scribe_References.Look(ref this.Target, "target");
-        Scribe_References.Look(ref this.Use,    "use");
+        Scribe_References.Look(ref this.Use, "use");
     }
 }

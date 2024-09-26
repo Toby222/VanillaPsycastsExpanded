@@ -7,7 +7,10 @@ using Verse;
 
 namespace VanillaPsycastsExpanded;
 
-[HarmonyPatch(typeof(RitualOutcomeEffectWorker_Bestowing), nameof(RitualOutcomeEffectWorker_Bestowing.Apply))]
+[HarmonyPatch(
+    typeof(RitualOutcomeEffectWorker_Bestowing),
+    nameof(RitualOutcomeEffectWorker_Bestowing.Apply)
+)]
 public class RitualOutcomeEffectWorker_Bestowing_Apply_Patch
 {
     [HarmonyTranspiler]
@@ -15,19 +18,28 @@ public class RitualOutcomeEffectWorker_Bestowing_Apply_Patch
     {
         var codes = instructions.ToList();
         var info1 = AccessTools.Method(typeof(PawnUtility), nameof(PawnUtility.GetPsylinkLevel));
-        var info2 = AccessTools.Method(typeof(PawnUtility), nameof(PawnUtility.GetMaxPsylinkLevelByTitle));
+        var info2 = AccessTools.Method(
+            typeof(PawnUtility),
+            nameof(PawnUtility.GetMaxPsylinkLevelByTitle)
+        );
 
         var idx1 = codes.FindIndex(ins => ins.Calls(info1)) - 1;
         var idx2 = codes.FindIndex(ins => ins.Calls(info2)) + 1;
 
         codes.RemoveRange(idx1, idx2 - idx1 + 1);
-        codes.InsertRange(idx1, new[]
-        {
-            new CodeInstruction(OpCodes.Ldloc_2),
-            new CodeInstruction(OpCodes.Ldloc, 9),
-            new CodeInstruction(OpCodes.Ldloc, 10),
-            CodeInstruction.Call(typeof(RitualOutcomeEffectWorker_Bestowing_Apply_Patch), nameof(ApplyTitlePsylink))
-        });
+        codes.InsertRange(
+            idx1,
+            new[]
+            {
+                new CodeInstruction(OpCodes.Ldloc_2),
+                new CodeInstruction(OpCodes.Ldloc, 9),
+                new CodeInstruction(OpCodes.Ldloc, 10),
+                CodeInstruction.Call(
+                    typeof(RitualOutcomeEffectWorker_Bestowing_Apply_Patch),
+                    nameof(ApplyTitlePsylink)
+                ),
+            }
+        );
         return codes;
     }
 
@@ -46,7 +58,8 @@ public class RitualOutcomeEffectWorker_Bestowing_Apply_Patch
             return;
         }
 
-        if (psylink.maxLevelFromTitles > newMax) return;
+        if (psylink.maxLevelFromTitles > newMax)
+            return;
         psylink.ChangeLevel(newMax - oldMax, false);
         psylink.maxLevelFromTitles = newMax;
     }

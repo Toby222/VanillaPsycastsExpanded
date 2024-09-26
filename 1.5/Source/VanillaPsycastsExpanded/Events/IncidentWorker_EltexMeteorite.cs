@@ -4,6 +4,7 @@
     using RimWorld;
     using UnityEngine;
     using Verse;
+
     public class IncidentWorker_EltexMeteorite : IncidentWorker
     {
         protected override bool CanFireNowSub(IncidentParms parms)
@@ -28,29 +29,53 @@
                 list.Add(building);
             }
             SkyfallerMaker.SpawnSkyfaller(ThingDefOf.MeteoriteIncoming, list, cell, map);
-            LetterDef baseLetterDef = (list[0].def.building.isResourceRock ? LetterDefOf.PositiveEvent : LetterDefOf.NeutralEvent);
+            LetterDef baseLetterDef = (
+                list[0].def.building.isResourceRock
+                    ? LetterDefOf.PositiveEvent
+                    : LetterDefOf.NeutralEvent
+            );
             string text = string.Format(def.letterText, list[0].def.label).CapitalizeFirst();
-            SendStandardLetter(def.letterLabel, text, baseLetterDef, parms, new TargetInfo(cell, map));
+            SendStandardLetter(
+                def.letterLabel,
+                text,
+                baseLetterDef,
+                parms,
+                new TargetInfo(cell, map)
+            );
             return true;
         }
 
         private bool TryFindCell(out IntVec3 cell, Map map)
         {
             int maxMineables = 5;
-            return CellFinderLoose.TryFindSkyfallerCell(ThingDefOf.MeteoriteIncoming, map, out cell, 10, default(IntVec3), -1, allowRoofedCells: true, allowCellsWithItems: false, allowCellsWithBuildings: false, colonyReachable: false, avoidColonistsIfExplosive: true, alwaysAvoidColonists: true, delegate (IntVec3 x)
-            {
-                int num = Mathf.CeilToInt(Mathf.Sqrt(maxMineables)) + 2;
-                CellRect cellRect = CellRect.CenteredOn(x, num, num);
-                int num2 = 0;
-                foreach (IntVec3 item in cellRect)
+            return CellFinderLoose.TryFindSkyfallerCell(
+                ThingDefOf.MeteoriteIncoming,
+                map,
+                out cell,
+                10,
+                default(IntVec3),
+                -1,
+                allowRoofedCells: true,
+                allowCellsWithItems: false,
+                allowCellsWithBuildings: false,
+                colonyReachable: false,
+                avoidColonistsIfExplosive: true,
+                alwaysAvoidColonists: true,
+                delegate(IntVec3 x)
                 {
-                    if (item.InBounds(map) && item.Standable(map))
+                    int num = Mathf.CeilToInt(Mathf.Sqrt(maxMineables)) + 2;
+                    CellRect cellRect = CellRect.CenteredOn(x, num, num);
+                    int num2 = 0;
+                    foreach (IntVec3 item in cellRect)
                     {
-                        num2++;
+                        if (item.InBounds(map) && item.Standable(map))
+                        {
+                            num2++;
+                        }
                     }
+                    return num2 >= maxMineables;
                 }
-                return num2 >= maxMineables;
-            });
+            );
         }
     }
 }

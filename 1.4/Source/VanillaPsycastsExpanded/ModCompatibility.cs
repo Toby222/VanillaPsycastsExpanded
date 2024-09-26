@@ -8,10 +8,12 @@ public static class ModCompatibility
 {
     public static bool AlienRacesIsActive;
 
-		static ModCompatibility()
+    static ModCompatibility()
     {
-			AlienRacesIsActive = ModsConfig.IsActive("erdelf.HumanoidAlienRaces") || ModsConfig.IsActive("erdelf.HumanoidAlienRaces_steam");
-		}
+        AlienRacesIsActive =
+            ModsConfig.IsActive("erdelf.HumanoidAlienRaces")
+            || ModsConfig.IsActive("erdelf.HumanoidAlienRaces_steam");
+    }
 
     public static Color GetSkinColorFirst(Pawn pawn)
     {
@@ -32,12 +34,14 @@ public static class ModCompatibility
     public static void SetSkinColorFirst(Pawn pawn, Color color)
     {
         var alienComp = ThingCompUtility.TryGetComp<AlienRace.AlienPartGenerator.AlienComp>(pawn);
-        if (alienComp != null) alienComp.OverwriteColorChannel("skin", color, null);
+        if (alienComp != null)
+            alienComp.OverwriteColorChannel("skin", color, null);
     }
 
     public static void SetSkinColorSecond(Pawn pawn, Color color)
     {
         var alienComp = ThingCompUtility.TryGetComp<AlienRace.AlienPartGenerator.AlienComp>(pawn);
-        if (alienComp != null) alienComp.OverwriteColorChannel("skin", null, color);
+        if (alienComp != null)
+            alienComp.OverwriteColorChannel("skin", null, color);
     }
 }

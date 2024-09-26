@@ -1,7 +1,7 @@
 ﻿namespace VanillaPsycastsExpanded.Graphics
 {
-    using RimWorld;
     using System.Collections.Generic;
+    using RimWorld;
     using UnityEngine;
     using VanillaPsycastsExpanded.HarmonyPatches;
     using Verse;
@@ -14,7 +14,7 @@
             new Vector3(0f, 0f, 0.4f),
             new Vector3(0.4f, 0f, 0.25f),
             new Vector3(0f, 0f, 0.1f),
-            new Vector3(-0.4f, 0f, 0.25f)
+            new Vector3(-0.4f, 0f, 0.25f),
         };
         public HediffCompProperties_Mote Props => this.props as HediffCompProperties_Mote;
 
@@ -26,19 +26,29 @@
             {
                 bool humanlike = pawn.RaceProps.Humanlike;
                 List<Vector3> headPosPerRotation = pawn.RaceProps.headPosPerRotation;
-                Rot4 rotation = ((pawn.GetPosture() != 0) ?
-                    pawn.Drawer.renderer.LayingFacing() : (humanlike ? Rot4.North 
-                    : pawn.Rotation));
+                Rot4 rotation = (
+                    (pawn.GetPosture() != 0)
+                        ? pawn.Drawer.renderer.LayingFacing()
+                        : (humanlike ? Rot4.North : pawn.Rotation)
+                );
                 Vector3 vector;
                 if (humanlike)
                 {
-                    vector = (pawn.Drawer.renderer.BaseHeadOffsetAt(rotation) + new Vector3(0, 0, 0.15f)).RotatedBy(pawn.Drawer.renderer.BodyAngle());
+                    vector = (
+                        pawn.Drawer.renderer.BaseHeadOffsetAt(rotation) + new Vector3(0, 0, 0.15f)
+                    ).RotatedBy(pawn.Drawer.renderer.BodyAngle());
                 }
                 else
                 {
                     float bodySizeFactor = pawn.ageTracker.CurLifeStage.bodySizeFactor;
-                    Vector2 vector2 = pawn.ageTracker.CurKindLifeStage.bodyGraphicData.drawSize * bodySizeFactor;
-                    vector = ((!headPosPerRotation.NullOrEmpty()) ? headPosPerRotation[rotation.AsInt].ScaledBy(new Vector3(vector2.x, 1f, vector2.y)) : (animalHeadOffsets[rotation.AsInt] * pawn.BodySize));
+                    Vector2 vector2 =
+                        pawn.ageTracker.CurKindLifeStage.bodyGraphicData.drawSize * bodySizeFactor;
+                    vector = (
+                        (!headPosPerRotation.NullOrEmpty())
+                            ? headPosPerRotation[rotation.AsInt]
+                                .ScaledBy(new Vector3(vector2.x, 1f, vector2.y))
+                            : (animalHeadOffsets[rotation.AsInt] * pawn.BodySize)
+                    );
                 }
                 vector = pawn.DrawPos + vector;
                 if (this.mote == null || this.mote.Destroyed)
@@ -66,7 +76,7 @@
         public override void CompExposeData()
         {
             base.CompExposeData();
-            if (this.mote != null && this.mote.def.CanBeSaved() is false) 
+            if (this.mote != null && this.mote.def.CanBeSaved() is false)
             {
                 return;
             }
@@ -77,6 +87,6 @@
     public class HediffCompProperties_Mote : HediffCompProperties
     {
         public ThingDef mote;
-        public Color    color;
+        public Color color;
     }
 }

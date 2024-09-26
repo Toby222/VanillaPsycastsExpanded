@@ -13,23 +13,24 @@ using AbilityDef = VFECore.Abilities.AbilityDef;
 [StaticConstructorOnStartup]
 public class Hediff_PsycastAbilities : Hediff_Abilities
 {
-    private static readonly Texture2D PsySetNext = ContentFinder<Texture2D>.Get("UI/Gizmos/Psyset_Next");
+    private static readonly Texture2D PsySetNext = ContentFinder<Texture2D>.Get(
+        "UI/Gizmos/Psyset_Next"
+    );
 
-    public  float              experience;
-    public  int                points;
+    public float experience;
+    public int points;
     private IChannelledPsycast currentlyChanneling;
 
     private int statPoints;
     private int psysetIndex;
 
-    public  Hediff_Psylink           psylink;
-    public  List<PsySet>             psysets                = new();
-    public  List<MeditationFocusDef> unlockedMeditationFoci = new();
-    public  List<PsycasterPathDef>   unlockedPaths          = new();
-    private List<IMinHeatGiver>      minHeatGivers          = new();
+    public Hediff_Psylink psylink;
+    public List<PsySet> psysets = new();
+    public List<MeditationFocusDef> unlockedMeditationFoci = new();
+    public List<PsycasterPathDef> unlockedPaths = new();
+    private List<IMinHeatGiver> minHeatGivers = new();
 
     public int maxLevelFromTitles;
-
 
     private HediffStage curStage;
 
@@ -39,7 +40,8 @@ public class Hediff_PsycastAbilities : Hediff_Abilities
     {
         get
         {
-            if (this.curStage == null) this.RecacheCurStage();
+            if (this.curStage == null)
+                this.RecacheCurStage();
             return this.curStage;
         }
     }
@@ -48,23 +50,28 @@ public class Hediff_PsycastAbilities : Hediff_Abilities
     {
         if (this.psysets.Count > 0)
         {
-            int nextIndex                                 = this.psysetIndex + 1;
-            if (nextIndex > this.psysets.Count) nextIndex = 0;
+            int nextIndex = this.psysetIndex + 1;
+            if (nextIndex > this.psysets.Count)
+                nextIndex = 0;
             yield return new Command_ActionWithFloat
             {
-                defaultLabel    = "VPE.PsySetNext".Translate(),
-                defaultDesc     = "VPE.PsySetDesc".Translate(this.PsySetLabel(this.psysetIndex), this.PsySetLabel(nextIndex)),
-                icon            = PsySetNext,
-                action          = () => this.psysetIndex = nextIndex,
-                order           = 10f,
-                floatMenuGetter = this.GetPsySetFloatMenuOptions
+                defaultLabel = "VPE.PsySetNext".Translate(),
+                defaultDesc = "VPE.PsySetDesc".Translate(
+                    this.PsySetLabel(this.psysetIndex),
+                    this.PsySetLabel(nextIndex)
+                ),
+                icon = PsySetNext,
+                action = () => this.psysetIndex = nextIndex,
+                order = 10f,
+                floatMenuGetter = this.GetPsySetFloatMenuOptions,
             };
         }
     }
 
     private string PsySetLabel(int index)
     {
-        if (index == this.psysets.Count) return "VPE.All".Translate();
+        if (index == this.psysets.Count)
+            return "VPE.All".Translate();
         return this.psysets[index].Name;
     }
 
@@ -73,18 +80,25 @@ public class Hediff_PsycastAbilities : Hediff_Abilities
         for (int i = 0; i <= this.psysets.Count; i++)
         {
             int index = i;
-            yield return new FloatMenuOption(this.PsySetLabel(index), () => this.psysetIndex = index);
+            yield return new FloatMenuOption(
+                this.PsySetLabel(index),
+                () => this.psysetIndex = index
+            );
         }
     }
 
     public void InitializeFromPsylink(Hediff_Psylink psylink)
     {
         this.psylink = psylink;
-        this.level   = psylink.level;
-        this.points  = this.level;
+        this.level = psylink.level;
+        this.points = this.level;
         this.RecacheCurStage();
         if (!this.unlockedPaths.Any())
-            this.unlockedPaths.Add(DefDatabase<PsycasterPathDef>.AllDefs.Where(path => path.CanPawnUnlock(psylink.pawn)).RandomElement());
+            this.unlockedPaths.Add(
+                DefDatabase<PsycasterPathDef>
+                    .AllDefs.Where(path => path.CanPawnUnlock(psylink.pawn))
+                    .RandomElement()
+            );
     }
 
     private void RecacheCurStage()
@@ -93,14 +107,26 @@ public class Hediff_PsycastAbilities : Hediff_Abilities
         {
             statOffsets = new List<StatModifier>
             {
-                new() { stat = StatDefOf.PsychicEntropyMax, value          = this.level * 5 + this.statPoints * 20 },
-                new() { stat = StatDefOf.PsychicEntropyRecoveryRate, value = this.statPoints * 0.2f },
-                new() { stat = StatDefOf.PsychicSensitivity, value         = this.statPoints * 0.05f },
-                new() { stat = StatDefOf.MeditationFocusGain, value        = this.statPoints * 0.1f },
-                new() { stat = VPE_DefOf.VPE_PsyfocusCostFactor, value     = this.statPoints * -0.01f },
-                new() { stat = VPE_DefOf.VPE_PsychicEntropyMinimum, value  = this.minHeatGivers.Sum(giver => giver.MinHeat) }
+                new()
+                {
+                    stat = StatDefOf.PsychicEntropyMax,
+                    value = this.level * 5 + this.statPoints * 20,
+                },
+                new()
+                {
+                    stat = StatDefOf.PsychicEntropyRecoveryRate,
+                    value = this.statPoints * 0.2f,
+                },
+                new() { stat = StatDefOf.PsychicSensitivity, value = this.statPoints * 0.05f },
+                new() { stat = StatDefOf.MeditationFocusGain, value = this.statPoints * 0.1f },
+                new() { stat = VPE_DefOf.VPE_PsyfocusCostFactor, value = this.statPoints * -0.01f },
+                new()
+                {
+                    stat = VPE_DefOf.VPE_PsychicEntropyMinimum,
+                    value = this.minHeatGivers.Sum(giver => giver.MinHeat),
+                },
             },
-            becomeVisible = false
+            becomeVisible = false,
         };
         this.pawn.health.Notify_HediffChanged(this);
     }
@@ -115,11 +141,16 @@ public class Hediff_PsycastAbilities : Hediff_Abilities
     {
         this.ChangeLevel(levelOffset);
         if (sendLetter && PawnUtility.ShouldSendNotificationAbout(this.pawn))
-            Find.LetterStack.ReceiveLetter("VPE.PsylinkGained".Translate(this.pawn.LabelShortCap),
-                                           "VPE.PsylinkGained.Desc".Translate(this.pawn.LabelShortCap,
-                                                                              this.pawn.gender.GetPronoun().CapitalizeFirst(),
-                                                                              ExperienceRequiredForLevel(this.level + 1)), LetterDefOf.PositiveEvent,
-                                           this.pawn);
+            Find.LetterStack.ReceiveLetter(
+                "VPE.PsylinkGained".Translate(this.pawn.LabelShortCap),
+                "VPE.PsylinkGained.Desc".Translate(
+                    this.pawn.LabelShortCap,
+                    this.pawn.gender.GetPronoun().CapitalizeFirst(),
+                    ExperienceRequiredForLevel(this.level + 1)
+                ),
+                LetterDefOf.PositiveEvent,
+                this.pawn
+            );
     }
 
     public override void ChangeLevel(int levelOffset)
@@ -127,7 +158,9 @@ public class Hediff_PsycastAbilities : Hediff_Abilities
         base.ChangeLevel(levelOffset);
         this.points += levelOffset;
         this.RecacheCurStage();
-        this.psylink ??= this.pawn.health.hediffSet.hediffs.OfType<Hediff_Psylink>().FirstOrDefault();
+        this.psylink ??= this
+            .pawn.health.hediffSet.hediffs.OfType<Hediff_Psylink>()
+            .FirstOrDefault();
         if (this.psylink == null)
         {
             this.pawn.ChangePsylinkLevel(this.level, false);
@@ -143,7 +176,8 @@ public class Hediff_PsycastAbilities : Hediff_Abilities
         this.unlockedPaths.Clear();
         this.unlockedMeditationFoci.Clear();
         this.statPoints = 0;
-        this.pawn.GetComp<CompAbilities>()?.LearnedAbilities.RemoveAll(a => a.def.Psycast() != null);
+        this.pawn.GetComp<CompAbilities>()
+            ?.LearnedAbilities.RemoveAll(a => a.def.Psycast() != null);
         this.RecacheCurStage();
     }
 
@@ -154,8 +188,8 @@ public class Hediff_PsycastAbilities : Hediff_Abilities
         while (this.experience >= ExperienceRequiredForLevel(this.level + 1))
         {
             this.ChangeLevel(1, sendLetter && !newLevelWasGainedAlready);
-            newLevelWasGainedAlready =  true;
-            this.experience          -= ExperienceRequiredForLevel(this.level);
+            newLevelWasGainedAlready = true;
+            this.experience -= ExperienceRequiredForLevel(this.level);
         }
     }
 
@@ -163,8 +197,8 @@ public class Hediff_PsycastAbilities : Hediff_Abilities
         this.pawn.psychicEntropy.CurrentPsyfocus > focusRequired;
 
     public override bool SatisfiesConditionForAbility(AbilityDef abilityDef) =>
-        base.SatisfiesConditionForAbility(abilityDef) ||
-        abilityDef.requiredHediff?.minimumLevel <= this.psylink.level;
+        base.SatisfiesConditionForAbility(abilityDef)
+        || abilityDef.requiredHediff?.minimumLevel <= this.psylink.level;
 
     public void AddMinHeatGiver(IMinHeatGiver giver)
     {
@@ -183,20 +217,29 @@ public class Hediff_PsycastAbilities : Hediff_Abilities
     public override void ExposeData()
     {
         base.ExposeData();
-        Scribe_Values.Look(ref this.experience,         nameof(this.experience));
-        Scribe_Values.Look(ref this.points,             nameof(this.points));
-        Scribe_Values.Look(ref this.statPoints,         nameof(this.statPoints));
-        Scribe_Values.Look(ref this.psysetIndex,        nameof(this.psysetIndex));
+        Scribe_Values.Look(ref this.experience, nameof(this.experience));
+        Scribe_Values.Look(ref this.points, nameof(this.points));
+        Scribe_Values.Look(ref this.statPoints, nameof(this.statPoints));
+        Scribe_Values.Look(ref this.psysetIndex, nameof(this.psysetIndex));
         Scribe_Values.Look(ref this.maxLevelFromTitles, nameof(this.maxLevelFromTitles));
-        Scribe_Collections.Look(ref this.unlockedPaths,          nameof(this.unlockedPaths),          LookMode.Def);
-        Scribe_Collections.Look(ref this.unlockedMeditationFoci, nameof(this.unlockedMeditationFoci), LookMode.Def);
-        Scribe_Collections.Look(ref this.psysets,                nameof(this.psysets),                LookMode.Deep);
-        Scribe_Collections.Look(ref this.minHeatGivers,          nameof(this.minHeatGivers),          LookMode.Reference);
-        Scribe_References.Look(ref this.psylink,             nameof(this.psylink));
+        Scribe_Collections.Look(ref this.unlockedPaths, nameof(this.unlockedPaths), LookMode.Def);
+        Scribe_Collections.Look(
+            ref this.unlockedMeditationFoci,
+            nameof(this.unlockedMeditationFoci),
+            LookMode.Def
+        );
+        Scribe_Collections.Look(ref this.psysets, nameof(this.psysets), LookMode.Deep);
+        Scribe_Collections.Look(
+            ref this.minHeatGivers,
+            nameof(this.minHeatGivers),
+            LookMode.Reference
+        );
+        Scribe_References.Look(ref this.psylink, nameof(this.psylink));
         Scribe_References.Look(ref this.currentlyChanneling, nameof(this.currentlyChanneling));
 
         this.minHeatGivers ??= new List<IMinHeatGiver>();
-        if (Scribe.mode == LoadSaveMode.PostLoadInit) this.RecacheCurStage();
+        if (Scribe.mode == LoadSaveMode.PostLoadInit)
+            this.RecacheCurStage();
     }
 
     public void SpentPoints(int count = 1)
@@ -221,7 +264,9 @@ public class Hediff_PsycastAbilities : Hediff_Abilities
         MeditationFocusTypeAvailabilityCache.ClearFor(this.pawn);
     }
 
-    public bool ShouldShow(Ability ability) => this.psysetIndex == this.psysets.Count || this.psysets[this.psysetIndex].Abilities.Contains(ability.def);
+    public bool ShouldShow(Ability ability) =>
+        this.psysetIndex == this.psysets.Count
+        || this.psysets[this.psysetIndex].Abilities.Contains(ability.def);
 
     public void RemovePsySet(PsySet set)
     {
@@ -232,20 +277,20 @@ public class Hediff_PsycastAbilities : Hediff_Abilities
     public static int ExperienceRequiredForLevel(int level) =>
         level switch
         {
-            <= 1  => 100,
+            <= 1 => 100,
             <= 20 => Mathf.RoundToInt(ExperienceRequiredForLevel(level - 1) * 1.15f),
             <= 30 => Mathf.RoundToInt(ExperienceRequiredForLevel(level - 1) * 1.10f),
-            _     => Mathf.RoundToInt(ExperienceRequiredForLevel(level - 1) * 1.05f)
+            _ => Mathf.RoundToInt(ExperienceRequiredForLevel(level - 1) * 1.05f),
         };
 
-    public override void GiveRandomAbilityAtLevel(int? forLevel = null)
-    {
-    }
+    public override void GiveRandomAbilityAtLevel(int? forLevel = null) { }
 
     public override void Tick()
     {
         base.Tick();
-        if (this.currentlyChanneling is { IsActive: false }) this.currentlyChanneling = null;
-        if (this.minHeatGivers.RemoveAll(giver => !giver.IsActive) > 0) this.RecacheCurStage();
+        if (this.currentlyChanneling is { IsActive: false })
+            this.currentlyChanneling = null;
+        if (this.minHeatGivers.RemoveAll(giver => !giver.IsActive) > 0)
+            this.RecacheCurStage();
     }
 }

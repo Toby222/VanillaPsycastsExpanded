@@ -1,13 +1,14 @@
 ﻿namespace VanillaPsycastsExpanded
 {
-    using RimWorld;
-    using RimWorld.Planet;
     using System.Collections.Generic;
     using System.Linq;
+    using RimWorld;
+    using RimWorld.Planet;
     using UnityEngine;
     using Verse;
     using Verse.AI;
     using VFECore.Abilities;
+
     public class Ability_Corpsetalk : Ability_TargetCorpse
     {
         public override void Cast(params GlobalTargetInfo[] targets)

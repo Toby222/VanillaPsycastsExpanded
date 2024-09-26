@@ -25,9 +25,16 @@
 
         public static bool ShouldTargetAllies(Thing t) => HaywireThings.Contains(t);
 
-        [HarmonyPatch(typeof(AttackTargetsCache), nameof(AttackTargetsCache.GetPotentialTargetsFor))]
+        [HarmonyPatch(
+            typeof(AttackTargetsCache),
+            nameof(AttackTargetsCache.GetPotentialTargetsFor)
+        )]
         [HarmonyPostfix]
-        public static void ChangeTargets(IAttackTargetSearcher th, ref List<IAttackTarget> __result, AttackTargetsCache __instance)
+        public static void ChangeTargets(
+            IAttackTargetSearcher th,
+            ref List<IAttackTarget> __result,
+            AttackTargetsCache __instance
+        )
         {
             if (th is Thing t && HaywireThings.Contains(t))
             {
@@ -38,19 +45,28 @@
 
         [HarmonyPatch(typeof(Building_TurretGun), "IsValidTarget")]
         [HarmonyTranspiler]
-        public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
+        public static IEnumerable<CodeInstruction> Transpiler(
+            IEnumerable<CodeInstruction> instructions,
+            ILGenerator generator
+        )
         {
             List<CodeInstruction> codes = instructions.ToList();
-            FieldInfo             info  = AccessTools.Field(typeof(Building_TurretGun), "mannableComp");
-            int                   idx   = codes.FindIndex(ins => ins.LoadsField(info));
-            Label                 label = (Label) codes[idx + 1].operand;
-            int                   idx2  = codes.FindLastIndex(idx, ins => ins.opcode == OpCodes.Ldarg_0);
-            codes.InsertRange(idx2 + 1, new[]
-            {
-                new CodeInstruction(OpCodes.Call,   AccessTools.Method(typeof(HaywireManager), nameof(ShouldTargetAllies))),
-                new CodeInstruction(OpCodes.Brtrue, label),
-                new CodeInstruction(OpCodes.Ldarg_0)
-            });
+            FieldInfo info = AccessTools.Field(typeof(Building_TurretGun), "mannableComp");
+            int idx = codes.FindIndex(ins => ins.LoadsField(info));
+            Label label = (Label)codes[idx + 1].operand;
+            int idx2 = codes.FindLastIndex(idx, ins => ins.opcode == OpCodes.Ldarg_0);
+            codes.InsertRange(
+                idx2 + 1,
+                new[]
+                {
+                    new CodeInstruction(
+                        OpCodes.Call,
+                        AccessTools.Method(typeof(HaywireManager), nameof(ShouldTargetAllies))
+                    ),
+                    new CodeInstruction(OpCodes.Brtrue, label),
+                    new CodeInstruction(OpCodes.Ldarg_0),
+                }
+            );
             return codes;
         }
 
@@ -59,24 +75,40 @@
         {
             [HarmonyTargetMethod]
             public static MethodInfo TargetMethod() =>
-                AccessTools.Method(AccessTools.Inner(typeof(AttackTargetFinder), "<>c__DisplayClass5_0"), "<BestAttackTarget>b__1");
+                AccessTools.Method(
+                    AccessTools.Inner(typeof(AttackTargetFinder), "<>c__DisplayClass5_0"),
+                    "<BestAttackTarget>b__1"
+                );
 
             [HarmonyTranspiler]
-            public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
+            public static IEnumerable<CodeInstruction> Transpiler(
+                IEnumerable<CodeInstruction> instructions,
+                ILGenerator generator
+            )
             {
                 List<CodeInstruction> codes = instructions.ToList();
-                MethodInfo            info  = AccessTools.Method(typeof(GenHostility), nameof(GenHostility.HostileTo), new[] {typeof(Thing), typeof(Thing)});
-                int                   idx   = codes.FindIndex(ins => ins.Calls(info));
-                int                   idx2  = codes.FindLastIndex(idx, ins => ins.opcode == OpCodes.Ldarg_0);
-                FieldInfo             info2 = (FieldInfo) codes[idx2 + 1].operand;
-                int                   idx3  = codes.FindIndex(idx, ins => ins.opcode == OpCodes.Ldc_I4_0);
+                MethodInfo info = AccessTools.Method(
+                    typeof(GenHostility),
+                    nameof(GenHostility.HostileTo),
+                    new[] { typeof(Thing), typeof(Thing) }
+                );
+                int idx = codes.FindIndex(ins => ins.Calls(info));
+                int idx2 = codes.FindLastIndex(idx, ins => ins.opcode == OpCodes.Ldarg_0);
+                FieldInfo info2 = (FieldInfo)codes[idx2 + 1].operand;
+                int idx3 = codes.FindIndex(idx, ins => ins.opcode == OpCodes.Ldc_I4_0);
                 codes.RemoveAt(idx3);
-                codes.InsertRange(idx3, new[]
-                {
-                    new CodeInstruction(OpCodes.Ldarg_0),
-                    new CodeInstruction(OpCodes.Ldfld, info2),
-                    new CodeInstruction(OpCodes.Call,  AccessTools.Method(typeof(HaywireManager), nameof(ShouldTargetAllies)))
-                });
+                codes.InsertRange(
+                    idx3,
+                    new[]
+                    {
+                        new CodeInstruction(OpCodes.Ldarg_0),
+                        new CodeInstruction(OpCodes.Ldfld, info2),
+                        new CodeInstruction(
+                            OpCodes.Call,
+                            AccessTools.Method(typeof(HaywireManager), nameof(ShouldTargetAllies))
+                        ),
+                    }
+                );
                 return codes;
             }
         }
@@ -84,7 +116,7 @@
 
     public class CompHaywire : ThingComp
     {
-        private int      ticksLeft;
+        private int ticksLeft;
         private Effecter effecter;
 
         public void GoHaywire(int duration)
@@ -117,7 +149,8 @@
         public override void PostDeSpawn(Map map)
         {
             base.PostDeSpawn(map);
-            if (HaywireManager.HaywireThings.Contains(this.parent)) HaywireManager.HaywireThings.Remove(this.parent);
+            if (HaywireManager.HaywireThings.Contains(this.parent))
+                HaywireManager.HaywireThings.Remove(this.parent);
         }
 
         public override void PostSpawnSetup(bool respawningAfterLoad)

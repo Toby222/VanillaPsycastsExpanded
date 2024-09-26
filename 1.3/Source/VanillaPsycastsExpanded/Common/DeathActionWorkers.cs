@@ -20,7 +20,10 @@
     {
         public override void PawnDied(Corpse corpse)
         {
-            if (corpse.Map != null && corpse.InnerPawn?.TryGetComp<CompSetStoneColour>()?.KilledLeave is { } def)
+            if (
+                corpse.Map != null
+                && corpse.InnerPawn?.TryGetComp<CompSetStoneColour>()?.KilledLeave is { } def
+            )
             {
                 Thing chunk = ThingMaker.MakeThing(def);
                 GenSpawn.Spawn(chunk, corpse.Position, corpse.Map);

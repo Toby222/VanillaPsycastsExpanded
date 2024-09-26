@@ -13,7 +13,11 @@ public class MoteAttachedScaled : MoteAttached
         if (!Destroyed)
             if (def.mote.growthRate != 0f)
             {
-                linearScale = new(linearScale.x + def.mote.growthRate * deltaTime, linearScale.y, linearScale.z + def.mote.growthRate * deltaTime);
+                linearScale = new(
+                    linearScale.x + def.mote.growthRate * deltaTime,
+                    linearScale.y,
+                    linearScale.z + def.mote.growthRate * deltaTime
+                );
                 linearScale.x = Mathf.Min(Mathf.Max(linearScale.x, 0.0001f), maxScale);
                 linearScale.z = Mathf.Min(Mathf.Max(linearScale.z, 0.0001f), maxScale);
             }

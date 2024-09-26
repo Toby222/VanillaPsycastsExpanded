@@ -16,8 +16,14 @@ public class Ability_GuardianSkipBarrier : Ability, IChannelledPsycast
                 defaultLabel = "VPE.CancelSkipbarrier".Translate(),
                 defaultDesc = "VPE.CancelSkipbarrierDesc".Translate(),
                 icon = def.icon,
-                action = delegate { pawn.health.RemoveHediff(hediff); },
-                Order = 10f + (def.requiredHediff?.hediffDef?.index ?? 0) + (def.requiredHediff?.minimumLevel ?? 0)
+                action = delegate
+                {
+                    pawn.health.RemoveHediff(hediff);
+                },
+                Order =
+                    10f
+                    + (def.requiredHediff?.hediffDef?.index ?? 0)
+                    + (def.requiredHediff?.minimumLevel ?? 0),
             };
         return base.GetGizmo();
     }

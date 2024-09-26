@@ -6,6 +6,7 @@
     public class SoulFromSky : Skyfaller
     {
         public Corpse target;
+
         protected override void Impact()
         {
             var pawn = target.InnerPawn;
@@ -19,7 +20,11 @@
                     pawn.health.RemoveHediff(hediff);
                     pawn.health.RestorePart(part);
                 }
-                else if (hediff.def != VPE_DefOf.TraumaSavant && (hediff.def.isBad || hediff is Hediff_Addiction) && hediff.def.everCurableByItem)
+                else if (
+                    hediff.def != VPE_DefOf.TraumaSavant
+                    && (hediff.def.isBad || hediff is Hediff_Addiction)
+                    && hediff.def.everCurableByItem
+                )
                 {
                     pawn.health.RemoveHediff(hediff);
                 }

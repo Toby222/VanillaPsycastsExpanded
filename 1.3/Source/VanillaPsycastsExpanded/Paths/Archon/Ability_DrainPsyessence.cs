@@ -15,7 +15,11 @@
                 {
                     if (showMessages)
                     {
-                        Messages.Message("VPE.MustBeDowned".Translate(), victim, MessageTypeDefOf.CautionInput);
+                        Messages.Message(
+                            "VPE.MustBeDowned".Translate(),
+                            victim,
+                            MessageTypeDefOf.CautionInput
+                        );
                     }
                     return false;
                 }
@@ -23,7 +27,11 @@
                 {
                     if (showMessages)
                     {
-                        Messages.Message("VPE.MustHavePsychicLevel".Translate(), victim, MessageTypeDefOf.CautionInput);
+                        Messages.Message(
+                            "VPE.MustHavePsychicLevel".Translate(),
+                            victim,
+                            MessageTypeDefOf.CautionInput
+                        );
                     }
                 }
             }
@@ -49,14 +57,25 @@
                 }
                 pawnPsycasts.GainExperience(previousExperience);
 
-                targetPawn.health.RemoveHediff(targetPawn.health.hediffSet.GetFirstHediffOfDef(HediffDefOf.PsychicAmplifier));
-                targetPawn.health.RemoveHediff(targetPawn.health.hediffSet.GetFirstHediffOfDef(VPE_DefOf.VPE_PsycastAbilityImplant));
-
+                targetPawn.health.RemoveHediff(
+                    targetPawn.health.hediffSet.GetFirstHediffOfDef(HediffDefOf.PsychicAmplifier)
+                );
+                targetPawn.health.RemoveHediff(
+                    targetPawn.health.hediffSet.GetFirstHediffOfDef(
+                        VPE_DefOf.VPE_PsycastAbilityImplant
+                    )
+                );
 
                 targetPawn.Kill(null);
                 targetPawn.Corpse.GetComp<CompRottable>().RotProgress += 1200000f;
-                FilthMaker.TryMakeFilth(targetPawn.Corpse.Position, targetPawn.Corpse.Map, ThingDefOf.Filth_CorpseBile, 3);
-                MoteBetween mote = (MoteBetween)ThingMaker.MakeThing(VPE_DefOf.VPE_PsycastPsychicEffectTransfer);
+                FilthMaker.TryMakeFilth(
+                    targetPawn.Corpse.Position,
+                    targetPawn.Corpse.Map,
+                    ThingDefOf.Filth_CorpseBile,
+                    3
+                );
+                MoteBetween mote = (MoteBetween)
+                    ThingMaker.MakeThing(VPE_DefOf.VPE_PsycastPsychicEffectTransfer);
                 mote.Attach(targetPawn.Corpse, this.pawn);
                 mote.Scale = 1f;
                 mote.exactPosition = targetPawn.Corpse.DrawPos;
@@ -67,7 +86,13 @@
             {
                 if (!allFaction.IsPlayer && !allFaction.defeated)
                 {
-                    Faction.OfPlayer.TryAffectGoodwillWith(allFaction, -15, canSendMessage: true, canSendHostilityLetter: true, HistoryEventDefOf.UsedHarmfulAbility);
+                    Faction.OfPlayer.TryAffectGoodwillWith(
+                        allFaction,
+                        -15,
+                        canSendMessage: true,
+                        canSendHostilityLetter: true,
+                        HistoryEventDefOf.UsedHarmfulAbility
+                    );
                 }
             }
         }

@@ -82,10 +82,10 @@ public static class VPE_DefOf
     public static FleckDef PsycastAreaEffect;
     public static FleckDef VPE_PsycastSkipFlashEntry_DarkBlue;
     public static FleckDef VPE_Slash;
-    public static StatDef  VPE_PsyfocusCostFactor;
-    public static StatDef  VPE_PsychicEntropyMinimum;
-    public static JobDef   VPE_StandFreeze;
-    public static JobDef   VPE_EssenceTransfer;
+    public static StatDef VPE_PsyfocusCostFactor;
+    public static StatDef VPE_PsychicEntropyMinimum;
+    public static JobDef VPE_StandFreeze;
+    public static JobDef VPE_EssenceTransfer;
 
     public static EffecterDef VPE_Haywire;
     public static EffecterDef VPE_Liferot;
@@ -94,25 +94,32 @@ public static class VPE_DefOf
 
     public static MeditationFocusDef VPE_Archotech;
     public static MeditationFocusDef VPE_Science;
-    public static MentalStateDef     VPE_Wander_Sad;
-    public static MentalStateDef     VPE_ManhunterTerritorial;
-    public static HistoryEventDef    VPE_Foretelling;
-    public static HistoryEventDef    VPE_GiftedEltex;
-    public static HistoryEventDef    VPE_SoldEltex;
-    public static PawnKindDef        VPE_RockConstruct;
-    public static PawnKindDef        VPE_SteelConstruct;
-    public static ThoughtDef         EnvironmentDark;
-    public static ThoughtDef         VPE_Future;
+    public static MentalStateDef VPE_Wander_Sad;
+    public static MentalStateDef VPE_ManhunterTerritorial;
+    public static HistoryEventDef VPE_Foretelling;
+    public static HistoryEventDef VPE_GiftedEltex;
+    public static HistoryEventDef VPE_SoldEltex;
+    public static PawnKindDef VPE_RockConstruct;
+    public static PawnKindDef VPE_SteelConstruct;
+    public static ThoughtDef EnvironmentDark;
+    public static ThoughtDef VPE_Future;
 
     public static GameConditionDef VPE_PsychicFlashstorm;
     public static GameConditionDef VPE_TimeQuake;
-    public static PawnKindDef      VPE_SummonedSkeleton;
-    public static BodyPartDef      Finger;
+    public static PawnKindDef VPE_SummonedSkeleton;
+    public static BodyPartDef Finger;
 
-    [DefAlias("VPE_Hurricane")]      public static WeatherDef       VPE_Hurricane_Weather;
-    [DefAlias("VPE_Hurricane")]      public static GameConditionDef VPE_Hurricane_Condition;
-    [DefAlias("VPE_RockConstruct")]  public static ThingDef         VPE_Race_RockConstruct;
-    [DefAlias("VPE_SteelConstruct")] public static ThingDef         VPE_Race_SteelConstruct;
+    [DefAlias("VPE_Hurricane")]
+    public static WeatherDef VPE_Hurricane_Weather;
+
+    [DefAlias("VPE_Hurricane")]
+    public static GameConditionDef VPE_Hurricane_Condition;
+
+    [DefAlias("VPE_RockConstruct")]
+    public static ThingDef VPE_Race_RockConstruct;
+
+    [DefAlias("VPE_SteelConstruct")]
+    public static ThingDef VPE_Race_SteelConstruct;
 
     public static StorytellerDef VPE_Basilicus;
 

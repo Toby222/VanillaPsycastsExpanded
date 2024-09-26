@@ -8,10 +8,12 @@
         public bool shouldDestroy;
 
         public int currentIndex;
+
         public int CurrentIndex()
         {
             return currentIndex;
         }
+
         public override void Tick()
         {
             base.Tick();
@@ -23,6 +25,7 @@
                 }
             }
         }
+
         public override void ExposeData()
         {
             base.ExposeData();

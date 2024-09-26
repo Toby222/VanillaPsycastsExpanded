@@ -17,7 +17,13 @@
         public override void Cast(params GlobalTargetInfo[] targets)
         {
             base.Cast(targets);
-            MakeStaticFleck(this.targetCell, this.pawn.Map, VPE_DefOf.PsycastAreaEffect, this.GetRadiusForPawn(), 0);
+            MakeStaticFleck(
+                this.targetCell,
+                this.pawn.Map,
+                VPE_DefOf.PsycastAreaEffect,
+                this.GetRadiusForPawn(),
+                0
+            );
         }
     }
 }

@@ -10,26 +10,40 @@ public class RaidStrategyWorker_ImmediateAttack_Psycasters : RaidStrategyWorker_
 {
     public override bool CanUseWith(IncidentParms parms, PawnGroupKindDef groupKind)
     {
-        if (!PawnGenOptionsWithRequiredPawns(parms.faction, groupKind).Any()) return false;
+        if (!PawnGenOptionsWithRequiredPawns(parms.faction, groupKind).Any())
+            return false;
         return base.CanUseWith(parms, groupKind);
     }
 
-    protected bool MatchesRequiredPawnKind(PawnKindDef kind) => kind.HasModExtension<PawnKindAbilityExtension_Psycasts>();
+    protected bool MatchesRequiredPawnKind(PawnKindDef kind) =>
+        kind.HasModExtension<PawnKindAbilityExtension_Psycasts>();
 
     protected int MinRequiredPawnsForPoints(float pointsTotal, Faction faction = null) => 1;
 
     public override float MinimumPoints(Faction faction, PawnGroupKindDef groupKind) =>
-        Mathf.Max(base.MinimumPoints(faction, groupKind), CheapestRequiredPawnCost(faction, groupKind));
+        Mathf.Max(
+            base.MinimumPoints(faction, groupKind),
+            CheapestRequiredPawnCost(faction, groupKind)
+        );
 
-    public override float MinMaxAllowedPawnGenOptionCost(Faction faction, PawnGroupKindDef groupKind) => CheapestRequiredPawnCost(faction, groupKind);
+    public override float MinMaxAllowedPawnGenOptionCost(
+        Faction faction,
+        PawnGroupKindDef groupKind
+    ) => CheapestRequiredPawnCost(faction, groupKind);
 
     private float CheapestRequiredPawnCost(Faction faction, PawnGroupKindDef groupKind)
     {
         var enumerable = PawnGenOptionsWithRequiredPawns(faction, groupKind);
         if (!enumerable.Any())
         {
-            Log.Error("Tried to get MinimumPoints for " + GetType() + " for faction " + faction +
-                      " but the faction has no groups with the required pawn kind. groupKind=" + groupKind);
+            Log.Error(
+                "Tried to get MinimumPoints for "
+                    + GetType()
+                    + " for faction "
+                    + faction
+                    + " but the faction has no groups with the required pawn kind. groupKind="
+                    + groupKind
+            );
             return 99999f;
         }
 
@@ -41,16 +55,34 @@ public class RaidStrategyWorker_ImmediateAttack_Psycasters : RaidStrategyWorker_
         return num;
     }
 
-    public override bool CanUsePawnGenOption(float pointsTotal, PawnGenOption g, List<PawnGenOptionWithXenotype> chosenGroups, Faction faction = null)
+    public override bool CanUsePawnGenOption(
+        float pointsTotal,
+        PawnGenOption g,
+        List<PawnGenOptionWithXenotype> chosenGroups,
+        Faction faction = null
+    )
     {
-        if (chosenGroups != null && chosenGroups.Count < MinRequiredPawnsForPoints(pointsTotal, faction) && !MatchesRequiredPawnKind(g.kind)) return false;
+        if (
+            chosenGroups != null
+            && chosenGroups.Count < MinRequiredPawnsForPoints(pointsTotal, faction)
+            && !MatchesRequiredPawnKind(g.kind)
+        )
+            return false;
 
         return true;
     }
 
-    private IEnumerable<PawnGroupMaker> PawnGenOptionsWithRequiredPawns(Faction faction, PawnGroupKindDef groupKind)
+    private IEnumerable<PawnGroupMaker> PawnGenOptionsWithRequiredPawns(
+        Faction faction,
+        PawnGroupKindDef groupKind
+    )
     {
-        if (faction.def.pawnGroupMakers == null) return Enumerable.Empty<PawnGroupMaker>();
-        return faction.def.pawnGroupMakers.Where(gm => gm.kindDef == groupKind && gm.options != null && gm.options.Any(op => MatchesRequiredPawnKind(op.kind)));
+        if (faction.def.pawnGroupMakers == null)
+            return Enumerable.Empty<PawnGroupMaker>();
+        return faction.def.pawnGroupMakers.Where(gm =>
+            gm.kindDef == groupKind
+            && gm.options != null
+            && gm.options.Any(op => MatchesRequiredPawnKind(op.kind))
+        );
     }
 }

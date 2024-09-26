@@ -16,11 +16,23 @@ public static class SkipdoorPatches
     public static void Pawn_Kill_Prefix(Pawn __instance)
     {
         if (__instance.Faction is { IsPlayer: true })
-            foreach (Skipdoor skipdoor in WorldComponent_DoorTeleporterManager.Instance.DoorTeleporters.OfType<Skipdoor>().ToList())
+            foreach (
+                Skipdoor skipdoor in WorldComponent_DoorTeleporterManager
+                    .Instance.DoorTeleporters.OfType<Skipdoor>()
+                    .ToList()
+            )
                 if (skipdoor.Pawn == __instance)
                 {
-                    GenExplosion.DoExplosion(skipdoor.Position, skipdoor.Map, 4.9f, DamageDefOf.Bomb, skipdoor, 35);
-                    if (!skipdoor.Destroyed) skipdoor.Destroy();
+                    GenExplosion.DoExplosion(
+                        skipdoor.Position,
+                        skipdoor.Map,
+                        4.9f,
+                        DamageDefOf.Bomb,
+                        skipdoor,
+                        35
+                    );
+                    if (!skipdoor.Destroyed)
+                        skipdoor.Destroy();
                 }
     }
 }

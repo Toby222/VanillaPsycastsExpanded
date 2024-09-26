@@ -17,6 +17,7 @@
         public FleckDef fleckToSpawn;
 
         public float spawnRate;
+
         public void DoEffects(Map map)
         {
             foreach (var cell in GenRadial.RadialCellsAround(center, radius, true))
@@ -31,6 +32,7 @@
                 }
             }
         }
+
         public void ThrowFleck(IntVec3 c, Map map, float size)
         {
             Vector3 vector = c.ToVector3Shifted();
@@ -39,7 +41,12 @@
                 vector += size * new Vector3(Rand.Value - 0.5f, 0f, Rand.Value - 0.5f);
                 if (vector.InBounds(map))
                 {
-                    FleckCreationData dataStatic = FleckMaker.GetDataStatic(vector, map, fleckToSpawn, Rand.Range(4f, 6f) * size);
+                    FleckCreationData dataStatic = FleckMaker.GetDataStatic(
+                        vector,
+                        map,
+                        fleckToSpawn,
+                        Rand.Range(4f, 6f) * size
+                    );
                     dataStatic.rotationRate = Rand.Range(-3f, 3f);
                     dataStatic.velocityAngle = Rand.Range(0, 360);
                     dataStatic.velocitySpeed = 0.12f;
@@ -47,6 +54,7 @@
                 }
             }
         }
+
         public void ExposeData()
         {
             Scribe_Values.Look(ref center, "center");

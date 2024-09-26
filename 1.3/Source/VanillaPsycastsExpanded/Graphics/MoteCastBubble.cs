@@ -9,8 +9,8 @@
     {
         private float durationSecs;
 
-        protected override bool  EndOfLife => this.AgeSecs >= this.durationSecs;
-        public override    float Alpha     => 1f;
+        protected override bool EndOfLife => this.AgeSecs >= this.durationSecs;
+        public override float Alpha => 1f;
 
         public void Setup(Pawn pawn, Ability ability)
         {

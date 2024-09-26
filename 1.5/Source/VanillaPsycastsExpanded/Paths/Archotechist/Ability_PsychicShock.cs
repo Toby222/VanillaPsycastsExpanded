@@ -9,7 +9,11 @@ public class Ability_PsychicShock : Ability
 {
     public override bool ValidateTarget(LocalTargetInfo target, bool showMessages = true)
     {
-        if (target.Thing is not Pawn victim || victim.GetStatValue(StatDefOf.PsychicSensitivity) <= 0) return false;
+        if (
+            target.Thing is not Pawn victim
+            || victim.GetStatValue(StatDefOf.PsychicSensitivity) <= 0
+        )
+            return false;
         return base.ValidateTarget(target, showMessages);
     }
 

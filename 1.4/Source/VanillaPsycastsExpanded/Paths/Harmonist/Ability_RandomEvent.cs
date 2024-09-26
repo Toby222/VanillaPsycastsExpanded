@@ -11,7 +11,8 @@ public class Ability_RandomEvent : Ability
     public override void Cast(params GlobalTargetInfo[] targets)
     {
         base.Cast(targets);
-        foreach (GlobalTargetInfo target in targets) DoRandomEvent(target.Map);
+        foreach (GlobalTargetInfo target in targets)
+            DoRandomEvent(target.Map);
     }
 
     public static void DoRandomEvent(Map map)
@@ -22,7 +23,12 @@ public class Ability_RandomEvent : Ability
             try
             {
                 IncidentDef incident = DefDatabase<IncidentDef>.AllDefs.RandomElement();
-                if (incident.Worker.TryExecute(StorytellerUtility.DefaultParmsNow(incident.category, map))) break;
+                if (
+                    incident.Worker.TryExecute(
+                        StorytellerUtility.DefaultParmsNow(incident.category, map)
+                    )
+                )
+                    break;
             }
             catch (Exception)
             {

@@ -25,24 +25,38 @@ public class AbilityExtension_AbilityOffsetPrisonerResistance : AbilityExtension
         }
     }
 
-    public override bool CanApplyOn(LocalTargetInfo target, Ability ability, bool throwMessages = false)
+    public override bool CanApplyOn(
+        LocalTargetInfo target,
+        Ability ability,
+        bool throwMessages = false
+    )
     {
         var pawn = target.Pawn;
         if (pawn != null)
         {
-            if (!pawn.IsPrisonerOfColony) return false;
-            if (pawn != null && pawn.guest.resistance < float.Epsilon) return false;
-            if (pawn.Downed) return false;
+            if (!pawn.IsPrisonerOfColony)
+                return false;
+            if (pawn != null && pawn.guest.resistance < float.Epsilon)
+                return false;
+            if (pawn.Downed)
+                return false;
             return Valid(new[] { target.ToGlobalTargetInfo(target.Thing.Map) }, ability);
         }
 
         return false;
     }
 
-    public override bool Valid(GlobalTargetInfo[] targets, Ability ability, bool throwMessages = false)
+    public override bool Valid(
+        GlobalTargetInfo[] targets,
+        Ability ability,
+        bool throwMessages = false
+    )
     {
         foreach (var target in targets)
-            if (target.Thing is Pawn pawn && !AbilityUtility.ValidateHasResistance(pawn, throwMessages, null))
+            if (
+                target.Thing is Pawn pawn
+                && !AbilityUtility.ValidateHasResistance(pawn, throwMessages, null)
+            )
                 return false;
 
         return base.Valid(targets, ability, throwMessages);

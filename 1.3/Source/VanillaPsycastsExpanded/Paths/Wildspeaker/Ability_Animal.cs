@@ -14,7 +14,10 @@ public class Ability_Animal : Ability
             if (target.Thing is Pawn pawn)
                 if (pawn.AnimalOrWildMan())
                 {
-                    if (pawn.MentalStateDef == MentalStateDefOf.Manhunter || pawn.MentalStateDef == MentalStateDefOf.ManhunterPermanent)
+                    if (
+                        pawn.MentalStateDef == MentalStateDefOf.Manhunter
+                        || pawn.MentalStateDef == MentalStateDefOf.ManhunterPermanent
+                    )
                         pawn.MentalState.RecoverFromState();
                     else
                         InteractionWorker_RecruitAttempt.DoRecruit(this.pawn, pawn);

@@ -15,25 +15,45 @@ public class Ability_SummonPack : Ability
         var points = GetPowerForPawn();
         List<Pawn> animals = new();
 
-        while (points > 0 && AggressiveAnimalIncidentUtility.TryFindAggressiveAnimalKind(points, map.Tile, out var kind))
+        while (
+            points > 0
+            && AggressiveAnimalIncidentUtility.TryFindAggressiveAnimalKind(
+                points,
+                map.Tile,
+                out var kind
+            )
+        )
         {
             points -= kind.combatPower;
             var animal = PawnGenerator.GeneratePawn(new(kind, tile: map.Tile));
             animals.Add(animal);
         }
 
-        if (!RCellFinder.TryFindRandomPawnEntryCell(out var entryCell, map, CellFinder.EdgeRoadChance_Animal))
+        if (
+            !RCellFinder.TryFindRandomPawnEntryCell(
+                out var entryCell,
+                map,
+                CellFinder.EdgeRoadChance_Animal
+            )
+        )
             entryCell = CellFinder.RandomEdgeCell(map);
 
         for (var i = 0; i < animals.Count; i++)
         {
             var animal = animals[i];
             GenSpawn.Spawn(animal, CellFinder.RandomClosewalkCellNear(entryCell, map, 10), map);
-            animal.mindState.mentalStateHandler.TryStartMentalState(VPE_DefOf.VPE_ManhunterTerritorial);
-            animal.mindState.exitMapAfterTick = Find.TickManager.TicksGame + Rand.Range(25000, 35000);
+            animal.mindState.mentalStateHandler.TryStartMentalState(
+                VPE_DefOf.VPE_ManhunterTerritorial
+            );
+            animal.mindState.exitMapAfterTick =
+                Find.TickManager.TicksGame + Rand.Range(25000, 35000);
         }
 
-        Find.LetterStack.ReceiveLetter("VPE.PackSummon".Translate(), "VPE.PackSummon.Desc".Translate(pawn.NameShortColored), LetterDefOf.PositiveEvent,
-            new TargetInfo(entryCell, map));
+        Find.LetterStack.ReceiveLetter(
+            "VPE.PackSummon".Translate(),
+            "VPE.PackSummon.Desc".Translate(pawn.NameShortColored),
+            LetterDefOf.PositiveEvent,
+            new TargetInfo(entryCell, map)
+        );
     }
 }

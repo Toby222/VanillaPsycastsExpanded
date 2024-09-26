@@ -12,16 +12,35 @@
         public string letterLabel;
         public string letterDesc;
         public string relationInfoKey;
+
         public void DoImpact()
         {
-            Faction.OfPlayer.TryAffectGoodwillWith(factionToImpact, goodwillImpact, true, true, historyEvent);
+            Faction.OfPlayer.TryAffectGoodwillWith(
+                factionToImpact,
+                goodwillImpact,
+                true,
+                true,
+                historyEvent
+            );
             if (!relationInfoKey.NullOrEmpty())
             {
-                letterDesc += "\n\n" + relationInfoKey.Translate(factionToImpact.Named("FACTION"),
-                    Faction.OfPlayer.GoodwillWith(factionToImpact), goodwillImpact);
+                letterDesc +=
+                    "\n\n"
+                    + relationInfoKey.Translate(
+                        factionToImpact.Named("FACTION"),
+                        Faction.OfPlayer.GoodwillWith(factionToImpact),
+                        goodwillImpact
+                    );
             }
-            Find.LetterStack.ReceiveLetter(letterLabel, letterDesc, LetterDefOf.ThreatSmall, null, relatedFaction: factionToImpact);
+            Find.LetterStack.ReceiveLetter(
+                letterLabel,
+                letterDesc,
+                LetterDefOf.ThreatSmall,
+                null,
+                relatedFaction: factionToImpact
+            );
         }
+
         public void ExposeData()
         {
             Scribe_Values.Look(ref impactInTicks, "impactInTicks");

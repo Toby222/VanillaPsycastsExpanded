@@ -17,7 +17,7 @@
             Vector3 pos = this.Pawn.DrawPos + new Vector3(0f, 0f, 0.5f);
             if (this.mote == null || this.mote.Destroyed)
             {
-                this.mote                         = MoteMaker.MakeStaticMote(pos, this.Pawn.Map, this.Props.mote);
+                this.mote = MoteMaker.MakeStaticMote(pos, this.Pawn.Map, this.Props.mote);
                 this.mote.Graphic.MatSingle.color = this.Props.color;
             }
             else
@@ -37,6 +37,6 @@
     public class HediffCompProperties_Mote : HediffCompProperties
     {
         public ThingDef mote;
-        public Color    color;
+        public Color color;
     }
 }

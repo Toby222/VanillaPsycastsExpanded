@@ -14,7 +14,12 @@ public class AbilityExtension_CastPsychicSoothe : AbilityExtension_AbilityMod
         base.Cast(targets, ability);
         var pawnsToApply = new List<GlobalTargetInfo>();
         foreach (var pawn in ability.pawn.MapHeld.mapPawns.AllPawnsSpawned)
-            if (!pawn.Dead && pawn.gender == gender && pawn.needs != null && pawn.needs.mood != null)
+            if (
+                !pawn.Dead
+                && pawn.gender == gender
+                && pawn.needs != null
+                && pawn.needs.mood != null
+            )
                 ability.ApplyHediff(pawn);
     }
 }

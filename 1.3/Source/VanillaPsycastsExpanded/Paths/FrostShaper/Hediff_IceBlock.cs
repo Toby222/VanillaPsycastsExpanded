@@ -1,9 +1,10 @@
 ﻿namespace VanillaPsycastsExpanded
 {
-    using RimWorld;
     using System.Linq;
+    using RimWorld;
     using UnityEngine;
     using Verse;
+
     public class Hediff_IceBlock : Hediff_Overlay
     {
         public override void PostAdd(DamageInfo? dinfo)
@@ -18,7 +19,9 @@
             pawn.pather.StopDead();
             pawn.stances.SetStance(new Stance_Stand(ticksToStand, facedCell, null));
         }
+
         public override string OverlayPath => "Effects/Frostshaper/IceBlock/IceBlock";
+
         public override void Draw()
         {
             Vector3 pos = pawn.DrawPos;
@@ -26,7 +29,15 @@
             Matrix4x4 matrix = default(Matrix4x4);
             var drawSize = 1.5f;
             matrix.SetTRS(pos, Quaternion.identity, new Vector3(drawSize, 1f, drawSize));
-            UnityEngine.Graphics.DrawMesh(MeshPool.plane10, matrix, OverlayMat, 0, null, 0, MatPropertyBlock);
+            UnityEngine.Graphics.DrawMesh(
+                MeshPool.plane10,
+                matrix,
+                OverlayMat,
+                0,
+                null,
+                0,
+                MatPropertyBlock
+            );
         }
 
         public override void Tick()

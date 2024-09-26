@@ -1,11 +1,12 @@
 ﻿namespace VanillaPsycastsExpanded
 {
-    using HarmonyLib;
-    using RimWorld;
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
+    using HarmonyLib;
+    using RimWorld;
     using Verse;
+
     [HarmonyPatch(typeof(IncidentWorker_RaidEnemy), "GetLetterText")]
     public static class IncidentWorker_RaidEnemy_GetLetterText_Patch
     {
@@ -13,8 +14,12 @@
         {
             if (parms.raidStrategy.Worker is RaidStrategyWorker_ImmediateAttack_Psycasters)
             {
-                string text = string.Format(parms.raidArrivalMode.textEnemy, parms.faction.def.pawnsPlural, 
-                    parms.faction.Name.ApplyTag(parms.faction)).CapitalizeFirst();
+                string text = string.Format(
+                        parms.raidArrivalMode.textEnemy,
+                        parms.faction.def.pawnsPlural,
+                        parms.faction.Name.ApplyTag(parms.faction)
+                    )
+                    .CapitalizeFirst();
                 text += "\n\n";
                 text += parms.raidStrategy.arrivalTextEnemy;
                 var psycasters = pawns.Where(x => x.HasPsylink).ToList();
@@ -28,7 +33,11 @@
                 if (pawn != null)
                 {
                     text += "\n\n";
-                    text += "EnemyRaidLeaderPresent".Translate(pawn.Faction.def.pawnsPlural, pawn.LabelShort, pawn.Named("LEADER"));
+                    text += "EnemyRaidLeaderPresent".Translate(
+                        pawn.Faction.def.pawnsPlural,
+                        pawn.LabelShort,
+                        pawn.Named("LEADER")
+                    );
                 }
                 __result = text;
                 return false;

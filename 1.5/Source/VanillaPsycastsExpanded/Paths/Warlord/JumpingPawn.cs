@@ -39,6 +39,11 @@ public class JumpingPawn : AbilityPawnFlyer
         base.RespawnPawn();
         VPE_DefOf.VPE_PowerLeap_Land.PlayOneShot(flyingPawn);
         FleckMaker.ThrowSmoke(flyingPawn.DrawPos, flyingPawn.Map, 1f);
-        FleckMaker.ThrowDustPuffThick(flyingPawn.DrawPos, flyingPawn.Map, 2f, new(1f, 1f, 1f, 2.5f));
+        FleckMaker.ThrowDustPuffThick(
+            flyingPawn.DrawPos,
+            flyingPawn.Map,
+            2f,
+            new(1f, 1f, 1f, 2.5f)
+        );
     }
 }

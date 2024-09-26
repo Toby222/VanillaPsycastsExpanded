@@ -9,7 +9,10 @@
     {
         public static void Postfix(Pawn p, ref ThoughtState __result)
         {
-            if (__result.StageIndex != 0 && p.health.hediffSet.GetFirstHediffOfDef(VPE_DefOf.VPE_PsychicSoothe) != null)
+            if (
+                __result.StageIndex != 0
+                && p.health.hediffSet.GetFirstHediffOfDef(VPE_DefOf.VPE_PsychicSoothe) != null
+            )
             {
                 __result = ThoughtState.ActiveAtStage(0);
             }

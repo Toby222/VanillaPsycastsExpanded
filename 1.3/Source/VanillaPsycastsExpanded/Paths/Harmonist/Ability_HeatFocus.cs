@@ -14,8 +14,13 @@ public class Ability_HeatFocus : Ability
     public override void Cast(params GlobalTargetInfo[] targets)
     {
         base.Cast(targets);
-        float amount = Mathf.Min(1f - this.pawn.psychicEntropy.CurrentPsyfocus,
-                                 (this.pawn.psychicEntropy.EntropyValue - this.pawn.GetStatValue(VPE_DefOf.VPE_PsychicEntropyMinimum)) * 0.002f);
+        float amount = Mathf.Min(
+            1f - this.pawn.psychicEntropy.CurrentPsyfocus,
+            (
+                this.pawn.psychicEntropy.EntropyValue
+                - this.pawn.GetStatValue(VPE_DefOf.VPE_PsychicEntropyMinimum)
+            ) * 0.002f
+        );
         this.pawn.psychicEntropy.OffsetPsyfocusDirectly(amount);
         currentEntropy(this.pawn.psychicEntropy) -= amount * 500f;
     }

@@ -8,6 +8,7 @@
     {
         public Func<IEnumerable<FloatMenuOption>> floatMenuGetter;
 
-        public override IEnumerable<FloatMenuOption> RightClickFloatMenuOptions => this.floatMenuGetter?.Invoke();
+        public override IEnumerable<FloatMenuOption> RightClickFloatMenuOptions =>
+            this.floatMenuGetter?.Invoke();
     }
 }

@@ -109,10 +109,17 @@ public static class VPE_DefOf
     public static PawnKindDef VPE_SummonedSkeleton;
     public static BodyPartDef Finger;
 
-    [DefAlias("VPE_Hurricane")] public static WeatherDef VPE_Hurricane_Weather;
-    [DefAlias("VPE_Hurricane")] public static GameConditionDef VPE_Hurricane_Condition;
-    [DefAlias("VPE_RockConstruct")] public static ThingDef VPE_Race_RockConstruct;
-    [DefAlias("VPE_SteelConstruct")] public static ThingDef VPE_Race_SteelConstruct;
+    [DefAlias("VPE_Hurricane")]
+    public static WeatherDef VPE_Hurricane_Weather;
+
+    [DefAlias("VPE_Hurricane")]
+    public static GameConditionDef VPE_Hurricane_Condition;
+
+    [DefAlias("VPE_RockConstruct")]
+    public static ThingDef VPE_Race_RockConstruct;
+
+    [DefAlias("VPE_SteelConstruct")]
+    public static ThingDef VPE_Race_SteelConstruct;
 
     public static StorytellerDef VPE_Basilicus;
 

@@ -21,8 +21,12 @@ public class GameCondition_RaidPause : GameCondition_TimeSnow
             foreach (Pawn pawn in map.attackTargetsCache.TargetsHostileToColony.OfType<Pawn>())
                 pawn.stances.stunner.StunFor(61, null, false);
 
-        if (this.sustainer == null) this.sustainer = VPE_DefOf.VPE_RaidPause_Sustainer.TrySpawnSustainer(SoundInfo.OnCamera());
-        else this.sustainer.Maintain();
+        if (this.sustainer == null)
+            this.sustainer = VPE_DefOf.VPE_RaidPause_Sustainer.TrySpawnSustainer(
+                SoundInfo.OnCamera()
+            );
+        else
+            this.sustainer.Maintain();
     }
 
     public override void End()
@@ -31,14 +35,22 @@ public class GameCondition_RaidPause : GameCondition_TimeSnow
         base.End();
     }
 
-
     [HarmonyPatch(typeof(Pawn_HealthTracker), nameof(Pawn_HealthTracker.PostApplyDamage))]
     [HarmonyPostfix]
     public static void PostPostApplyDamage(DamageInfo dinfo, float totalDamageDealt, Pawn ___pawn)
     {
-        if (totalDamageDealt >= 0f      && dinfo.Def.ExternalViolenceFor(___pawn) && dinfo.Instigator is { } attacker &&
-            ___pawn.HostileTo(attacker) && !attacker.HostileTo(Faction.OfPlayer))
-            foreach (GameCondition_RaidPause condition in ___pawn.MapHeld.gameConditionManager.ActiveConditions.OfType<GameCondition_RaidPause>().ToList())
+        if (
+            totalDamageDealt >= 0f
+            && dinfo.Def.ExternalViolenceFor(___pawn)
+            && dinfo.Instigator is { } attacker
+            && ___pawn.HostileTo(attacker)
+            && !attacker.HostileTo(Faction.OfPlayer)
+        )
+            foreach (
+                GameCondition_RaidPause condition in ___pawn
+                    .MapHeld.gameConditionManager.ActiveConditions.OfType<GameCondition_RaidPause>()
+                    .ToList()
+            )
                 condition.End();
     }
 }
@@ -46,8 +58,10 @@ public class GameCondition_RaidPause : GameCondition_TimeSnow
 [StaticConstructorOnStartup]
 public class GameCondition_TimeSnow : GameCondition
 {
-    public static readonly Material TimeSnowOverlay =
-        MaterialPool.MatFrom("Effects/Chronopath/Timesnow/TimesnowWorldOverlay", ShaderDatabase.WorldOverlayTransparent);
+    public static readonly Material TimeSnowOverlay = MaterialPool.MatFrom(
+        "Effects/Chronopath/Timesnow/TimesnowWorldOverlay",
+        ShaderDatabase.WorldOverlayTransparent
+    );
 
     private Material worldOverlayMat;
 
@@ -61,8 +75,13 @@ public class GameCondition_TimeSnow : GameCondition
     {
         base.GameConditionDraw(map);
         if (this.worldOverlayMat != null)
-            Graphics.DrawMesh(MeshPool.wholeMapPlane, map.Center.ToVector3ShiftedWithAltitude(AltitudeLayer.Weather), Quaternion.identity,
-                              this.worldOverlayMat, 0);
+            Graphics.DrawMesh(
+                MeshPool.wholeMapPlane,
+                map.Center.ToVector3ShiftedWithAltitude(AltitudeLayer.Weather),
+                Quaternion.identity,
+                this.worldOverlayMat,
+                0
+            );
     }
 
     public override void GameConditionTick()
@@ -71,10 +90,20 @@ public class GameCondition_TimeSnow : GameCondition
         if (this.worldOverlayMat != null)
         {
             this.worldOverlayMat.SetTextureOffset(
-                "_MainTex", Find.TickManager.TicksGame % 3600000 * new Vector2(0.0005f, -0.002f) * this.worldOverlayMat.GetTextureScale("_MainTex").x);
+                "_MainTex",
+                Find.TickManager.TicksGame
+                    % 3600000
+                    * new Vector2(0.0005f, -0.002f)
+                    * this.worldOverlayMat.GetTextureScale("_MainTex").x
+            );
             if (this.worldOverlayMat.HasProperty("_MainTex2"))
                 this.worldOverlayMat.SetTextureOffset(
-                    "_MainTex2", Find.TickManager.TicksGame % 3600000 * new Vector2(0.0004f, -0.002f) * this.worldOverlayMat.GetTextureScale("_MainTex").x);
+                    "_MainTex2",
+                    Find.TickManager.TicksGame
+                        % 3600000
+                        * new Vector2(0.0004f, -0.002f)
+                        * this.worldOverlayMat.GetTextureScale("_MainTex").x
+                );
         }
     }
 }

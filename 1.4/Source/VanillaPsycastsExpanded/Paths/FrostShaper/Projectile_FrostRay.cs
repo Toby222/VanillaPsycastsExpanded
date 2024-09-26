@@ -13,10 +13,18 @@ namespace VanillaPsycastsExpanded;
 [StaticConstructorOnStartup]
 public class Projectile_FrostRay : Projectile
 {
-    private static readonly Material shadowMaterial = MaterialPool.MatFrom("Things/Skyfaller/SkyfallerShadowCircle", ShaderDatabase.Transparent);
+    private static readonly Material shadowMaterial = MaterialPool.MatFrom(
+        "Things/Skyfaller/SkyfallerShadowCircle",
+        ShaderDatabase.Transparent
+    );
 
-    public static Func<Projectile, float> ArcHeightFactor = (Func<Projectile, float>)
-        Delegate.CreateDelegate(typeof(Func<Projectile, float>), null, AccessTools.Method(typeof(Projectile), "get_ArcHeightFactor"));
+    public static Func<Projectile, float> ArcHeightFactor =
+        (Func<Projectile, float>)
+            Delegate.CreateDelegate(
+                typeof(Func<Projectile, float>),
+                null,
+                AccessTools.Method(typeof(Projectile), "get_ArcHeightFactor")
+            );
 
     private Sustainer sustainer;
 
@@ -27,16 +35,25 @@ public class Projectile_FrostRay : Projectile
         var drawPos = Vector3.Lerp(origin, DrawPos, 0.5f);
         drawPos.y += 5f;
         var position = drawPos + new Vector3(0f, 0f, 1f) * num;
-        if (def.projectile.shadowSize > 0f) DrawShadow(drawPos, num);
+        if (def.projectile.shadowSize > 0f)
+            DrawShadow(drawPos, num);
         Comps_PostDraw();
-        UnityEngine.Graphics.DrawMesh(MeshPool.GridPlane(new Vector2(5f, distanceSize)), position, ExactRotation, (Graphic as Graphic_Animated).MatSingle, 0);
+        UnityEngine.Graphics.DrawMesh(
+            MeshPool.GridPlane(new Vector2(5f, distanceSize)),
+            position,
+            ExactRotation,
+            (Graphic as Graphic_Animated).MatSingle,
+            0
+        );
     }
 
     public override void Tick()
     {
         base.Tick();
         if (sustainer == null || sustainer.Ended)
-            sustainer = VPE_DefOf.VPE_FrostRay_Sustainer.TrySpawnSustainer(SoundInfo.InMap(this, MaintenanceType.PerTick));
+            sustainer = VPE_DefOf.VPE_FrostRay_Sustainer.TrySpawnSustainer(
+                SoundInfo.InMap(this, MaintenanceType.PerTick)
+            );
         sustainer.Maintain();
         if (launcher is Pawn pawn)
         {
@@ -58,17 +75,36 @@ public class Projectile_FrostRay : Projectile
                 pawns.Add(thing);
             foreach (var victim in pawns)
             {
-                var battleLogEntry_RangedImpact = new BattleLogEntry_RangedImpact(launcher, victim,
-                    intendedTarget.Thing, launcher.def, def, targetCoverDef);
+                var battleLogEntry_RangedImpact = new BattleLogEntry_RangedImpact(
+                    launcher,
+                    victim,
+                    intendedTarget.Thing,
+                    launcher.def,
+                    def,
+                    targetCoverDef
+                );
                 Find.BattleLog.Add(battleLogEntry_RangedImpact);
-                var dinfo = new DamageInfo(def.projectile.damageDef, DamageAmount, ArmorPenetration, ExactRotation.eulerAngles.y, launcher, null, equipmentDef,
-                    DamageInfo.SourceCategory.ThingOrUnknown, intendedTarget.Thing);
+                var dinfo = new DamageInfo(
+                    def.projectile.damageDef,
+                    DamageAmount,
+                    ArmorPenetration,
+                    ExactRotation.eulerAngles.y,
+                    launcher,
+                    null,
+                    equipmentDef,
+                    DamageInfo.SourceCategory.ThingOrUnknown,
+                    intendedTarget.Thing
+                );
                 victim.TakeDamage(dinfo).AssociateWithLog(battleLogEntry_RangedImpact);
                 if (victim.CanReceiveHypothermia(out var hediff))
                 {
                     HealthUtility.AdjustSeverity(victim, hediff, 0.08f / 6f);
                 }
-                HealthUtility.AdjustSeverity(victim, VPE_DefOf.VFEP_HypothermicSlowdown, 0.08f / 6f);
+                HealthUtility.AdjustSeverity(
+                    victim,
+                    VPE_DefOf.VFEP_HypothermicSlowdown,
+                    0.08f / 6f
+                );
             }
         }
     }
