@@ -4,3 +4,4 @@ bin
 Debug
 node_modules
 .direnv
+.idea
